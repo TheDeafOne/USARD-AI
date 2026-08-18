@@ -14,7 +14,7 @@
     { label: "Step 2 of 6 / A simple bridge", title: "Give every word a coordinate.", copy: "Build a vocabulary, then use the arrow to place each sentence word into its coordinate. Read the finished row left to right and the sentence is now a vector.", next: "Add passages" },
     { label: "Step 3 of 6 / The knowledge base", title: "Embed every passage the same way.", copy: "A RAG system prepares a searchable collection in advance. Each passage becomes one row, using exactly the same coordinate system.", next: "Ask a question" },
     { label: "Step 4 of 6 / At question time", title: "The question becomes a vector, too.", copy: "Use the arrow to scan shared coordinates and reveal a first similarity score. This exact-word comparison is the bridge to semantic similarity.", next: "Compare directions" },
-    { label: "Step 5 of 6 / Semantic search", title: "Modern embeddings capture meaning.", copy: "Bag-of-words makes the idea visible. A learned embedding model compresses meaning into a dense vector; cosine similarity then ranks the closest passage.", next: "Retrieve evidence" },
+    { label: "Step 5 of 6 / Semantic search", title: "Modern embeddings capture meaning.", copy: "Bag-of-words makes the idea visible. Now use the arrows to pass every row through the same learned embedding model before comparing their directions.", next: "Retrieve evidence" },
     { label: "Step 6 of 6 / Ground the answer", title: "Retrieve first. Generate second.", copy: "The best-matching passage is added to the prompt as evidence. The language model answers from that context and can point back to its source.", next: "Complete" },
   ];
 
@@ -32,6 +32,9 @@
   let wordFillComplete = false;
   let corpusBuildComplete = true;
   let overlapComplete = false;
+  let embeddingRowsComplete = false;
+  let sphereRevealComplete = false;
+  let visibleSpherePointCount = 0;
   let interactionBusy = false;
   let animationVersion = 0;
 
@@ -100,6 +103,21 @@
     sourceTray.appendChild(article);
   });
 
+  const passageEmbeddingValues = [
+    "[0.21, −0.38, 0.76, …]",
+    "[−0.15, 0.62, 0.31, …]",
+    "[0.71, 0.09, −0.44, …]",
+    "[0.04, 0.51, 0.26, …]",
+  ];
+  const rowEmbeddings = document.getElementById("row-embeddings");
+  passages.forEach((passage, index) => {
+    const item = document.createElement("div");
+    item.className = "row-embedding is-pending";
+    item.dataset.embeddingRow = passage.id;
+    item.innerHTML = `<span>${passage.label}</span><i class="embedding-arrow" aria-hidden="true"></i><code>${passageEmbeddingValues[index]}</code>`;
+    rowEmbeddings.appendChild(item);
+  });
+
   const scoreList = document.getElementById("score-list");
   [...passages].sort((a, b) => b.score - a.score).forEach((passage, index) => {
     const row = document.createElement("div");
@@ -127,7 +145,12 @@
     seedWords.querySelectorAll(".word").forEach((word) => word.classList.remove("is-flying", "is-placed"));
     sourceTray.querySelectorAll(".source-chip").forEach((card) => card.classList.remove("is-corpus-pending", "is-corpus-arriving", "is-first-handoff"));
     matrixBody.querySelectorAll("tr").forEach((row) => row.classList.remove("is-corpus-arriving"));
-    story.classList.remove("is-filling-words", "similarity-revealed", "corpus-first-handoff");
+    story.classList.remove("is-filling-words", "word-fill-complete", "similarity-revealed", "corpus-first-handoff", "embedding-rows-revealed", "sphere-revealed", "sphere-points-complete");
+    rowEmbeddings.querySelectorAll(".row-embedding").forEach((item) => {
+      item.classList.add("is-pending");
+      item.classList.remove("is-on-sphere");
+    });
+    document.querySelector(".learned-card").classList.remove("is-on-sphere");
     document.querySelectorAll(".token-ghost").forEach((ghost) => ghost.remove());
     document.querySelector(".query-arrow").textContent = "↑ same vocabulary, same coordinates";
   }
@@ -153,6 +176,13 @@
     sourceTray.querySelector('[data-passage="p1"]').classList.add("is-first-handoff");
   }
 
+  function resetEmbeddingComparison() {
+    embeddingRowsComplete = false;
+    sphereRevealComplete = false;
+    visibleSpherePointCount = 0;
+    rowEmbeddings.querySelectorAll(".row-embedding").forEach((item) => item.classList.add("is-pending"));
+  }
+
   function updateNextButton() {
     if (currentScene === scenes.length - 1) {
       nextButton.disabled = true;
@@ -164,6 +194,8 @@
     if (currentScene === 1 && !wordFillComplete) label = interactionBusy ? "Placing words…" : "Place the words";
     if (currentScene === 2 && !corpusBuildComplete) label = "Building corpus…";
     if (currentScene === 3 && !overlapComplete) label = interactionBusy ? "Comparing…" : "Compare word overlap";
+    if (currentScene === 4 && !embeddingRowsComplete) label = interactionBusy ? "Embedding rows…" : "Embed every row";
+    else if (currentScene === 4 && !sphereRevealComplete) label = interactionBusy ? "Building sphere…" : "Place on sphere";
     nextButton.innerHTML = `${label} <span aria-hidden="true">→</span>`;
   }
 
@@ -184,6 +216,7 @@
       wordFillComplete = true;
       interactionBusy = false;
       story.classList.remove("is-filling-words");
+      story.classList.add("word-fill-complete");
       updateNextButton();
       return;
     }
@@ -225,6 +258,7 @@
       wordFillComplete = true;
       interactionBusy = false;
       story.classList.remove("is-filling-words");
+      story.classList.add("word-fill-complete");
       updateNextButton();
     }, 160 + (words.length - 1) * 150 + 700);
   }
@@ -308,6 +342,65 @@
     window.setTimeout(finish, 1020 + 3 * 440);
   }
 
+  function animateRowEmbeddings() {
+    if (embeddingRowsComplete || interactionBusy) return;
+    const runVersion = animationVersion;
+    interactionBusy = true;
+    story.classList.add("embedding-rows-revealed");
+    updateNextButton();
+    const items = [...rowEmbeddings.querySelectorAll(".row-embedding")];
+    if (reducedMotion) {
+      items.forEach((item) => item.classList.remove("is-pending"));
+      embeddingRowsComplete = true;
+      interactionBusy = false;
+      updateNextButton();
+      return;
+    }
+    items.forEach((item, index) => window.setTimeout(() => {
+      if (runVersion !== animationVersion || currentScene !== 4) return;
+      item.classList.remove("is-pending");
+    }, 140 + index * 260));
+    window.setTimeout(() => {
+      if (runVersion !== animationVersion || currentScene !== 4) return;
+      embeddingRowsComplete = true;
+      interactionBusy = false;
+      updateNextButton();
+    }, 140 + items.length * 260);
+  }
+
+  function revealEmbeddingSphere() {
+    if (sphereRevealComplete || interactionBusy) return;
+    const runVersion = animationVersion;
+    interactionBusy = true;
+    visibleSpherePointCount = 0;
+    renderSphere(0);
+    story.classList.add("sphere-revealed");
+    updateNextButton();
+    const finish = () => {
+      if (runVersion !== animationVersion || currentScene !== 4) return;
+      story.classList.add("sphere-points-complete");
+      sphereRevealComplete = true;
+      interactionBusy = false;
+      updateNextButton();
+    };
+    if (reducedMotion) {
+      visibleSpherePointCount = points.length;
+      renderSphere();
+      document.querySelector(".learned-card").classList.add("is-on-sphere");
+      rowEmbeddings.querySelectorAll(".row-embedding").forEach((item) => item.classList.add("is-on-sphere"));
+      finish();
+      return;
+    }
+    points.forEach((point, index) => window.setTimeout(() => {
+      if (runVersion !== animationVersion || currentScene !== 4) return;
+      visibleSpherePointCount = index + 1;
+      renderSphere();
+      if (index === 0) document.querySelector(".learned-card").classList.add("is-on-sphere");
+      else rowEmbeddings.querySelector(`[data-embedding-row="p${index}"]`).classList.add("is-on-sphere");
+    }, 180 + index * 280));
+    window.setTimeout(finish, 180 + points.length * 280);
+  }
+
   function showScene(index) {
     animationVersion += 1;
     interactionBusy = false;
@@ -316,6 +409,7 @@
     if (currentScene === 1) resetWordFill();
     if (currentScene === 2) prepareCorpusBuild();
     if (currentScene === 3) resetOverlap();
+    if (currentScene === 4) resetEmbeddingComparison();
     const scene = scenes[currentScene];
     story.dataset.scene = String(currentScene);
     sceneLabel.textContent = scene.label;
@@ -329,7 +423,6 @@
     setVisibleRows(currentScene);
     window.history.replaceState(null, "", `#scene-${currentScene + 1}`);
     if (currentScene === 2) window.setTimeout(animateCorpusBuild, 40);
-    if (currentScene === 4) renderSphere();
   }
 
   function handleNext() {
@@ -340,6 +433,14 @@
     }
     if (currentScene === 3 && !overlapComplete) {
       animateOverlap();
+      return;
+    }
+    if (currentScene === 4 && !embeddingRowsComplete) {
+      animateRowEmbeddings();
+      return;
+    }
+    if (currentScene === 4 && !sphereRevealComplete) {
+      revealEmbeddingSphere();
       return;
     }
     showScene(currentScene + 1);
@@ -399,19 +500,25 @@
     }
     return path.join(" ");
   };
-  const arcPath = (a, b) => {
+  const arcPath = (a, b, radius = 0.3) => {
     const path = [];
     for (let i = 0; i <= 30; i += 1) {
       const t = i / 30;
       const mix = a.map((value, axis) => value * (1 - t) + b[axis] * t);
       const length = Math.hypot(...mix);
-      const p = project(mix.map((value) => value / length));
+      const p = project(mix.map((value) => (value / length) * radius));
       path.push(`${i ? "L" : "M"}${p.x.toFixed(1)},${p.y.toFixed(1)}`);
     }
     return path.join(" ");
   };
 
-  function renderSphere() {
+  const angleLabelPosition = (a, b, radius = 0.39) => {
+    const mix = a.map((value, axis) => value + b[axis]);
+    const length = Math.hypot(...mix);
+    return project(mix.map((value) => (value / length) * radius));
+  };
+
+  function renderSphere(visibleCount = visibleSpherePointCount) {
     svg.replaceChildren();
     const defs = el("defs");
     const gradient = el("radialGradient", { id: "ragSphereGlow", cx: "35%", cy: "25%", r: "72%" });
@@ -421,9 +528,15 @@
     svg.appendChild(el("circle", { cx: 280, cy: 210, r: 154, class: "rag-sphere-outline" }));
     [-Math.PI / 3, -Math.PI / 6, 0, Math.PI / 6, Math.PI / 3].forEach((angle) => svg.appendChild(el("path", { d: spherePath(angle), class: "rag-sphere-grid" })));
     [0, Math.PI / 3, 2 * Math.PI / 3].forEach((angle) => svg.appendChild(el("path", { d: spherePath(angle, true), class: "rag-sphere-grid" })));
-    svg.appendChild(el("path", { d: arcPath(points[0].vector, points[1].vector), class: "rag-angle" }));
+    if (visibleCount >= 2) {
+      svg.appendChild(el("path", { d: arcPath(points[0].vector, points[1].vector), class: "rag-angle" }));
+      const thetaPosition = angleLabelPosition(points[0].vector, points[1].vector);
+      const theta = el("text", { x: thetaPosition.x + 4, y: thetaPosition.y - 4, class: "rag-angle-label" });
+      theta.textContent = "θ";
+      svg.appendChild(theta);
+    }
     const center = project([0, 0, 0]);
-    points.map((point) => ({ ...point, projected: project(point.vector) })).sort((a, b) => a.projected.depth - b.projected.depth).forEach((point) => {
+    points.slice(0, visibleCount).map((point) => ({ ...point, projected: project(point.vector) })).sort((a, b) => a.projected.depth - b.projected.depth).forEach((point) => {
       svg.appendChild(el("line", { x1: center.x, y1: center.y, x2: point.projected.x, y2: point.projected.y, class: `rag-vector ${point.type}` }));
       svg.appendChild(el("circle", { cx: point.projected.x, cy: point.projected.y, r: point.type ? 6.5 : 5, class: `rag-point ${point.type}` }));
       const label = el("text", { x: point.projected.x + 9, y: point.projected.y - 9, class: `rag-point-label ${point.type}` });
@@ -439,8 +552,8 @@
   });
   svg.addEventListener("pointermove", (event) => {
     if (!dragging) return;
-    yaw -= (event.clientX - previous.x) * 0.009;
-    pitch = Math.max(-1.25, Math.min(1.25, pitch + (event.clientY - previous.y) * 0.009));
+    yaw += (event.clientX - previous.x) * 0.009;
+    pitch = Math.max(-1.25, Math.min(1.25, pitch - (event.clientY - previous.y) * 0.009));
     previous = { x: event.clientX, y: event.clientY };
     renderSphere();
   });
