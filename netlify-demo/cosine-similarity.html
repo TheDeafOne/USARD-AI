@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="An interactive, step-by-step explanation of cosine similarity using the USARD recommender-system lab." />
+    <title>Cosine Similarity | USARD Demo</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="assets/styles.css" />
+    <script src="assets/cosine-demo.js" defer></script>
+  </head>
+  <body class="demo-body">
+    <main class="demo-shell">
+      <header class="demo-topbar">
+        <a class="back-link compact" href="index.html">&larr; All demos</a>
+        <p>USARD / Recommender Systems</p>
+      </header>
+
+      <section class="demo-title-block">
+        <p class="eyebrow">Interactive explainer</p>
+        <h1>Similarity is an angle.</h1>
+        <p class="lede">
+          Follow Jefferson High from a table of recruiting outcomes to a recommendation built from its nearest behavioral neighbors.
+        </p>
+      </section>
+
+      <section class="stepper" id="cosine-demo" aria-label="Cosine similarity walkthrough">
+        <nav class="step-tabs" aria-label="Walkthrough steps">
+          <button type="button" data-step-button="0" aria-selected="true"><span>01</span> Data</button>
+          <button type="button" data-step-button="1" aria-selected="false"><span>02</span> Vectors</button>
+          <button type="button" data-step-button="2" aria-selected="false"><span>03</span> Sphere</button>
+          <button type="button" data-step-button="3" aria-selected="false"><span>04</span> Neighbors</button>
+          <button type="button" data-step-button="4" aria-selected="false"><span>05</span> Result</button>
+        </nav>
+
+        <div class="slides">
+          <article class="demo-step is-active" data-step="0">
+            <div class="step-copy">
+              <p class="step-label">Step 1 of 5 / Build the matrix</p>
+              <h2>Each school becomes a row of outcomes.</h2>
+              <p>
+                Every value is historical contracts per recruiter-hour for one engagement action. Jefferson has never tried a Mechanical Careers Demo, so that cell is missing—not zero.
+              </p>
+            </div>
+
+            <div class="table-wrap" tabindex="0" aria-label="Scrollable school effectiveness table">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th scope="col">School</th>
+                    <th scope="col"><abbr title="Cyber Careers Event">Cyber</abbr></th>
+                    <th scope="col"><abbr title="STEM Careers Presentation">STEM</abbr></th>
+                    <th scope="col"><abbr title="Mechanical Careers Demo">Mechanical</abbr></th>
+                    <th scope="col"><abbr title="Healthcare Careers Session">Healthcare</abbr></th>
+                    <th scope="col"><abbr title="Education Benefits Session">Education</abbr></th>
+                    <th scope="col"><abbr title="General Recruiting Table">Recruiting table</abbr></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="target-row">
+                    <th scope="row">Jefferson High <span class="tag">target</span></th>
+                    <td>0.767</td><td>0.765</td><td class="missing">—</td><td>0.269</td><td>0.522</td><td>0.429</td>
+                  </tr>
+                  <tr><th scope="row">Washington High</th><td>0.652</td><td>0.667</td><td>0.815</td><td>0.235</td><td>0.471</td><td>0.333</td></tr>
+                  <tr><th scope="row">Madison High</th><td>0.333</td><td>0.560</td><td>0.828</td><td>0.077</td><td>0.214</td><td>0.222</td></tr>
+                  <tr><th scope="row">North County Tech</th><td>0.542</td><td>0.476</td><td>0.840</td><td class="missing">—</td><td>0.176</td><td>0.125</td></tr>
+                  <tr><th scope="row">Lincoln High</th><td>0.194</td><td>0.364</td><td>0.757</td><td>0.100</td><td>0.105</td><td>0.111</td></tr>
+                  <tr><th scope="row">Oak Valley High</th><td>0.167</td><td class="missing">—</td><td>0.625</td><td>0.067</td><td>0.091</td><td>0.188</td></tr>
+                  <tr><th scope="row">Union High</th><td>0.412</td><td>0.389</td><td>0.371</td><td>0.409</td><td>0.400</td><td class="missing">—</td></tr>
+                  <tr><th scope="row">Redstone High</th><td>0.290</td><td>0.778</td><td>0.722</td><td>0.000</td><td>0.182</td><td>0.188</td></tr>
+                  <tr><th scope="row">Monroe High</th><td>0.913</td><td>0.208</td><td>0.000</td><td>0.143</td><td>0.222</td><td>0.000</td></tr>
+                  <tr><th scope="row">Hamilton High</th><td>0.056</td><td>0.045</td><td>0.125</td><td>0.815</td><td>0.211</td><td>0.143</td></tr>
+                  <tr><th scope="row">Valley Tech</th><td>0.000</td><td class="missing">—</td><td class="missing">—</td><td>0.864</td><td>0.091</td><td>0.111</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="callout">
+              <span class="callout-symbol">—</span>
+              <p><strong>Missing means “not observed.”</strong> Treating it as zero would turn absence of evidence into evidence of failure.</p>
+            </div>
+          </article>
+
+          <article class="demo-step" data-step="1" hidden>
+            <div class="split-layout">
+              <div class="step-copy">
+                <p class="step-label">Step 2 of 5 / Make vectors</p>
+                <h2>A row becomes a direction.</h2>
+                <p>
+                  For a three-dimensional teaching view, use Cyber, STEM, and Recruiting Table as the axes. The values locate each school in behavioral space.
+                </p>
+                <div class="vector-readout" aria-label="Jefferson vector values">
+                  <span><i class="dot cyan"></i>Cyber <strong>0.767</strong></span>
+                  <span><i class="dot cyan"></i>STEM <strong>0.765</strong></span>
+                  <span><i class="dot cyan"></i>Table <strong>0.429</strong></span>
+                </div>
+                <p class="formula" aria-label="Jefferson vector equals 0.767, 0.765, 0.429">
+                  Jefferson = [0.767, 0.765, 0.429]
+                </p>
+              </div>
+              <figure class="plot-figure">
+                <svg id="vector-plot" class="vector-plot" viewBox="0 0 720 460" role="img" aria-labelledby="vector-title vector-desc">
+                  <title id="vector-title">Jefferson as a three-dimensional vector</title>
+                  <desc id="vector-desc">One arrow represents Jefferson High's recruiting outcome pattern across three dimensions.</desc>
+                </svg>
+                <figcaption><span class="legend-key cyan-line"></span> Jefferson High</figcaption>
+              </figure>
+            </div>
+          </article>
+
+          <article class="demo-step" data-step="2" hidden>
+            <div class="step-copy centered-copy">
+              <p class="step-label">Step 3 of 5 / Normalize</p>
+              <h2>Move every vector onto the unit sphere.</h2>
+              <p>
+                Normalization removes magnitude and keeps direction. Points with a small angle between them have similar patterns—even if one school produces more contracts overall.
+              </p>
+            </div>
+
+            <figure class="sphere-figure">
+              <svg id="sphere-plot" class="sphere-plot" viewBox="0 0 720 500" role="img" aria-labelledby="sphere-title sphere-desc">
+                <title id="sphere-title">Schools normalized onto a three-dimensional sphere</title>
+                <desc id="sphere-desc">Jefferson High and schools with three shared features appear as points. Nearby directions indicate higher cosine similarity.</desc>
+              </svg>
+              <figcaption>
+                <span id="point-readout">Drag the sphere to rotate it. Hover a point to inspect it.</span>
+                <span class="drag-hint" aria-hidden="true">↔ drag to rotate</span>
+              </figcaption>
+            </figure>
+
+            <div class="equation-strip">
+              <span>cos(θ)</span>
+              <span class="fraction"><b>A · B</b><i>‖A‖ × ‖B‖</i></span>
+              <span>= 1 when directions match</span>
+            </div>
+            <p class="method-note">This sphere uses three visible features for intuition. The lab’s final score uses every action observed by both schools.</p>
+          </article>
+
+          <article class="demo-step" data-step="3" hidden>
+            <div class="split-layout neighbors-layout">
+              <div class="step-copy">
+                <p class="step-label">Step 4 of 5 / Measure the angle</p>
+                <h2>Smaller angle, stronger neighbor.</h2>
+                <p>
+                  The lab compares Jefferson with each school using only their shared observations. At least three shared actions are required so one or two coincidences cannot define a neighbor.
+                </p>
+                <div class="rule-card">
+                  <span>Minimum overlap</span>
+                  <strong>3 actions</strong>
+                </div>
+              </div>
+
+              <div class="ranking" aria-label="Schools ranked by cosine similarity to Jefferson High">
+                <div class="ranking-header"><span>Neighbor</span><span>Similarity</span></div>
+                <div class="rank-row top"><span><b>01</b> Washington High <small>5 overlaps</small></span><strong>0.9993</strong><i style="--score:99.93%"></i></div>
+                <div class="rank-row top"><span><b>02</b> Madison High <small>5 overlaps</small></span><strong>0.9638</strong><i style="--score:96.38%"></i></div>
+                <div class="rank-row top"><span><b>03</b> North County Tech <small>4 overlaps</small></span><strong>0.9628</strong><i style="--score:96.28%"></i></div>
+                <div class="rank-row"><span><b>04</b> Lincoln High <small>5 overlaps</small></span><strong>0.9458</strong><i style="--score:94.58%"></i></div>
+                <div class="rank-row"><span><b>05</b> Oak Valley High <small>4 overlaps</small></span><strong>0.9413</strong><i style="--score:94.13%"></i></div>
+                <div class="rank-row contrast"><span><b>25</b> Valley Tech <small>4 overlaps</small></span><strong>0.3542</strong><i style="--score:35.42%"></i></div>
+              </div>
+            </div>
+
+            <div class="angle-callout">
+              <div class="angle-graphic" aria-hidden="true"><span></span><i></i></div>
+              <p><strong>Washington is almost parallel to Jefferson.</strong> Their outcome mix points in nearly the same direction across five shared actions.</p>
+            </div>
+          </article>
+
+          <article class="demo-step" data-step="4" hidden>
+            <div class="step-copy centered-copy">
+              <p class="step-label">Step 5 of 5 / Fill the gap</p>
+              <h2>Let the nearest neighbors vote.</h2>
+              <p>
+                Jefferson has no Mechanical history. The three nearest neighbors are considered; those with Mechanical evidence contribute in proportion to their similarity.
+              </p>
+            </div>
+
+            <div class="table-wrap prediction-table-wrap" tabindex="0" aria-label="Mechanical prediction evidence table">
+              <table class="data-table prediction-table">
+                <thead>
+                  <tr>
+                    <th scope="col">School</th>
+                    <th scope="col">Cyber</th>
+                    <th scope="col">STEM</th>
+                    <th scope="col" class="focus-column">Mechanical</th>
+                    <th scope="col">Healthcare</th>
+                    <th scope="col">Education</th>
+                    <th scope="col">Recruiting table</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="target-row">
+                    <th scope="row">Jefferson High <span class="tag">target</span></th>
+                    <td>0.767</td><td>0.765</td><td class="result-cell">0.827 <small>predicted</small></td><td>0.269</td><td>0.522</td><td>0.429</td>
+                  </tr>
+                  <tr><th scope="row">Washington High</th><td>0.652</td><td>0.667</td><td class="evidence-cell">0.815 <small>source</small></td><td>0.235</td><td>0.471</td><td>0.333</td></tr>
+                  <tr><th scope="row">Madison High</th><td>0.333</td><td>0.560</td><td class="evidence-cell">0.828 <small>source</small></td><td>0.077</td><td>0.214</td><td>0.222</td></tr>
+                  <tr><th scope="row">North County Tech</th><td>0.542</td><td>0.476</td><td class="evidence-cell">0.840 <small>source</small></td><td class="missing">—</td><td>0.176</td><td>0.125</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="prediction-cards" aria-label="Prediction values">
+              <div class="value-card">
+                <span>Washington</span><strong>0.815</strong><small>similarity 0.9993</small>
+              </div>
+              <div class="value-card">
+                <span>Madison</span><strong>0.828</strong><small>similarity 0.9638</small>
+              </div>
+              <div class="value-card">
+                <span>North County</span><strong>0.840</strong><small>similarity 0.9628</small>
+              </div>
+              <div class="value-card result-card">
+                <span>Jefferson prediction</span><strong>0.827</strong><small>similarity-weighted result</small>
+              </div>
+            </div>
+
+            <div class="recommendation">
+              <div>
+                <p class="eyebrow">Top recommendation</p>
+                <h3>Mechanical Careers Demo</h3>
+              </div>
+              <div class="recommendation-score"><strong>0.827</strong><span>predicted</span></div>
+            </div>
+
+            <p class="method-note">Similarity finds the analogues; similarity-weighted evidence turns those analogues into a transparent prediction.</p>
+          </article>
+        </div>
+
+        <footer class="step-controls">
+          <button type="button" class="arrow-button" id="previous-step" disabled><span aria-hidden="true">←</span> Back</button>
+          <p id="step-status" aria-live="polite">1 / 5</p>
+          <button type="button" class="arrow-button primary" id="next-step">Next <span aria-hidden="true">→</span></button>
+        </footer>
+      </section>
+    </main>
+  </body>
+</html>

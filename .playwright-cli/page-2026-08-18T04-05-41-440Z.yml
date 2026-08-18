@@ -1,0 +1,51 @@
+- main [ref=e2]:
+  - generic [ref=e3]:
+    - link "← All demos" [ref=e4] [cursor=pointer]:
+      - /url: index.html
+    - paragraph [ref=e5]: USARD / Recommender Systems
+  - generic [ref=e6]:
+    - paragraph [ref=e7]: Interactive explainer
+    - heading "Similarity is an angle." [level=1] [ref=e8]
+    - paragraph [ref=e9]: Follow Jefferson High from a table of recruiting outcomes to a recommendation built from its nearest behavioral neighbors.
+  - region "Cosine similarity walkthrough" [ref=e10]:
+    - navigation "Walkthrough steps" [ref=e11]:
+      - button "01 Data" [ref=e12] [cursor=pointer]
+      - button "02 Vectors" [ref=e13] [cursor=pointer]
+      - button "03 Sphere" [ref=e14] [cursor=pointer]
+      - button "04 Neighbors" [ref=e15] [cursor=pointer]
+      - button "05 Recommend" [ref=e16] [cursor=pointer]
+    - article [ref=e133]:
+      - generic [ref=e134]:
+        - generic [ref=e135]:
+          - paragraph [ref=e136]: Step 2 of 5 / Make vectors
+          - heading "A row becomes a direction." [level=2] [ref=e137]
+          - paragraph [ref=e138]: For a three-dimensional teaching view, use Cyber, STEM, and Recruiting Table as the axes. The values locate each school in behavioral space.
+          - generic "Jefferson vector values" [ref=e139]:
+            - generic [ref=e140]:
+              - text: Cyber
+              - strong [ref=e142]: "0.667"
+            - generic [ref=e143]:
+              - text: STEM
+              - strong [ref=e145]: "0.588"
+            - generic [ref=e146]:
+              - text: Table
+              - strong [ref=e148]: "0.231"
+          - paragraph [ref=e149]: Jefferson = [0.667, 0.588, 0.231]
+        - figure "Jefferson Washington" [ref=e150]:
+          - img [ref=e151]:
+            - generic [ref=e161]: Cyber
+            - generic [ref=e162]: STEM
+            - generic [ref=e164]: Recruiting table
+            - generic [ref=e167]: Jefferson
+            - generic [ref=e170]: Washington
+          - generic [ref=e172]:
+            - text: Jefferson
+            - text: Washington
+    - generic [ref=e127]:
+      - button "Back" [ref=e128] [cursor=pointer]:
+        - generic [ref=e129]: ←
+        - text: Back
+      - paragraph [ref=e130]: 2 / 5
+      - button "Next" [active] [ref=e131] [cursor=pointer]:
+        - text: Next
+        - generic [ref=e175]: →

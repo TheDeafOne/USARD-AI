@@ -1,0 +1,134 @@
+- main [ref=e2]:
+  - generic [ref=e3]:
+    - link "← All demos" [ref=e4] [cursor=pointer]:
+      - /url: index.html
+    - paragraph [ref=e5]: USARD / Recommender Systems
+  - generic [ref=e6]:
+    - paragraph [ref=e7]: Interactive explainer
+    - heading "Similarity is an angle." [level=1] [ref=e8]
+    - paragraph [ref=e9]: Follow Jefferson High from a table of recruiting outcomes to a recommendation built from its nearest behavioral neighbors.
+  - region "Cosine similarity walkthrough" [ref=e10]:
+    - navigation "Walkthrough steps" [ref=e11]:
+      - button "01 Data" [ref=e12] [cursor=pointer]
+      - button "02 Vectors" [ref=e13] [cursor=pointer]
+      - button "03 Sphere" [ref=e14] [cursor=pointer]
+      - button "04 Neighbors" [ref=e15] [cursor=pointer]
+      - button "05 Recommend" [ref=e16] [cursor=pointer]
+    - article [ref=e18]:
+      - generic [ref=e19]:
+        - paragraph [ref=e20]: Step 1 of 5 / Build the matrix
+        - heading "Each school becomes a row of outcomes." [level=2] [ref=e21]
+        - paragraph [ref=e22]: Every value is historical contracts per recruiter-hour for one engagement action. Jefferson has never tried a Mechanical Careers Demo, so that cell is missing—not zero.
+      - generic "Scrollable school effectiveness table" [ref=e23]:
+        - table [ref=e24]:
+          - rowgroup [ref=e25]:
+            - row "School Cyber STEM Mechanical Healthcare Education Recruiting table" [ref=e26]:
+              - columnheader "School" [ref=e27]
+              - columnheader "Cyber" [ref=e28]
+              - columnheader "STEM" [ref=e29]
+              - columnheader "Mechanical" [ref=e30]
+              - columnheader "Healthcare" [ref=e31]
+              - columnheader "Education" [ref=e32]
+              - columnheader "Recruiting table" [ref=e33]
+          - rowgroup [ref=e34]:
+            - row "Jefferson High target 0.667 0.588 — — 0.333 0.231" [ref=e35]:
+              - rowheader "Jefferson High target" [ref=e36]
+              - cell "0.667" [ref=e37]
+              - cell "0.588" [ref=e38]
+              - cell "—" [ref=e39]
+              - cell "—" [ref=e40]
+              - cell "0.333" [ref=e41]
+              - cell "0.231" [ref=e42]
+            - row "Washington High 0.650 0.591 0.792 0.200 0.333 0.214" [ref=e43]:
+              - rowheader "Washington High" [ref=e44]
+              - cell "0.650" [ref=e45]
+              - cell "0.591" [ref=e46]
+              - cell "0.792" [ref=e47]
+              - cell "0.200" [ref=e48]
+              - cell "0.333" [ref=e49]
+              - cell "0.214" [ref=e50]
+            - row "Harbor High — 0.600 — 0.200 0.364 —" [ref=e51]:
+              - rowheader "Harbor High" [ref=e52]
+              - cell "—" [ref=e53]
+              - cell "0.600" [ref=e54]
+              - cell "—" [ref=e55]
+              - cell "0.200" [ref=e56]
+              - cell "0.364" [ref=e57]
+              - cell "—" [ref=e58]
+            - row "Hamilton High 0.611 0.591 0.625 0.185 0.316 0.214" [ref=e59]:
+              - rowheader "Hamilton High" [ref=e60]
+              - cell "0.611" [ref=e61]
+              - cell "0.591" [ref=e62]
+              - cell "0.625" [ref=e63]
+              - cell "0.185" [ref=e64]
+              - cell "0.316" [ref=e65]
+              - cell "0.214" [ref=e66]
+            - row "Wilson High 0.571 0.600 0.696 0.250 0.333 0.227" [ref=e67]:
+              - rowheader "Wilson High" [ref=e68]
+              - cell "0.571" [ref=e69]
+              - cell "0.600" [ref=e70]
+              - cell "0.696" [ref=e71]
+              - cell "0.250" [ref=e72]
+              - cell "0.333" [ref=e73]
+              - cell "0.227" [ref=e74]
+            - row "North County Tech 0.609 0.538 0.731 — 0.368 0.286" [ref=e75]:
+              - rowheader "North County Tech" [ref=e76]
+              - cell "0.609" [ref=e77]
+              - cell "0.538" [ref=e78]
+              - cell "0.731" [ref=e79]
+              - cell "—" [ref=e80]
+              - cell "0.368" [ref=e81]
+              - cell "0.286" [ref=e82]
+            - row "Central High 0.552 0.545 0.720 — — 0.333" [ref=e83]:
+              - rowheader "Central High" [ref=e84]
+              - cell "0.552" [ref=e85]
+              - cell "0.545" [ref=e86]
+              - cell "0.720" [ref=e87]
+              - cell "—" [ref=e88]
+              - cell "—" [ref=e89]
+              - cell "0.333" [ref=e90]
+            - row "Summit High 0.452 0.474 0.467 0.481 — 0.333" [ref=e91]:
+              - rowheader "Summit High" [ref=e92]
+              - cell "0.452" [ref=e93]
+              - cell "0.474" [ref=e94]
+              - cell "0.467" [ref=e95]
+              - cell "0.481" [ref=e96]
+              - cell "—" [ref=e97]
+              - cell "0.333" [ref=e98]
+            - row "Monroe High 0.478 0.542 0.353 0.476 0.444 0.400" [ref=e99]:
+              - rowheader "Monroe High" [ref=e100]
+              - cell "0.478" [ref=e101]
+              - cell "0.542" [ref=e102]
+              - cell "0.353" [ref=e103]
+              - cell "0.476" [ref=e104]
+              - cell "0.444" [ref=e105]
+              - cell "0.400" [ref=e106]
+            - row "Westfield High 0.227 0.417 0.250 0.375 — 0.500" [ref=e107]:
+              - rowheader "Westfield High" [ref=e108]
+              - cell "0.227" [ref=e109]
+              - cell "0.417" [ref=e110]
+              - cell "0.250" [ref=e111]
+              - cell "0.375" [ref=e112]
+              - cell "—" [ref=e113]
+              - cell "0.500" [ref=e114]
+            - row "Oak Valley High 0.179 0.250 0.261 — — 0.375" [ref=e115]:
+              - rowheader "Oak Valley High" [ref=e116]
+              - cell "0.179" [ref=e117]
+              - cell "0.250" [ref=e118]
+              - cell "0.261" [ref=e119]
+              - cell "—" [ref=e120]
+              - cell "—" [ref=e121]
+              - cell "0.375" [ref=e122]
+      - generic [ref=e123]:
+        - generic [ref=e124]: —
+        - paragraph [ref=e125]:
+          - strong [ref=e126]: Missing means “not observed.”
+          - text: Treating it as zero would turn absence of evidence into evidence of failure.
+    - generic [ref=e127]:
+      - button "Back" [disabled] [ref=e128]:
+        - generic [ref=e129]: ←
+        - text: Back
+      - paragraph [ref=e130]: 1 / 5
+      - button "Next" [ref=e131] [cursor=pointer]:
+        - text: Next
+        - generic [ref=e132]: →

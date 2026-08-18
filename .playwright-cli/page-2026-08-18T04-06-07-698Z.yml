@@ -1,0 +1,51 @@
+- main [ref=e2]:
+  - generic [ref=e3]:
+    - link "← All demos" [ref=e4] [cursor=pointer]:
+      - /url: index.html
+    - paragraph [ref=e5]: USARD / Recommender Systems
+  - generic [ref=e6]:
+    - paragraph [ref=e7]: Interactive explainer
+    - heading "Similarity is an angle." [level=1] [ref=e8]
+    - paragraph [ref=e9]: Follow Jefferson High from a table of recruiting outcomes to a recommendation built from its nearest behavioral neighbors.
+  - region "Cosine similarity walkthrough" [ref=e10]:
+    - navigation "Walkthrough steps" [ref=e11]:
+      - button "01 Data" [ref=e12] [cursor=pointer]
+      - button "02 Vectors" [ref=e13] [cursor=pointer]
+      - button "03 Sphere" [ref=e14] [cursor=pointer]
+      - button "04 Neighbors" [ref=e15] [cursor=pointer]
+      - button "05 Recommend" [ref=e16] [cursor=pointer]
+    - article [ref=e18]:
+      - generic [ref=e19]:
+        - generic [ref=e20]:
+          - paragraph [ref=e21]: Step 2 of 5 / Make vectors
+          - heading "A row becomes a direction." [level=2] [ref=e22]
+          - paragraph [ref=e23]: For a three-dimensional teaching view, use Cyber, STEM, and Recruiting Table as the axes. The values locate each school in behavioral space.
+          - generic "Jefferson vector values" [ref=e24]:
+            - generic [ref=e25]:
+              - text: Cyber
+              - strong [ref=e27]: "0.667"
+            - generic [ref=e28]:
+              - text: STEM
+              - strong [ref=e30]: "0.588"
+            - generic [ref=e31]:
+              - text: Table
+              - strong [ref=e33]: "0.231"
+          - paragraph [ref=e34]: Jefferson = [0.667, 0.588, 0.231]
+        - figure "Jefferson Washington" [ref=e35]:
+          - img [ref=e36]:
+            - generic [ref=e46]: Cyber
+            - generic [ref=e47]: STEM
+            - generic [ref=e49]: Recruiting table
+            - generic [ref=e52]: Jefferson
+            - generic [ref=e55]: Washington
+          - generic [ref=e57]:
+            - text: Jefferson
+            - text: Washington
+    - generic [ref=e60]:
+      - button "Back" [ref=e61] [cursor=pointer]:
+        - generic [ref=e62]: ←
+        - text: Back
+      - paragraph [ref=e63]: 2 / 5
+      - button "Next" [ref=e64] [cursor=pointer]:
+        - text: Next
+        - generic [ref=e65]: →

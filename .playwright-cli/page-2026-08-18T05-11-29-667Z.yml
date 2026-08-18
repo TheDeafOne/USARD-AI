@@ -1,0 +1,93 @@
+- generic [ref=e1]:
+  - link "Skip to walkthrough" [ref=e2] [cursor=pointer]:
+    - /url: "#stage-title"
+  - main [ref=e3]:
+    - generic [ref=e4]:
+      - link "Back to all USARD demos" [ref=e5] [cursor=pointer]:
+        - /url: index.html
+        - generic [ref=e6]: U
+        - generic [ref=e7]: USARD / LAB 02
+      - paragraph [ref=e8]:
+        - generic [ref=e9]: ←
+        - generic [ref=e10]: →
+        - text: to explore
+    - complementary "Pipeline steps" [ref=e11]:
+      - button "00 Mission Frame the decision" [ref=e13] [cursor=pointer]:
+        - generic [ref=e14]: "00"
+        - generic [ref=e15]: Mission
+        - generic [ref=e16]: Frame the decision
+      - paragraph [ref=e17]: Where
+      - button "01 Evidence Validated inputs" [ref=e18] [cursor=pointer]:
+        - generic [ref=e19]: "01"
+        - generic [ref=e20]: Evidence
+        - generic [ref=e21]: Validated inputs
+      - button "02 Measures Downstream value" [ref=e22] [cursor=pointer]:
+        - generic [ref=e23]: "02"
+        - generic [ref=e24]: Measures
+        - generic [ref=e25]: Downstream value
+      - button "03 Score Weighted objective" [ref=e26] [cursor=pointer]:
+        - generic [ref=e27]: "03"
+        - generic [ref=e28]: Score
+        - generic [ref=e29]: Weighted objective
+      - button "04 Shortlist Constraints + Top K" [ref=e30] [cursor=pointer]:
+        - generic [ref=e31]: "04"
+        - generic [ref=e32]: Shortlist
+        - generic [ref=e33]: Constraints + Top K
+      - paragraph [ref=e34]: What
+      - button "05 Matrix Schools × actions" [ref=e35] [cursor=pointer]:
+        - generic [ref=e36]: "05"
+        - generic [ref=e37]: Matrix
+        - generic [ref=e38]: Schools × actions
+      - button "06 Similarity Behavioral neighbors" [ref=e39] [cursor=pointer]:
+        - generic [ref=e40]: "06"
+        - generic [ref=e41]: Similarity
+        - generic [ref=e42]: Behavioral neighbors
+      - button "07 Predict Weighted evidence" [active] [ref=e43] [cursor=pointer]:
+        - generic [ref=e44]: "07"
+        - generic [ref=e45]: Predict
+        - generic [ref=e46]: Weighted evidence
+      - button "08 Recommend Keep provenance" [ref=e47] [cursor=pointer]:
+        - generic [ref=e48]: "08"
+        - generic [ref=e49]: Recommend
+        - generic [ref=e50]: Keep provenance
+    - generic [ref=e51]:
+      - article [ref=e85]:
+        - generic [ref=e86]:
+          - paragraph [ref=e87]: 07 / Similarity-weighted prediction
+          - heading "Let the closest analogues contribute most." [level=2] [ref=e88]
+          - paragraph [ref=e89]: Inspect the three nearest schools, keep only neighbors with Mechanical evidence, then compute a weighted average.
+        - generic "Mechanical prediction from nearest neighbors" [ref=e90]:
+          - generic [ref=e91]:
+            - generic [ref=e92]: Washington
+            - strong [ref=e93]: ".815"
+            - generic [ref=e94]: value × .9993 similarity
+          - generic [ref=e95]:
+            - generic [ref=e96]: Madison
+            - strong [ref=e97]: ".828"
+            - generic [ref=e98]: value × .9638 similarity
+          - generic [ref=e99]:
+            - generic [ref=e100]: North County
+            - strong [ref=e101]: ".840"
+            - generic [ref=e102]: value × .9628 similarity
+          - generic [ref=e103]:
+            - generic [ref=e104]: Predicted for Jefferson
+            - strong [ref=e105]: "0.827"
+            - generic [ref=e106]: contracts / recruiter-hour
+        - paragraph [ref=e107]:
+          - generic [ref=e108]: prediction
+          - text: =
+          - generic [ref=e109]:
+            - generic [ref=e110]: (.9993 × .815) + (.9638 × .828) + (.9628 × .840)
+            - generic [ref=e111]: .9993 + .9638 + .9628
+          - text: =
+          - strong [ref=e112]: ".827"
+        - paragraph [ref=e113]:
+          - generic [ref=e114]: Collaborative signal
+          - text: Similarity finds the analogues; weighted averaging turns their observed outcomes into an explainable estimate.
+      - text: • • • •
+    - generic [ref=e78]:
+      - button "Previous pipeline step" [ref=e79] [cursor=pointer]: ← Back
+      - generic [ref=e80]:
+        - generic [ref=e81]: WHAT
+        - paragraph [ref=e82]: 08 / 09
+      - button "Next step" [ref=e115] [cursor=pointer]: Next step →

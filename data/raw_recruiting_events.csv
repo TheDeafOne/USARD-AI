@@ -1,0 +1,495 @@
+engagement_id,event_date,school_name,action,recruiter_hours,contacts,appointments,qualified,contracts,access_score,distance_miles
+E1236,2026-03-03,Parkview HS,Healthcare Career Session,8,34,9,5,3,0.92,19
+E1199,2026-01-21,Oak Valley High,General Recruiting Table,4,45,9,4,1,0.72,9
+E1148,2025-12-23,Central High,Healthcare Careers Session,7,40,20,13,6,0.8,12
+E1227,2025-12-11,CEDAR GROVE HIGH,Education Benefits Session,5,31,11,7,4,0.94,6
+E1196,2025/11/12,Oak Valley HS,Benefits Session,5,36,9,6,0,0.72,9
+E1322,2026-06-05,Grant High,Education Benefit Session,7,50,14,17,3,0.74,46
+E1203,2026-02-10,Summit High,CYBER CAREERS EVENT,6,31,4,2,0,0.86,16
+E1302,"Apr 12, 2026",Jackson High,Mechanical Career Demo,9,46,10,6,3,0.77,38
+E1339,"Jul 21, 2026",Wilson High School,Recruiting Table,6,29,7,3,1,0.71,13
+E1423,07/10/2026,Redstone High,Healthcare Career Session,8,48,12,3,0,0.85,36
+E1123,2026-05-18,MADISON HIGH,Recruiting Table,4,22,7,4,1,0.77,35
+E1142,"Jun 3, 2026",Central High,Mech Careers Demo,7,46,11,8,1,0.8,12
+E1421,02/26/2026,REDSTONE HIGH,Mechanical Careers Demo,8,38,16,11,6,0.85,36
+E1026,2025/12/20,Jefferson High,CYBER CAREERS EVENT,9,38,18,13,7,0.92,12
+E1409,01/20/2026,Greenfield High,Mechanical Career Demo,9,35,11,5,0,0.73,17
+E1315,01/24/2026,Grant High,Mech Careers Demo,8,41,8,4,1,0.74,46
+E1308,2025-09-01,JACKSON HIGH,General Recruitment Table,5,24,9,4,2,0.77,38
+E1481,2026-07-06,Victory High School,Education Benefit Session,7,48,13,8,2,0.74,14
+E1312,2026-04-28,Grant High,Cyber Careers Event,6,18,6,2,0,0.74,46
+E1316,2026-03-22,Grant HS,Mech Careers Demo,10,36,11,3,1,0.74,46
+E1371,12/23/2025,Mountain View High,Mech Careers Demo,8,28,16,8,1,0.78,34
+E1068,2026-02-12,Roosevelt High,Mech Careers Demo,8,28,12,5,1,0.95,6
+E1127,2026-04-05,Franklin High,STEM Career Presentation,8,30,11,8,2,0.71,47
+E1235,2025/12/28,Parkview High,Mechanical Careers Demo,9,43,12,10,4,0.92,19
+E1099,2026-01-21,  Lakeside Academy ,Healthcare Careers Session,5,30,14,7,3,0.94,32
+E1114,2026-03-01,Madison High,Healthcare Careers Session,6,26,10,5,0,0.77,35
+E1363,2026-02-03,  Valley Tech ,General Recruiting Table,6,22,9,4,1,0.76,11
+E1280,09/01/2025,Hamilton High,Healthcare Career Session,8,26,14,9,6,0.69,33
+E1480,2026/05/30,Union High School,Benefits Session,5,44,8,6,2,0.86,23
+E1133,2026-04-06,Franklin High,Mechanical Careers Demo,10,-5,12,8,2,0.71,47
+E1267,2025/09/22,Adams High,STEM Careers Presentation,8,33,18,9,3,0.61,20
+E1069,2025-12-02,Roosevelt High School,Healthcare Careers Session,8,44,12,8,6,0.95,6
+E1278,2025/09/14,Hamilton HS,Mechanical Careers Demo,8,40,12,7,1,0.69,33
+E1418,2025-12-04,REDSTONE HIGH,STEM Presentation,8,47,15,9,6,0.85,36
+E1412,2026/06/28,Redstone High,Cyber Careers Event,7,36,16,8,1,0.85,36
+E1188,2026-03-02,OAK VALLEY HIGH,Cyber Careers Event,9,42,12,4,1,0.72,9
+E1381,2026-05-11,Mountain View High School,Education Benefits Session,4,39,16,9,4,0.78,34
+E1348,2026-04-12,,Healthcare Careers Session,6,39,15,6,1,0.96,39
+E1266,2025-09-21,Adams High,STEM Presentation,8,34,10,8,3,0.61,20
+E1015,2026-04-22,Lincoln High,Health Careers Session,7,43,17,4,0,0.9,8
+E1260,01/10/2026,Monroe High,Education Benefits Session,5,36,8,3,1,0.61,30
+E1189,"May 15, 2026",Oak Valley High,Mech Careers Demo,8,31,10,7,5,0.72,9
+E1102,2025/12/30,Lakeside Academy,General Recruiting Table,4,30,11,8,1,0.94,32
+E1169,2026-07-31,Westfield High,Cyber Career Event,6,47,14,7,1,0.63,26
+E1212,2026/04/16,SUMMIT HIGH,Healthcare Career Session,6,37,16,11,5,0.86,16
+E1164,2026/07/11,EASTVIEW HIGH,Education Benefit Session,7,41,13,8,3,0.61,41
+E1282,2026/05/17,Hamilton HS,Healthcare Career Session,5,50,16,11,4,0.69,33
+E1444,2025-09-27,Horizon HS,Benefits Session,5,28,15,8,1,0.94,10
+E1273,2026-07-08,HAMILTON HIGH,STEM Career Presentation,5,31,10,5,1,0.69,33
+E1234,2025-09-07,Parkview HS,Mech Careers Demo,8,48,16,11,4,0.92,19
+E1440,10/24/2025,Horizon HS,Healthcare Careers Session,7,47,21,12,6,0.94,10
+E1351,2025-11-28,Heritage High,General Recruiting Table,5,42,7,4,0,0.96,39
+E1225,2025-09-07,Cedar Grove High,Health Careers Session,7,35,14,6,2,0.94,6
+E1202,2026/07/28,Summit High School,Cyber Careers Event,8,46,11,2,0,0.86,16
+E1390,2026-03-03,Harbor High School,Education Benefits Session,4,26,9,4,1,0.67,13
+E1159,2025-10-22,Eastview HS,STEM Career Presentation,6,40,11,3,1,0.61,41
+E1432,2025/10/09,Horizon High School,Cyber Careers Event,9,26,11,7,0,0.94,10
+E1150,2025-10-12,Riverside High,CYBER CAREERS EVENT,7,47,13,7,0,0.9,6
+E1283,2026-04-19,HAMILTON HIGH,Benefits Session,4,43,11,8,1,0.69,33
+E1153,"Oct 13, 2025",Riverside High,STEM Careers Presentation,5,46,11,4,1,0.9,6
+E1131,04/14/2026,FRANKLIN HIGH,Mechanical Career Demo,7,29,8,6,2,0.71,47
+E1253,2026-05-24,Monroe High,STEM Career Presentation,6,27,13,8,1,0.61,30
+E1006,2025-09-17,  Lincoln High ,STEM Presentation,5,46,25,7,1,0.9,8
+E1216,2025-10-13,Summit High,General Recruiting Table,3,22,8,2,0,0.86,16
+E1386,"Jul 28, 2026",Harbor High,STEM Presentation,6,36,17,8,1,0.67,13
+E1095,2025-09-14,  Lakeside Academy ,Mechanical Career Demo,9,29,11,8,3,0.94,32
+E1284,2026-01-09,Hamilton High School,Education Benefit Session,6,36,10,6,1,0.69,33
+E1088,2026-14-02,North County Tech,General Recruitment Table,6,33,9,5,1,0.8,22
+E1116,2026-07-24,Madison High,Healthcare Careers Session,7,33,14,8,1,0.77,35
+E1264,"Oct 11, 2025",MONROE HIGH,General Recruiting Table,3,28,6,3,0,0.61,30
+E1040,2025-12-06,JEFFERSON HIGH,Education Benefits Session,6,38,11,5,3,0.92,12
+E1215,2026-06-17,Summit HS,Recruiting Table,6,48,12,8,1,0.86,16
+E1087,2025-09-27,North County Tech,Education Benefits Session,7,39,12,8,2,0.8,22
+E1183,06/15/2026,Pine Ridge High,Healthcare Career Session,8,42,8,5,0,0.75,46
+E1041,03/27/2026,JEFFERSON HIGH,General Recruiting Table,5,40,17,8,2,0.92,12
+E1463,07/03/2026,Pioneer High,Recruiting Table,3,49,13,4,1,0.68,39
+E1197,2025/09/23,OAK VALLEY HIGH,Education Benefits Session,5,22,10,6,1,0.72,9
+E1062,04/25/2026,Washington High,General Recruiting Table,3,30,13,7,1,0.72,18
+E1211,2026/05/30,SUMMIT HIGH,Health Careers Session,6,34,16,8,5,0.86,16
+E1347,"Mar 26, 2026",HERITAGE HIGH,Healthcare Careers Session,7,27,8,4,1,0.96,39
+E1081,09/27/2025,North County Tech,STEM Presentation,5,39,13,8,2,0.8,22
+E1165,2026/05/10,Eastview High,Education Benefit Session,5,46,17,8,1,0.61,41
+E1327,03/18/2026,WILSON HIGH,Cyber Career Event,7,30,15,11,6,0.71,13
+E1029,2025-12-05,Jefferson HS,STEM Careers Presentation,5,37,12,8,4,0.92,12
+E1448,2025-09-02,Pioneer High,Cyber Career Event,6,43,10,6,1,0.68,39
+E1391,2026-03-14,Harbor High,Education Benefits Session,4,34,13,6,1,0.67,13
+E1017,2025-11-07,LINCOLN HIGH,Education Benefits Session,4,30,18,5,1,0.9,8
+E1220,2025/09/30,Cedar Grove High,STEM Careers Presentation,8,49,14,8,1,0.94,6
+E1151,10/27/2025,Riverside High,STEM Career Presentation,6,27,8,5,0,0.9,6
+E1243,2026-07-18,Liberty High,Education Benefits Session,5,25,10,3,1,0.82,44
+E1337,2026-04-05,Wilson High,Education Benefits Session,6,40,9,4,0,0.71,13
+E1059,09/04/2025,Washington High,Benefits Session,7,45,10,7,3,0.72,18
+E1185,2026/01/05,PINE RIDGE HIGH,Recruiting Table,6,30,15,6,1,0.75,46
+E1113,2025/11/26,Madison High School,Healthcare Careers Session,6,47,13,5,0,0.77,35
+E1168,2025/11/08,Eastview High School,General Recruitment Table,4,47,15,8,1,0.61,41
+E1096,2026-07-24,  Lakeside Academy ,Mechanical Career Demo,10,47,14,9,2,0.94,32
+E1368,2026-06-06,Mountain View High School,STEM Careers Presentation,7,34,9,6,1,0.78,34
+E1270,2026-01-19,ADAMS HIGH,Education Benefit Session,5,44,16,8,1,0.61,20
+E1037,2025-10-09,JEFFERSON HIGH,Benefits Session,6,32,13,6,3,0.92,12
+E1005,2025/12/12,Lincoln HS,STEM Presentation,5,36,22,5,2,0.9,8
+E1310,"Oct 3, 2025",Grant High School,Cyber Careers Event,9,39,10,7,1,0.74,46
+E1388,2026-05-30,Harbor High,Mechanical Career Demo,10,45,19,10,7,0.67,13
+E1275,2025/11/16,Hamilton High,STEM Career Presentation,7,32,9,5,0,0.69,33
+E1384,2025/10/02,Harbor High,STEM Career Presentation,5,32,10,7,1,0.67,13
+E1380,2025-09-25,Mountain View High School,Benefits Session,6,55,20,12,5,0.78,34
+E1191,06/07/2026,  Oak Valley High ,Healthcare Career Session,5,45,9,3,0,0.72,9
+E1045,2026-05-27,Washington High,Cyber Careers Event,8,48,16,7,5,0.72,18
+E1377,2026/02/05,MOUNTAIN VIEW HIGH,,7,50,18,10,3,0.78,34
+E1433,2026/01/21,Horizon High,STEM Careers Presentation,5,34,16,8,1,0.94,10
+E1160,2026-04-20,Eastview High,Mechanical Careers Demo,7,38,13,8,1,0.61,41
+E1101,2026/03/06,Lakeside Academy,Health Careers Session,6,32,15,8,4,0.94,32
+E1471,04/30/2026,Union HS,Mech Careers Demo,9,39,8,6,4,0.86,23
+E1110,"May 29, 2026",Madison High,Mechanical Career Demo,10,53,20,14,8,0.77,35
+E1398,2026-06-28,Brookside High,Mechanical Careers Demo,9,27,15,8,1,0.61,9
+E1194,2026/03/10,Oak Valley High,Benefits Session,6,24,10,4,0,0.72,9
+E1305,2026-05-15,Jackson High,Healthcare Careers Session,6,49,17,8,1,0.77,38
+E1461,2026-03-19,Pioneer High School,Education Benefit Session,7,42,16,8,6,0.68,39
+E1345,2026-05-04,Heritage High School,Mechanical Careers Demo,7,33,18,12,5,0.96,39
+E1318,2026-01-13,Grant HS,Healthcare Career Session,7,29,9,5,1,0.74,46
+E1438,2025-10-06,Horizon High,Mechanical Careers Demo,8,24,9,4,1,0.94,10
+E1331,2026-06-24,WILSON HIGH,Mechanical Careers Demo,7,30,11,5,0,0.71,13
+E1126,2025/11/22,Franklin HS,CYBER CAREERS EVENT,7,43,9,3,0,0.71,47
+E1323,2026-01-27,Grant HS,Benefits Session,4,47,11,5,2,0.74,46
+E1026,2025/12/20,Jefferson High,CYBER CAREERS EVENT,9,38,18,13,7,0.92,12
+E1157,2025-10-29,Riverside High,Mechanical Careers Demo,9,42,12,6,0,0.9,6
+E1251,2026-07-04,Monroe High,STEM Careers Presentation,6,23,10,6,1,0.61,30
+E1385,2025/11/23,Harbor High,STEM Career Presentation,8,28,13,4,2,0.67,13
+E1421,02/26/2026,REDSTONE HIGH,Mechanical Careers Demo,8,38,16,11,6,0.85,36
+E1376,2025/12/15,MOUNTAIN VIEW HIGH,Healthcare Careers Session,8,43,11,6,2,0.78,34
+E1292,"Jun 16, 2026",Kennedy High,STEM Careers Presentation,7,29,12,7,1,0.67,22
+E1030,2026/06/01,Jefferson High School,STEM Presentation,5,28,16,7,4,0.92,12
+E1399,2026/03/03,BROOKSIDE HIGH,Mech Careers Demo,10,41,9,7,1,0.61,9
+E1173,01/18/2026,WESTFIELD HIGH,STEM Careers Presentation,5,41,8,2,0,0.63,26
+E1408,06/09/2026,Greenfield High,Mech Careers Demo,9,37,7,2,0,0.73,17
+E1187,2026-04-24,Oak Valley HS,Cyber Careers Event,9,29,12,6,2,0.72,9
+E1241,2026-04-06,Liberty High,Healthcare Career Session,6,27,13,6,0,0.82,44
+E1401,10/26/2025,Brookside High,General Recruiting Table,3,23,7,4,2,0.61,9
+E1314,10/10/2025,Grant High,STEM Presentation,8,43,14,8,1,0.74,46
+E1147,2025-11-21,Central High,Health Careers Session,5,36,12,10,5,0.8,12
+E1074,2026-06-14,Roosevelt HS,General Recruiting Table,6,46,11,7,1,0.95,6
+E1306,05/27/2026,JACKSON HIGH,General Recruitment Table,5,48,15,8,2,0.77,38
+E1357,2025-10-20,Valley Tech,Healthcare Careers Session,5,33,15,7,4,0.76,11
+E1326,2025-10-19,Wilson High,Cyber Career Event,8,34,19,12,7,0.71,13
+E1072,2026-05-31,  Roosevelt High ,Healthcare Career Session,8,45,19,12,6,0.95,6
+E1019,2026-05-27,Lincoln High,Education Benefits Session,4,49,18,2,0,0.9,8
+E1426,2025-11-26,Redstone High,Education Benefits Session,4,29,15,8,1,0.85,36
+E1321,06/15/2026,Grant High,Benefits Session,5,34,8,4,2,0.74,46
+E1155,2026/06/23,Riverside High,Mechanical Career Demo,9,38,12,6,0,0.9,6
+E1299,2026-01-20,KENNEDY HIGH,Benefits Session,4,32,10,8,3,0.67,22
+E1224,05/17/2026,Cedar Grove HS,Health Careers Session,8,32,10,6,2,0.94,6
+E1272,2026-05-14,Hamilton High,Cyber Career Event,9,23,10,4,1,0.69,33
+E1338,2026/07/12,Wilson High,Education Benefits Session,4,33,12,7,0,0.71,13
+E1051,2026-03-21,WASHINGTON HIGH,Mechanical Career Demo,10,34,19,12,8,0.72,18
+E1167,2025/09/25,Eastview High,General Recruiting Table,5,20,7,4,1,0.61,41
+E1274,2026-06-05,Hamilton HS,STEM Careers Presentation,5,34,12,6,0,0.69,33
+E1254,2025-10-19,Monroe High School,Mechanical Careers Demo,9,25,10,3,5,0.61,30
+E1313,2026-07-19,Grant High,STEM Career Presentation,5,42,15,6,1,0.74,46
+E1405,2026-02-17,  Greenfield High ,STEM Presentation,5,36,14,5,1,0.73,17
+E1271,2026/02/06,Hamilton High,CYBER CAREERS EVENT,9,29,11,3,0,0.69,33
+E1011,2026/04/20,Lincoln HS,Mechanical Careers Demo,9,51,29,14,7,0.9,8
+E1279,2026-01-14,HAMILTON HIGH,Healthcare Careers Session,8,39,15,11,7,0.69,33
+E1249,2025-10-30,Monroe High School,Cyber Career Event,6,30,13,9,6,0.61,30
+E1162,2026-06-28,Eastview High,Mechanical Careers Demo,10,28,7,4,2,0.61,41
+E1130,2025-09-27,FRANKLIN HIGH,STEM Careers Presentation,8,44,9,3,1,0.71,47
+E1335,2026/05/06,Wilson HS,Health Careers Session,8,38,15,6,,0.71,13
+E1023,2025/12/06,Lincoln High,Recruiting Table,6,40,21,7,1,0.9,8
+E1410,2026-06-23,GREENFIELD HIGH,Recruiting Table,5,32,13,5,1,0.73,17
+E1336,2026-05-07,Wilson HS,Education Benefit Session,5,30,14,7,1,0.71,13
+E1105,2025-11-18,  Madison High ,Cyber Careers Event,6,26,13,4,6,0.77,35
+E1296,2026-06-24,Kennedy HS,Mechanical Career Demo,8,49,16,7,0,0.67,22
+E1259,2026-02-26,MONROE HIGH,Health Careers Session,7,37,11,8,1,0.61,30
+E1228,2026-04-02,Cedar Grove High School,General Recruitment Table,4,40,12,3,1,0.94,6
+E1084,2026-03-25,North County Tech,Mech Careers Demo,9,43,16,9,7,0.8,22
+E1206,2026/07/24,SUMMIT HIGH,STEM Presentation,5,26,8,3,1,0.86,16
+E1144,2025-11-23,Central High,Mechanical Career Demo,7,47,15,8,2,0.8,12
+E1080,2026/03/21,North County Tech,STEM Career Presentation,8,32,13,10,5,0.8,22
+E1093,2026-07-24,  Lakeside Academy ,STEM Career Presentation,8,23,11,4,1,0.94,32
+E1179,2026-05-22,Westfield High,General Recruiting Table,4,37,12,15,4,0.63,26
+E1325,2026-07-11,Wilson High,Cyber Careers Event,7,45,17,13,6,0.71,13
+E1098,2026-06-21,Lakeside Academy,Health Careers Session,6,38,16,10,4,0.94,32
+E1436,2025-12-15,HORIZON HIGH,Mechanical Career Demo,10,27,11,8,3,0.94,10
+E1064,2026-07-10,Roosevelt High,Cyber Career Event,8,47,15,6,0,0.95,6
+E1089,06/18/2026,North County Tech,Recruiting Table,5,21,6,3,1,0.8,22
+E1200,2026/03/22,Oak Valley High,General Recruiting Table,6,38,15,7,1,0.72,9
+E1467,01/03/2026,  Union High ,CYBER CAREERS EVENT,8,38,19,11,4,0.86,23
+E1469,2025-12-02,Union High School,STEM Careers Presentation,5,31,9,4,2,0.86,23
+E1479,2026-05-03,Union HS,Benefits Session,4,42,11,8,2,0.86,23
+E1416,06/24/2026,REDSTONE HIGH,STEM Careers Presentation,6,37,9,7,5,0.85,36
+E1007,2026/04/29,Lincoln High School,STEM Careers Presentation,6,52,20,5,3,0.9,8
+E1478,2025-09-01,Union High School,Benefits Session,6,26,14,6,2,0.86,23
+E1020,2026-03-24,  Lincoln High ,Education Benefit Session,4,50,20,2,0,0.9,8
+E1038,2025-09-21,Jefferson High,Education Benefits Session,6,35,15,7,3,0.92,12
+E1320,2025-12-09,Grant High,Benefits Session,7,35,14,5,2,0.74,46
+E1393,2026-02-01,Harbor HS,Education Benefit Session,6,30,9,2,0,0.67,13
+E1391,2026-03-14,Harbor High,Education Benefits Session,4,34,13,6,1,0.67,13
+E1404,2025-09-17,Greenfield High School,STEM Presentation,6,33,10,3,1,0.73,17
+E1079,11/20/2025,N County Technical,STEM Careers Presentation,8,28,10,5,3,0.8,22
+E1031,05/26/2026,JEFFERSON HIGH,STEM Careers Presentation,7,32,13,8,5,0.92,12
+E1048,2026-04-26,Washington High,STEM Career Presentation,6,45,12,6,4,0.72,18
+E1047,07/13/2026,Washington High,Cyber Career Event,8,49,15,11,5,0.72,18
+E1016,not recorded,Lincoln High,Health Careers Session,5,53,27,8,1,0.9,8
+E1182,2026-06-02,  Pine Ridge High ,Health Careers Session,7,38,13,7,0,0.75,46
+E1054,01/01/2026,Washington High,Healthcare Career Session,6,35,11,3,2,0.72,18
+E1175,2026/04/14,Westfield HS,STEM Career Presentation,7,18,5,3,1,0.63,26
+E1324,2025/09/07,WILSON HIGH,Cyber Career Event,6,40,18,12,5,0.71,13
+E1319,2026-06-26,Grant HS,Healthcare Careers Session,8,30,7,5,0,0.74,46
+E1358,2025-12-29,Valley Tech,Healthcare Career Session,6,51,22,13,6,0.76,11
+E1125,07/31/2026,Franklin High,CYBER CAREERS EVENT,6,33,7,5,1,0.71,47
+E1263,2026-02-07,Monroe High,General Recruiting Table,3,26,10,2,0,0.61,30
+E1378,2025-09-25,Mountain View High,Healthcare Career Session,7,41,16,8,2,0.78,34
+E1010,2026/06/17,Lincoln HS,Mechanical Careers Demo,9,65,31,13,7,0.9,8
+E1396,10/16/2025,Harbor High School,Recruiting Table,5,32,13,4,2,0.67,13
+E1269,2025-11-22,Adams HS,Education Benefits Session,5,38,8,6,1,0.61,20
+E1435,2026-06-19,Horizon High,Mechanical Careers Demo,7,38,11,8,2,0.94,10
+E1090,2025-10-14,NORTH COUNTY TECH,General Recruitment Table,3,24,9,2,0,0.8,22
+E1138,2025-10-07,Franklin High,Recruiting Table,5,39,9,7,2,0.71,47
+E1190,2026-02-16,Oak Valley HS,Mechanical Careers Demo,8,26,12,8,5,0.72,9
+E1046,2026-04-11,Washington High,Cyber Careers Event,7,38,12,6,5,0.72,18
+E1117,2025/12/16,  Madison High ,Benefits Session,6,38,12,7,1,0.77,35
+E1141,2026-05-04,CENTRAL HIGH,CYBER CAREERS EVENT,6,40,8,5,0,0.8,12
+E1204,2026-04-11,Summit High,Cyber Career Event,8,33,8,5,0,0.86,16
+E1262,09/12/2025,Monroe High,Recruiting Table,4,44,12,3,0,0.61,30
+E1146,2026-01-08,Central High,Healthcare Careers Session,5,43,12,10,5,0.8,12
+E1104,2026-07-20,Madison HS,Cyber Careers Event,6,31,10,7,2,0.77,35
+E1128,2025-10-28,Franklin High,STEM Careers Presentation,5,29,10,3,0,0.71,47
+E1137,"Mar 8, 2026",Franklin HS,General Recruitment Table,4,37,8,4,1,0.71,47
+E1193,2026-01-11,Oak Valley High,Health Careers Session,5,27,5,3,1,0.72,9
+E1143,2025/12/01,Central High,Mech Careers Demo,7,38,12,3,,0.8,12
+E1303,2025-12-11,JACKSON HIGH,Mech Careers Demo,8,39,9,5,2,0.77,38
+E1168,2025/11/08,Eastview High School,General Recruitment Table,4,47,15,8,1,0.61,41
+E1276,2025-10-15,Hamilton HS,STEM Careers Presentation,5,25,12,6,0,0.69,33
+E1136,2026-05-07,Franklin High,Health Careers Session,6,34,14,5,3,0.71,47
+E1447,06/01/2026,Horizon HS,General Recruitment Table,6,30,11,6,1,0.94,10
+E1286,2026-01-08,Hamilton High School,Education Benefits Session,4,45,13,4,1,0.69,33
+E1230,"Jul 11, 2026",PARKVIEW HIGH,STEM Presentation,7,41,17,10,3,0.92,19
+E1091,2025-12-04,LAKESIDE ACADEMY,STEM Careers Presentation,6,43,14,6,0,0.94,32
+E1328,2026-06-23,Wilson High,STEM Career Presentation,8,46,11,8,2,0.71,13
+E1268,03/18/2026,  Adams High ,STEM Career Presentation,8,44,14,6,3,0.61,20
+E1379,2025-09-27,Mountain View High,Education Benefit Session,4,23,9,5,3,0.78,34
+E1205,2025-12-30,Summit High School,STEM Careers Presentation,8,26,11,8,1,0.86,16
+E1455,2026/07/01,Pioneer High,Mechanical Career Demo,9,31,8,5,0,0.68,39
+E1233,2025-10-01,Parkview High,STEM Presentation,7,32,10,5,3,0.92,19
+E1118,2025/11/19,Madison High,Benefits Session,4,41,6,3,1,0.77,35
+E1293,2026-07-08,Kennedy High,STEM Careers Presentation,8,47,12,5,1,0.67,22
+E1353,2025-12-30,  Valley Tech ,Cyber Career Event,7,34,12,4,0,0.76,11
+E1033,2026-02-10,Jefferson High,Healthcare Careers Session,7,24,8,4,1,0.92,12
+E1013,"Sep 8, 2025",Lincoln High,Health Careers Session,8,40,23,5,1,0.9,8
+E1158,"Dec 20, 2025",Eastview High,STEM Career Presentation,5,37,8,3,1,0.61,41
+E1092,2026-04-21,Lakeside Acad.,STEM Presentation,7,47,16,7,1,0.94,32
+E1129,2025-12-24,Franklin High,STEM Career Presentation,8,30,17,8,1,0.71,47
+E1329,2025/12/15,Wilson High,STEM Presentation,7,25,9,3,1,0.71,13
+E1307,2026-05-11,Jackson High,Recruiting Table,3,40,5,2,0,0.77,38
+E1300,2026-03-25,Kennedy High,Benefits Session,6,29,11,7,5,0.67,22
+E1309,"Sep 3, 2025",Jackson High School,General Recruitment Table,4,42,13,4,2,0.77,38
+E1242,TBD,Liberty High,Education Benefit Session,5,28,9,4,2,0.82,44
+E1201,2025-09-09,Summit High,Cyber Careers Event,9,20,5,2,0,0.86,16
+E1342,2026-04-30,WILSON HIGH,General Recruitment Table,5,35,15,6,0,0.71,13
+E1466,2025-09-07,Union High,CYBER CAREERS EVENT,9,42,11,5,3,0.86,23
+E1213,2026-06-10,Summit High,Healthcare Careers Session,7,39,17,10,5,0.86,16
+E1078,2025/11/01,North County Tech,Cyber Careers Event,8,45,13,7,4,0.8,22
+E1370,2026-07-21,Mountain View High,STEM Career Presentation,6,37,7,5,0,0.78,34
+E1355,2026/04/11,Valley Tech,Health Careers Session,6,44,17,10,5,0.76,11
+E1139,2025-10-01,Franklin High,Recruiting Table,6,26,10,7,1,0.71,47
+E1304,2026-02-15,Jackson High,Healthcare Career Session,5,35,13,8,1,0.77,38
+E1470,2026-05-10,Union High,STEM Career Presentation,8,30,14,10,3,0.86,23
+E1415,2026-01-24,Redstone High,CYBER CAREERS EVENT,7,40,14,10,3,0.85,36
+E1397,03/29/2026,  Harbor High ,General Recruiting Table,4,25,13,5,2,0.67,13
+E1134,2026/03/31,Franklin High,Health Careers Session,7,33,12,7,4,0.71,47
+E1174,2026-03-03,WESTFIELD HIGH,STEM Careers Presentation,7,42,13,4,0,0.63,26
+E1255,2025-09-22,Monroe High School,Mech Careers Demo,10,38,12,7,0,0.61,30
+E1295,2025-12-15,Kennedy High,Mechanical Careers Demo,9,30,8,6,0,0.67,22
+E1108,2025-10-04,Madison High,STEM Career Presentation,6,43,13,10,3,0.77,35
+E1132,02/09/2026,Franklin HS,Mech Careers Demo,8,29,9,5,2,0.71,47
+E1085,2026/02/14,NORTH COUNTY TECH,Education Benefit Session,5,47,13,4,0,0.8,22
+E1066,2026-05-25,Roosevelt HS,Mech Careers Demo,8,46,10,5,1,0.95,6
+E1458,2026-04-18,Pioneer High,Health Careers Session,8,45,12,3,1,0.68,39
+E1149,2026-01-05,Riverside High,CYBER CAREERS EVENT,9,25,11,6,0,0.9,6
+E1207,2026-02-12,Summit High,STEM Career Presentation,6,36,10,4,1,0.86,16
+E1400,09/29/2025,Brookside High,General Recruitment Table,3,40,13,10,12,0.61,9
+E1297,2026-05-11,Kennedy High,Education Benefits Session,7,40,14,9,5,0.67,22
+E1369,"Apr 27, 2026",Mountain View HS,STEM Presentation,7,44,13,6,1,0.78,34
+E1301,2025-12-15,Jackson HS,Mech Careers Demo,7,47,15,9,2,0.77,38
+E1039,"Sep 2, 2025",Jefferson High,Education Benefit Session,5,30,16,7,3,0.92,12
+E1014,04/28/2026,Lincoln High,Healthcare Career Session,5,61,25,8,1,0.9,8
+E1214,2026-07-17,  Summit High ,Healthcare Career Session,8,36,14,12,6,0.86,16
+E1453,2025-09-17,Pioneer High,Mech Careers Demo,8,27,7,4,1,0.68,39
+E1394,2026/01/22,Harbor High,General Recruiting Table,4,27,8,4,1,0.67,13
+E1277,"Oct 9, 2025",HAMILTON HIGH,Mech Careers Demo,8,30,12,7,1,0.69,33
+E1447,06/01/2026,Horizon HS,General Recruitment Table,6,30,11,6,1,0.94,10
+E1424,2026-04-10,Redstone High,Health Careers Session,8,22,6,2,0,0.85,36
+E1025,2026-04-15,JEFFERSON HIGH,Cyber Careers Event,6,25,12,9,4,0.92,12
+E1419,"Jul 8, 2026",Redstone High,STEM Presentation,7,52,17,11,5,0.85,36
+E1170,07/04/2026,WESTFIELD HIGH,Cyber Careers Event,8,29,11,6,2,0.63,26
+E1247,2025/09/01,Monroe High,Cyber Careers Event,9,32,19,13,8,0.61,30
+E1018,11/29/2025,Lincoln High,Education Benefits Session,7,37,16,3,1,0.9,8
+E1245,2026-01-10,Liberty High School,Recruiting Table,5,30,12,10,3,0.82,44
+E1387,11/05/2025,Harbor HS,Mechanical Careers Demo,7,34,16,12,5,0.67,13
+E1217,2025-10-18,Cedar Grove High,STEM Careers Presentation,7,34,16,7,1,0.94,6
+E1172,2025-09-26,Westfield HS,STEM Careers Presentation,7,34,10,4,1,0.63,26
+E1354,04/16/2026,Valley Tech,CYBER CAREERS EVENT,8,30,14,6,0,0.76,11
+E1218,"Apr 16, 2026",Cedar Grove HS,STEM Career Presentation,8,21,8,6,0,0.94,6
+E1219,11/24/2025,Cedar Grove High,STEM Career Presentation,7,37,13,7,0,0.94,6
+E1340,2025-09-20,Wilson High School,General Recruitment Table,5,39,7,5,0,0.71,13
+E1420,2025-09-07,Redstone High School,Mech Careers Demo,10,47,19,10,7,0.85,36
+E1482,2025-12-16,Victory HS,General Recruitment Table,6,28,12,7,5,0.74,14
+E1180,2026-04-06,Pine Ridge High,Cyber Career Event,6,37,10,8,6,0.75,46
+E1198,2026-04-22,Oak Valley High,General Recruitment Table,6,43,16,7,1,0.72,9
+E1468,2026-06-03,Union High,STEM Careers Presentation,5,32,11,6,2,0.86,23
+E1012,2026/04/04,Lincoln High,Mech Careers Demo,9,38,26,11,6,0.9,8
+E1407,2026-06-03,Greenfield High,Mech Careers Demo,10,22,7,4,0,0.73,17
+E1311,2026-03-03,Grant High,Cyber Careers Event,8,41,7,3,1,0.74,46
+E1112,2026-01-06,Madison High,Mech Careers Demo,9,53,18,13,8,0.77,35
+E1119,11/17/2025,  Madison High ,,7,19,7,4,2,0.77,35
+E1056,2026-04-17,WASHINGTON HIGH,Health Careers Session,6,41,10,7,1,0.72,18
+E1053,03/05/2026,Washington High,Mechanical Careers Demo,9,48,21,12,7,0.72,18
+E1422,2025-10-23,Redstone High School,Health Careers Session,8,44,11,5,0,0.85,36
+E1372,2026/07/28,Mountain View High,Mech Careers Demo,7,24,10,4,0,0.78,34
+E1246,2025-09-05,Liberty High,General Recruiting Table,4,31,12,8,3,0.82,44
+E1265,2026/02/13,ADAMS HIGH,STEM Presentation,5,36,9,7,2,0.61,20
+E1475,05/04/2026,Union High,Healthcare Career Session,8,36,16,7,4,0.86,23
+E1402,2025-09-25,  Brookside High ,General Recruitment Table,4,34,9,6,4,0.61,9
+E1006,2025-09-17,  Lincoln High ,STEM Presentation,5,46,25,7,1,0.9,8
+E1383,2026/03/17,Harbor High,STEM Presentation,6,39,12,6,2,0.67,13
+E1121,2026-03-24,MADISON HIGH,General Recruitment Table,4,36,17,8,1,0.77,35
+E1107,2026-02-13,  Madison High ,STEM Presentation,5,55,19,10,3,0.77,35
+E1181,2026-04-28,Pine Ridge HS,Cyber Career Event,9,54,19,14,8,0.75,46
+,03/27/2026,SUMMIT HIGH,Mechanical Career Demo,9,34,15,7,2,0.86,16
+E1452,11/03/2025,Pioneer High,STEM Career Presentation,8,39,8,6,1,0.68,39
+E1122,2026-02-22,  Madison High ,General Recruiting Table,4,39,8,3,0,0.77,35
+E1109,2026-06-16,Madison High,STEM Career Presentation,8,52,17,10,5,0.77,35
+E1270,2026-01-19,ADAMS HIGH,Education Benefit Session,5,44,16,8,1,0.61,20
+E1425,2026-06-01,Redstone High,Education Benefits Session,7,44,9,4,1,0.85,36
+E1450,2026/02/14,Pioneer High,STEM Presentation,7,30,8,4,1,0.68,39
+E1406,12/25/2025,Greenfield High School,STEM Careers Presentation,8,28,12,9,2,0.73,17
+E1428,05/21/2026,Redstone High,Recruiting Table,6,41,8,4,1,0.85,36
+E1043,"Jun 16, 2026",Jefferson High,Recruiting Table,5,34,10,7,2,0.92,12
+E1281,2025-11-27,HAMILTON HIGH,Healthcare Careers Session,6,49,20,11,5,0.69,33
+E1457,2026-05-11,  Pioneer High ,Healthcare Career Session,5,29,7,4,1,0.68,39
+E1257,2026-04-18,Monroe High School,Health Careers Session,8,31,13,6,1,0.61,30
+E1166,2025-12-26,Eastview HS,Recruiting Table,6,40,11,5,0,0.61,41
+E1239,09/15/2025,Liberty High,Mechanical Careers Demo,8,51,15,7,1,0.82,44
+E1248,2025-12-27,MONROE HIGH,Cyber Careers Event,8,28,15,13,7,0.61,30
+E1413,2026-07-14,Redstone High School,CYBER CAREERS EVENT,8,43,13,5,2,0.85,36
+E1392,2026/01/19,Harbor High,Benefits Session,4,25,9,5,0,0.67,13
+E1462,"May 1, 2026",Pioneer High,Recruiting Table,5,31,11,7,1,0.68,39
+E1476,2025-12-21,Union High,Health Careers Session,7,37,13,6,3,0.86,23
+E1451,10/28/2025,Pioneer High,STEM Presentation,5,47,14,5,1,0.68,39
+E1171,2026/04/11,Westfield High,Cyber Career Event,8,22,9,6,2,0.63,26
+E1361,2025/11/09,  Valley Tech ,Recruiting Table,6,37,9,5,1,0.76,11
+E1332,12/27/2025,WILSON HIGH,Mechanical Career Demo,7,23,11,4,0,0.71,13
+E1427,"Jan 20, 2026",Redstone HS,Recruiting Table,4,33,12,8,1,0.85,36
+E1044,2026-03-28,Jefferson High,General Recruiting Table,5,37,11,8,2,0.92,12
+E1063,2026-02-20,Roosevelt High School,CYBER CAREERS EVENT,8,45,14,5,0,0.95,6
+E1100,2026/07/17,Lakeside Academy,Health Careers Session,7,33,11,8,5,0.94,32
+E1414,2025-12-06,Redstone High,CYBER CAREERS EVENT,9,47,16,10,3,0.85,36
+E1290,2025-09-18,Hamilton High,General Recruiting Table,5,30,17,8,1,0.69,33
+E1061,2025-09-24,Washington High,General Recruitment Table,3,26,11,5,1,0.72,18
+E1152,2026-06-19,Riverside High,STEM Career Presentation,5,27,13,5,0,0.9,6
+E1294,2026-06-07,Kennedy High,Mechanical Career Demo,10,21,8,3,0,0.67,22
+E1256,2026-06-13,Monroe High,Mechanical Careers Demo,7,24,6,2,0,0.61,30
+E1082,2026-05-09,North County Tech,Mechanical Careers Demo,9,46,16,14,8,0.8,22
+E1244,2026-01-14,Liberty High,General Recruiting Table,3,42,13,8,3,0.82,44
+E1210,2026-05-13,SUMMIT HIGH,Mechanical Careers Demo,8,42,8,5,2,0.86,16
+E1344,2025-10-20,Heritage High,Mechanical Careers Demo,8,26,14,11,6,0.96,39
+E1258,2026-04-23,MONROE HIGH,Healthcare Career Session,6,31,11,3,1,0.61,30
+E1042,2025/12/09,Jefferson HS,Recruiting Table,6,50,19,10,3,0.92,12
+E1441,2026-01-14,Horizon HS,Education Benefits Session,7,40,14,8,1,0.94,10
+E1291,2026/03/08,  Kennedy High ,STEM Career Presentation,8,27,11,5,1,0.67,22
+E1350,12/25/2025,Heritage HS,General Recruiting Table,5,34,11,7,1,0.96,39
+E1333,2025-10-22,Wilson High,Healthcare Career Session,5,23,8,2,0,0.71,13
+E1156,,Riverside High School,Mechanical Career Demo,10,36,11,5,0,0.9,6
+E1395,2026-07-03,HARBOR HIGH,General Recruitment Table,3,33,13,8,1,0.67,13
+E1298,2026/03/13,Kennedy High,Benefits Session,7,48,16,8,5,0.67,22
+E1373,2026-05-10,Mountain View High School,Mech Careers Demo,10,44,10,4,1,0.78,34
+E1203,2026-02-10,Summit High,CYBER CAREERS EVENT,6,31,4,2,0,0.86,16
+E1443,2026-05-22,Horizon High,Benefits Session,7,40,10,8,1,0.94,10
+E1334,2025-10-19,Wilson High,Healthcare Careers Session,7,45,12,4,0,0.71,13
+E1163,2026-04-20,Eastview High School,Education Benefit Session,7,31,8,5,2,0.61,41
+E1287,2025/12/16,HAMILTON HIGH,Recruiting Table,5,34,14,6,0,0.69,33
+E1439,2026-04-06,Horizon High School,Healthcare Careers Session,5,44,14,7,4,0.94,10
+E1094,2026/01/07,,Mechanical Career Demo,10,23,9,4,2,0.94,32
+E1032,2026/01/13,Jefferson High,STEM Career Presentation,7,34,11,14,5,0.92,12
+E1057,2025-10-26,Washington HS,Education Benefits Session,4,45,11,7,2,0.72,18
+E1176,06/06/2026,Westfield High,Healthcare Careers Session,7,47,14,7,1,0.63,26
+E1240,2026/01/28,Liberty HS,Healthcare Careers Session,7,33,9,5,1,0.82,44
+E1285,2026-04-12,Hamilton High,Education Benefit Session,5,36,11,6,1,0.69,33
+E1221,"Apr 29, 2026",Cedar Grove High,Mechanical Career Demo,7,34,10,7,1,0.94,6
+E1001,2026/06/02,LINCOLN HIGH,CYBER CAREERS EVENT,9,42,20,5,2,0.9,8
+E1003,2026-06-16,Lincoln High,Cyber Careers Event,7,54,23,6,2,0.9,8
+E1135,05/07/2026,FRANKLIN HIGH,Health Careers Session,6,43,15,9,3,0.71,47
+E1364,2026/05/21,Mountain View High,Cyber Career Event,7,28,12,6,1,0.78,34
+E1073,2026-07-05,Roosevelt High,Recruiting Table,5,28,13,5,1,0.95,6
+,09/23/2025,Roosevelt High,CYBER CAREERS EVENT,6,28,6,2,0,0.95,6
+E1446,2025-10-29,Horizon High,General Recruitment Table,5,34,12,4,1,0.94,10
+E1360,07/07/2026,  Valley Tech ,Benefits Session,6,33,8,5,0,0.76,11
+E1004,2026-02-28,Lincoln High,Cyber Careers Event,6,34,17,3,1,0.9,8
+E1154,2026-02-18,Riverside High,STEM Careers Presentation,5,48,12,5,0,0.9,6
+E1060,2026-03-29,  Washington High ,General Recruitment Table,3,22,9,3,1,0.72,18
+E1226,05/31/2026,Cedar Grove High,Education Benefits Session,5,46,10,7,4,0.94,6
+E1454,2026-01-31,Pioneer High,Mech Careers Demo,8,43,17,8,1,0.68,39
+E1120,07/25/2026,Madison High,Education Benefit Session,4,34,16,7,1,0.77,35
+E1184,11/29/2025,PINE RIDGE HIGH,Healthcare Careers Session,7,35,8,5,0,0.75,46
+E1161,2025-12-10,EASTVIEW HIGH,Mechanical Careers Demo,9,31,8,4,2,0.61,41
+E1028,11/11/2025,Jefferson High,CYBER CAREERS EVENT,9,43,18,13,7,0.92,12
+E1311,2026-03-03,Grant High,Cyber Careers Event,8,41,7,3,1,0.74,46
+,2026-01-28,Mountain View High,Cyber Career Event,7,45,10,2,0,0.78,34
+E1365,2026/03/06,Mountain View High,Cyber Careers Event,9,30,13,6,0,0.78,34
+E1036,2025-12-30,Jefferson High,Healthcare Careers Session,5,25,10,5,2,0.92,12
+E1140,2026/01/17,CENTRAL HIGH,Cyber Careers Event,6,25,11,4,0,0.8,12
+E1052,2026-02-26,WASHINGTON HIGH,Mechanical Career Demo,8,59,23,14,7,0.72,18
+E1177,02/12/2026,Westfield High,Health Careers Session,5,37,5,3,1,0.63,26
+E1465,2025-11-26,  Pioneer High ,General Recruiting Table,5,20,6,4,2,0.68,39
+E1222,2026/06/12,Cedar Grove High,Mechanical Careers Demo,7,45,10,7,0,0.94,6
+E1237,2026-05-07,Parkview High,Healthcare Career Session,8,43,16,9,4,0.92,19
+E1367,"Mar 24, 2026",Mountain View High,CYBER CAREERS EVENT,9,31,4,2,0,0.78,34
+E1382,2026-05-11,Mountain View High,Benefits Session,4,51,17,9,4,0.78,34
+E1289,"Jul 15, 2026",Hamilton High,General Recruiting Table,-2,21,9,6,1,0.69,33
+E1067,2025-10-05,Roosevelt HS,Mech Careers Demo,10,33,5,3,1,0.95,6
+E1252,09/10/2025,MONROE HIGH,STEM Career Presentation,6,28,13,4,2,0.61,30
+E1115,03/13/2026,Madison High,Health Careers Session,7,32,7,4,1,0.77,35
+E1071,2026-07-03,Roosevelt High,Healthcare Career Session,5,30,15,9,4,0.95,6
+E1456,2026-03-04,Pioneer HS,Healthcare Career Session,7,22,9,7,1,0.68,39
+E1070,"Oct 24, 2025",Roosevelt HS,Health Careers Session,6,53,17,11,5,0.95,6
+E1359,2025-09-27,Valley Tech,Benefits Session,5,48,14,5,1,0.76,11
+E1106,2025-12-10,Madison HS,STEM Career Presentation,6,29,9,6,3,0.77,35
+E1103,2025-12-29,  Lakeside Academy ,Recruiting Table,4,24,8,5,1,0.94,32
+E1083,"Mar 23, 2026",  North County Tech ,Mechanical Career Demo,7,48,17,9,6,0.8,22
+E1192,06/01/2026,Oak Valley High,Healthcare Careers Session,5,35,14,5,0,0.72,9
+E1437,2026-02-22,Horizon High,Mechanical Careers Demo,9,37,10,7,3,0.94,10
+E1431,05/21/2026,HORIZON HIGH,CYBER CAREERS EVENT,8,38,7,2,0,0.94,10
+E1111,2025-12-26,MADISON HIGH,Mechanical Career Demo,10,46,16,10,8,0.77,35
+E1021,2026-01-31,Lincoln High,General Recruiting Table,3,43,19,4,0,0.9,8
+E1231,2026-04-30,Parkview High,STEM Careers Presentation,6,30,15,10,3,0.92,19
+E1349,2026/01/14,Heritage High,General Recruitment Table,4,45,11,6,0,0.96,39
+E1022,2026-06-29,Lincoln High,General Recruiting Table,4,46,16,4,1,0.9,8
+E1417,2025-09-19,Redstone High,STEM Presentation,6,37,12,8,5,0.85,36
+E1330,2026-05-23,Wilson High,Mechanical Careers Demo,9,35,6,3,0,0.71,13
+E1459,"May 12, 2026",Pioneer High School,Healthcare Career Session,8,26,9,3,1,0.68,39
+E1024,2026-03-26,Lincoln HS,General Recruiting Table,5,43,20,3,0,0.9,8
+E1464,"Nov 1, 2025",Pioneer High School,Recruiting Table,4,36,16,8,2,0.68,39
+E1223,01/24/2026,Cedar Grove High,Health Careers Session,8,40,9,5,2,0.94,6
+E1232,2026/05/26,Parkview HS,STEM Careers Presentation,8,27,14,6,3,0.92,19
+E1341,12/28/2025,Wilson High,Recruiting Table,6,36,12,3,0,0.71,13
+E1317,2025-10-16,Grant High,Mechanical Careers Demo,7,36,8,6,1,0.74,46
+E1343,2026-03-24,Heritage High School,Mechanical Careers Demo,10,29,17,9,7,0.96,39
+E1445,2025-09-14,Horizon High School,General Recruiting Table,6,29,14,7,0,0.94,10
+E1075,2026-06-25,Roosevelt High,General Recruitment Table,3,24,9,5,0,0.95,6
+E1375,2026/03/01,Mountain View High,Healthcare Career Session,8,34,13,8,3,0.78,34
+E1389,2026-03-22,Harbor High,Mechanical Careers Demo,7,35,16,12,5,0.67,13
+E1288,04/11/2026,HAMILTON HIGH,Recruiting Table,4,41,13,6,1,0.69,33
+E1261,05/31/2026,MONROE HIGH,Education Benefit Session,4,42,8,5,1,0.61,30
+E1195,2026-01-30,Oak Valley High,Education Benefit Session,6,29,15,6,1,0.72,9
+E1374,2026-07-06,Mountain View High School,Mech Careers Demo,9,27,13,4,1,0.78,34
+E1362,2025-12-24,Valley Tech,General Recruitment Table,6,46,11,4,0,0.76,11
+E1411,2025-11-26,Greenfield HS,General Recruitment Table,5,-5,9,5,0,0.73,17
+E1112,2026-01-06,Madison High,Mech Careers Demo,9,53,18,13,8,0.77,35
+E1352,2025/11/01,Heritage High,General Recruitment Table,4,40,9,3,1,0.96,39
+E1145,2025-11-09,CENTRAL HIGH,Healthcare Career Session,5,32,13,8,4,0.8,12
+E1034,2026/02/15,Jefferson High,Healthcare Careers Session,6,35,15,8,2,0.92,12
+E1473,"Feb 6, 2026",Union High,Mech Careers Demo,8,47,11,8,3,0.86,23
+E1050,01/28/2026,Washington High,STEM Presentation,-2,27,10,8,-2,0.72,18
+E1442,2025-10-20,Horizon High,Benefits Session,7,48,16,7,1,0.94,10
+E1055,2025-11-24,Washington High,Healthcare Careers Session,5,33,10,6,1,0.72,18
+E1008,2026-01-22,Lincoln High,STEM Career Presentation,6,58,25,8,2,0.9,8
+E1356,2026/02/17,Valley Tech,Healthcare Careers Session,5,52,20,11,4,0.76,11
+E1250,07/06/2026,MONROE HIGH,STEM Career Presentation,6,43,10,8,1,0.61,30
+E1229,2026-05-10,Cedar Grove High School,Recruiting Table,6,25,10,5,2,0.94,6
+E1477,05/14/2026,Union High,Health Careers Session,7,46,16,9,2,0.86,23
+E1049,2025-12-26,Washington High,STEM Career Presentation,6,25,9,6,4,0.72,18
+E1430,07/03/2026,Horizon HS,Cyber Career Event,6,38,12,4,0,0.94,10
+E1086,2026-01-25,North County Tech,Education Benefit Session,5,33,10,4,1,0.8,22
+E1186,2026/06/03,PINE RIDGE HIGH,General Recruitment Table,4,29,13,6,1,0.75,46
+E1009,11/11/2025,Lincoln High School,Mechanical Careers Demo,10,56,26,13,8,0.9,8
+E1429,2025-10-25,Redstone High,Recruiting Table,6,37,11,5,1,0.85,36
+E1460,2025-11-26,Pioneer High,Education Benefits Session,5,48,19,11,4,0.68,39
+E1077,2025-09-05,North County Tech,CYBER CAREERS EVENT,7,26,9,7,4,0.8,22
+E1449,07/03/2026,Pioneer HS,Cyber Career Event,7,38,11,3,1,0.68,39
+E1403,2025/09/04,Greenfield High,STEM Presentation,7,29,12,8,1,0.73,17
+E1346,2026-05-23,Heritage HS,Health Careers Session,8,40,14,8,1,0.96,39
+E1474,2025-12-01,Union High,Mechanical Careers Demo,10,30,15,10,3,0.86,23
+E1352,2025/11/01,Heritage High,General Recruitment Table,4,40,9,3,1,0.96,39
+E1035,05/22/2026,Jeffrson High,Healthcare Careers Session,8,41,9,5,2,0.92,12
+E1434,11/04/2025,Horizon High,STEM Career Presentation,6,26,7,5,1,0.94,10
+E1472,2025-10-23,Union High,Mech Careers Demo,8,50,16,10,3,0.86,23
+E1027,12/26/2025,Jefferson High,CYBER CAREERS EVENT,6,31,9,7,5,0.92,12
+E1238,2026-01-28,Liberty High,Mechanical Career Demo,10,19,6,4,1,0.82,44
+E1002,2025-11-25,Lincoln High,CYBER CAREERS EVENT,9,32,18,6,1,0.9,8
+E1178,11/19/2025,Westfield High,General Recruiting Table,5,52,16,7,4,0.63,26
+E1058,2026-03-25,  Washington High ,Education Benefits Session,6,49,14,7,3,0.72,18
+E1076,2025/09/10,North County Tech,Cyber Career Event,9,36,16,8,5,0.8,22
+E1059,09/04/2025,Washington High,Benefits Session,7,45,10,7,3,0.72,18
+E1209,2026-05-14,  Summit High ,Mechanical Career Demo,7,48,15,8,2,0.86,16
+E1097,2025/10/22,  Lakeside Academy ,Mechanical Careers Demo,10,28,10,4,2,0.94,32
+E1124,2026-07-23,Madison High School,General Recruiting Table,6,27,8,5,2,0.77,35

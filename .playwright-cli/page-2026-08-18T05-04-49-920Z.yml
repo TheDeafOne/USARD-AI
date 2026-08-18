@@ -1,0 +1,77 @@
+- main [ref=e2]:
+  - generic [ref=e3]:
+    - paragraph [ref=e4]: USARD
+    - heading "Demo pages" [level=1] [ref=e5]
+    - paragraph [ref=e6]: Interactive explainers for the USARD technical track.
+  - region "Demos" [ref=e7]:
+    - generic [ref=e8]:
+      - paragraph [ref=e9]: Explore
+      - heading "Demos" [level=2] [ref=e10]
+    - navigation "Demonstrations" [ref=e11]:
+      - link "01 Cosine similarity Turn recruiting outcomes into vectors, neighbors, and a transparent recommendation." [ref=e12] [cursor=pointer]:
+        - /url: cosine-similarity.html
+        - generic [ref=e13]: "01"
+        - heading "Cosine similarity" [level=3] [ref=e14]
+        - paragraph [ref=e15]: Turn recruiting outcomes into vectors, neighbors, and a transparent recommendation.
+      - link "02 Lab 2 pipeline Walk from validated school data through weighted scoring, collaborative filtering, and a traceable recommendation." [ref=e16] [cursor=pointer]:
+        - /url: lab-2-pipeline.html
+        - generic [ref=e17]: "02"
+        - heading "Lab 2 pipeline" [level=3] [ref=e18]
+        - paragraph [ref=e19]: Walk from validated school data through weighted scoring, collaborative filtering, and a traceable recommendation.
+      - link "03 Other demo Use this page as a template for another demonstration." [ref=e20] [cursor=pointer]:
+        - /url: other.html
+        - generic [ref=e21]: "03"
+        - heading "Other demo" [level=3] [ref=e22]
+        - paragraph [ref=e23]: Use this page as a template for another demonstration.
+  - region "Data" [ref=e24]:
+    - generic [ref=e25]:
+      - generic [ref=e26]:
+        - paragraph [ref=e27]: Source files
+        - heading "Data" [level=2] [ref=e28]
+      - paragraph [ref=e29]: Inspect, sort, search, or download the datasets used throughout the labs.
+    - generic "Datasets" [ref=e30]:
+      - article [ref=e31]:
+        - generic [ref=e32]:
+          - generic [ref=e33]: CSV
+          - generic [ref=e34]: 494 rows
+        - heading "Raw recruiting events" [level=3] [ref=e35]:
+          - link "Raw recruiting events" [ref=e36] [cursor=pointer]:
+            - /url: data-viewer.html?dataset=raw
+        - paragraph [ref=e37]: Original engagement records, including inconsistent names and incomplete values for cleaning practice.
+        - generic [ref=e38]:
+          - link "View data" [ref=e39] [cursor=pointer]:
+            - /url: data-viewer.html?dataset=raw
+            - text: View data
+            - generic [ref=e40]: ↗
+          - link "Download" [ref=e41] [cursor=pointer]:
+            - /url: data/raw_recruiting_events.csv
+      - article [ref=e42]:
+        - generic [ref=e43]:
+          - generic [ref=e44]: CSV
+          - generic [ref=e45]: 459 rows
+        - heading "Clean recruiting events" [level=3] [ref=e46]:
+          - link "Clean recruiting events" [ref=e47] [cursor=pointer]:
+            - /url: data-viewer.html?dataset=clean
+        - paragraph [ref=e48]: Validated and standardized engagement records with school identifiers ready for analysis.
+        - generic [ref=e49]:
+          - link "View data" [ref=e50] [cursor=pointer]:
+            - /url: data-viewer.html?dataset=clean
+            - text: View data
+            - generic [ref=e51]: ↗
+          - link "Download" [ref=e52] [cursor=pointer]:
+            - /url: data/clean_recruiting_events.csv
+      - article [ref=e53]:
+        - generic [ref=e54]:
+          - generic [ref=e55]: CSV
+          - generic [ref=e56]: 36 rows
+        - heading "School summary" [level=3] [ref=e57]:
+          - link "School summary" [ref=e58] [cursor=pointer]:
+            - /url: data-viewer.html?dataset=summary
+        - paragraph [ref=e59]: School-level rollups of recruiting activity, outcomes, access, and travel distance.
+        - generic [ref=e60]:
+          - link "View data" [ref=e61] [cursor=pointer]:
+            - /url: data-viewer.html?dataset=summary
+            - text: View data
+            - generic [ref=e62]: ↗
+          - link "Download" [ref=e63] [cursor=pointer]:
+            - /url: data/school_summary.csv

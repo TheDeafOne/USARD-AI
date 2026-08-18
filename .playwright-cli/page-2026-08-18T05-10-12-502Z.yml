@@ -1,0 +1,106 @@
+- main [ref=e2]:
+  - generic [ref=e3]:
+    - link "← All demos" [ref=e4] [cursor=pointer]:
+      - /url: index.html
+    - paragraph [ref=e5]: USARD / Recommender Systems
+  - generic [ref=e6]:
+    - paragraph [ref=e7]: Interactive explainer
+    - heading "Similarity is an angle." [level=1] [ref=e8]
+    - paragraph [ref=e9]: Follow Jefferson High from a table of recruiting outcomes to a recommendation built from its nearest behavioral neighbors.
+  - region "Cosine similarity walkthrough" [ref=e10]:
+    - navigation "Walkthrough steps" [ref=e11]:
+      - button "01 Data" [ref=e12] [cursor=pointer]
+      - button "02 Vectors" [ref=e13] [cursor=pointer]
+      - button "03 Sphere" [ref=e14] [cursor=pointer]
+      - button "04 Neighbors" [ref=e15] [cursor=pointer]
+      - button "05 Result" [ref=e16] [cursor=pointer]
+    - article [ref=e18]:
+      - generic [ref=e19]:
+        - paragraph [ref=e20]: Step 5 of 5 / Fill the gap
+        - heading "Let the nearest neighbors vote." [level=2] [ref=e21]
+        - paragraph [ref=e22]: Jefferson has no Mechanical history. The three nearest neighbors are considered; those with Mechanical evidence contribute in proportion to their similarity.
+      - generic "Mechanical prediction evidence table" [ref=e23]:
+        - table [ref=e24]:
+          - rowgroup [ref=e25]:
+            - row "School Cyber STEM Mechanical Healthcare Education Recruiting table" [ref=e26]:
+              - columnheader "School" [ref=e27]
+              - columnheader "Cyber" [ref=e28]
+              - columnheader "STEM" [ref=e29]
+              - columnheader "Mechanical" [ref=e30]
+              - columnheader "Healthcare" [ref=e31]
+              - columnheader "Education" [ref=e32]
+              - columnheader "Recruiting table" [ref=e33]
+          - rowgroup [ref=e34]:
+            - row "Jefferson High target 0.767 0.765 0.827 predicted 0.269 0.522 0.429" [ref=e35]:
+              - rowheader "Jefferson High target" [ref=e36]
+              - cell "0.767" [ref=e37]
+              - cell "0.765" [ref=e38]
+              - cell "0.827 predicted" [ref=e39]:
+                - text: "0.827"
+                - generic [ref=e40]: predicted
+              - cell "0.269" [ref=e41]
+              - cell "0.522" [ref=e42]
+              - cell "0.429" [ref=e43]
+            - row "Washington High 0.652 0.667 0.815 source 0.235 0.471 0.333" [ref=e44]:
+              - rowheader "Washington High" [ref=e45]
+              - cell "0.652" [ref=e46]
+              - cell "0.667" [ref=e47]
+              - cell "0.815 source" [ref=e48]:
+                - text: "0.815"
+                - generic [ref=e49]: source
+              - cell "0.235" [ref=e50]
+              - cell "0.471" [ref=e51]
+              - cell "0.333" [ref=e52]
+            - row "Madison High 0.333 0.560 0.828 source 0.077 0.214 0.222" [ref=e53]:
+              - rowheader "Madison High" [ref=e54]
+              - cell "0.333" [ref=e55]
+              - cell "0.560" [ref=e56]
+              - cell "0.828 source" [ref=e57]:
+                - text: "0.828"
+                - generic [ref=e58]: source
+              - cell "0.077" [ref=e59]
+              - cell "0.214" [ref=e60]
+              - cell "0.222" [ref=e61]
+            - row "North County Tech 0.542 0.476 0.840 source — 0.176 0.125" [ref=e62]:
+              - rowheader "North County Tech" [ref=e63]
+              - cell "0.542" [ref=e64]
+              - cell "0.476" [ref=e65]
+              - cell "0.840 source" [ref=e66]:
+                - text: "0.840"
+                - generic [ref=e67]: source
+              - cell "—" [ref=e68]
+              - cell "0.176" [ref=e69]
+              - cell "0.125" [ref=e70]
+      - generic "Prediction values" [ref=e71]:
+        - generic [ref=e72]:
+          - generic [ref=e73]: Washington
+          - strong [ref=e74]: "0.815"
+          - generic [ref=e75]: similarity 0.9993
+        - generic [ref=e76]:
+          - generic [ref=e77]: Madison
+          - strong [ref=e78]: "0.828"
+          - generic [ref=e79]: similarity 0.9638
+        - generic [ref=e80]:
+          - generic [ref=e81]: North County
+          - strong [ref=e82]: "0.840"
+          - generic [ref=e83]: similarity 0.9628
+        - generic [ref=e84]:
+          - generic [ref=e85]: Jefferson prediction
+          - strong [ref=e86]: "0.827"
+          - generic [ref=e87]: similarity-weighted result
+      - generic [ref=e88]:
+        - generic [ref=e89]:
+          - paragraph [ref=e90]: Top recommendation
+          - heading "Mechanical Careers Demo" [level=3] [ref=e91]
+        - generic [ref=e92]:
+          - strong [ref=e93]: "0.827"
+          - generic [ref=e94]: predicted
+      - paragraph [ref=e95]: Similarity finds the analogues; similarity-weighted evidence turns those analogues into a transparent prediction.
+    - generic [ref=e96]:
+      - button "Back" [ref=e97] [cursor=pointer]:
+        - generic [ref=e98]: ←
+        - text: Back
+      - paragraph [ref=e99]: 5 / 5
+      - button "Complete" [disabled] [ref=e100]:
+        - text: Complete
+        - generic [ref=e101]: ✓

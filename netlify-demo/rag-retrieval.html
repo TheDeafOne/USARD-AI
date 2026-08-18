@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="A continuous interactive explanation of text vectors, embeddings, cosine similarity, and retrieval-augmented generation." />
+    <title>How RAG Finds Evidence | USARD Demo</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="assets/styles.css" />
+    <link rel="stylesheet" href="assets/rag-story.css" />
+    <script src="assets/rag-story.js" defer></script>
+  </head>
+  <body class="demo-body rag-body">
+    <main class="demo-shell rag-shell">
+      <header class="demo-topbar rag-topbar">
+        <a class="back-link compact" href="index.html">&larr; All demos</a>
+        <p>USARD / Retrieval-Augmented Generation</p>
+      </header>
+
+      <section class="demo-title-block rag-title-block">
+        <p class="eyebrow">Interactive explainer</p>
+        <h1>Words become directions.</h1>
+        <p class="lede">Then a question follows the closest direction to find evidence. Move through one continuous story from text to a grounded answer.</p>
+      </section>
+
+      <section class="rag-story" id="rag-story" data-scene="0" aria-label="RAG walkthrough">
+        <nav class="rag-progress" aria-label="Walkthrough scenes">
+          <button type="button" data-scene-button="0" aria-selected="true"><span>01</span>Text</button>
+          <button type="button" data-scene-button="1" aria-selected="false"><span>02</span>Count</button>
+          <button type="button" data-scene-button="2" aria-selected="false"><span>03</span>Corpus</button>
+          <button type="button" data-scene-button="3" aria-selected="false"><span>04</span>Query</button>
+          <button type="button" data-scene-button="4" aria-selected="false"><span>05</span>Compare</button>
+          <button type="button" data-scene-button="5" aria-selected="false"><span>06</span>Retrieve</button>
+        </nav>
+
+        <div class="rag-narration">
+          <div>
+            <p class="step-label" id="scene-label">Step 1 of 6 / The puzzle</p>
+            <h2 id="scene-title">How does a sentence become numbers?</h2>
+          </div>
+          <p id="scene-copy">Computers compare numbers, not sentences. Our first job is to turn this text into a vector: an ordered list of values.</p>
+        </div>
+
+        <div class="rag-stage" id="rag-stage">
+          <div class="sentence-card" id="seed-sentence">
+            <span class="card-label">Sentence</span>
+            <p id="seed-words" aria-label="A solar eclipse happens when the moon blocks the sun"></p>
+          </div>
+
+          <div class="mystery-flow" aria-label="Sentence becomes an unknown vector">
+            <span class="flow-arrow" aria-hidden="true">→</span>
+            <div class="mystery-vector"><span>[</span><b>?</b><b>?</b><b>?</b><b>?</b><b>?</b><span>]</span></div>
+          </div>
+
+          <section class="matrix-panel" aria-labelledby="matrix-title">
+            <div class="panel-heading">
+              <div>
+                <span class="card-label">Sparse representation</span>
+                <h3 id="matrix-title">One position for every vocabulary word</h3>
+              </div>
+              <div class="matrix-key"><i></i> word appears</div>
+            </div>
+            <div class="matrix-scroll">
+              <table class="word-matrix" id="word-matrix">
+                <caption class="sr-only">Bag-of-words vectors for four passages and one question</caption>
+                <thead><tr id="matrix-head"><th scope="col">Text</th></tr></thead>
+                <tbody id="matrix-body"></tbody>
+              </table>
+            </div>
+            <p class="matrix-note"><strong>Teaching model:</strong> these 0s and 1s are bag-of-words. TF-IDF starts here, then gives rarer words more weight.</p>
+          </section>
+
+          <div class="source-tray" id="source-tray" aria-label="Source passages"></div>
+
+          <div class="query-card" id="query-card">
+            <span class="card-label">User question</span>
+            <p>What blocks the sun during an eclipse?</p>
+            <span class="query-arrow" aria-hidden="true">↑ same vocabulary, same coordinates</span>
+          </div>
+
+          <section class="dense-bridge" aria-label="Sparse vectors become dense embeddings">
+            <div class="dense-card sparse-card">
+              <span class="card-label">Sparse vector</span>
+              <code>[0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0]</code>
+              <small>Mostly zeros · exact words</small>
+            </div>
+            <div class="condense-arrow" aria-hidden="true"><span>embedding model</span>→</div>
+            <div class="dense-card learned-card">
+              <span class="card-label">Dense embedding</span>
+              <code>[0.18, −0.42, 0.71, …]</code>
+              <small>Hundreds of learned features · meaning</small>
+            </div>
+          </section>
+
+          <section class="similarity-panel" aria-labelledby="sphere-heading">
+            <div class="sphere-copy">
+              <span class="card-label">Cosine similarity</span>
+              <h3 id="sphere-heading">Compare directions, not keywords.</h3>
+              <p>The real vectors have hundreds of dimensions. This sphere is a 3D teaching view of the same angle comparison from Lab 2.</p>
+              <div class="score-list" id="score-list"></div>
+            </div>
+            <figure class="rag-sphere-figure">
+              <svg id="rag-sphere" viewBox="0 0 560 430" role="img" aria-labelledby="rag-sphere-title rag-sphere-desc">
+                <title id="rag-sphere-title">Question and passage embeddings on a sphere</title>
+                <desc id="rag-sphere-desc">The eclipse passage points closest to the question and therefore has the highest cosine similarity.</desc>
+              </svg>
+              <figcaption>Drag to rotate · smaller angle means more similar</figcaption>
+            </figure>
+          </section>
+
+          <section class="retrieval-panel" aria-labelledby="retrieval-heading">
+            <div class="retrieval-flow">
+              <div class="retrieved-passage">
+                <span class="rank-badge">#1 retrieved</span>
+                <p>“A solar eclipse happens when the <mark>moon blocks the sun</mark>.”</p>
+                <small>Passage 1 · cosine similarity 0.96</small>
+              </div>
+              <span class="retrieval-arrow" aria-hidden="true">→</span>
+              <div class="prompt-card">
+                <span class="card-label">Prompt to the language model</span>
+                <p><b>Context:</b> A solar eclipse happens when the moon blocks the sun.</p>
+                <p><b>Question:</b> What blocks the sun during an eclipse?</p>
+              </div>
+            </div>
+            <div class="answer-card">
+              <div>
+                <span class="card-label">Grounded answer</span>
+                <h3 id="retrieval-heading">The moon blocks the sun during a solar eclipse.</h3>
+              </div>
+              <span class="citation">[Passage 1]</span>
+            </div>
+            <p class="rag-definition"><strong>Retrieve</strong> relevant text <span>→</span> <strong>Augment</strong> the prompt <span>→</span> <strong>Generate</strong> an answer grounded in that text.</p>
+          </section>
+        </div>
+
+        <footer class="rag-controls">
+          <button type="button" class="arrow-button" id="rag-back" disabled><span aria-hidden="true">←</span> Back</button>
+          <div class="scene-status"><span id="scene-status">1 / 6</span><i><b id="scene-progress"></b></i></div>
+          <button type="button" class="arrow-button primary" id="rag-next">Count the words <span aria-hidden="true">→</span></button>
+        </footer>
+      </section>
+    </main>
+  </body>
+</html>
