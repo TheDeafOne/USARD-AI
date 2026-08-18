@@ -1,0 +1,37 @@
+school_id,school_name,cyber,engineering,mechanical,healthcare,education
+S001,Lincoln High,0.45,0.58,0.72,0.12,0.28
+S002,Jefferson High,0.9,0.8,0.75,0.15,0.4
+S003,Washington High,0.78,0.73,0.82,0.12,0.32
+S004,Roosevelt High,0.1,0.18,0.14,0.86,0.48
+S005,North County Tech,0.58,0.88,0.92,0.08,0.22
+S006,Lakeside Academy,0.18,0.2,0.18,0.76,0.45
+S007,Madison High,0.88,0.62,0.26,0.02,0.28
+S008,Franklin High,0.28,0.94,0.76,0.08,0.2
+S009,Central High,0.1,0.14,0.04,0.95,0.32
+S010,Riverside High,0.06,0.26,0.12,0.22,0.82
+S011,Eastview High,0.52,0.54,0.4,0.48,0.52
+S012,Westfield High,0.42,0.4,0.3,0.3,0.4
+S013,Pine Ridge High,0.82,0.56,0.38,0.12,0.22
+S014,Oak Valley High,0.4,0.88,0.7,0.02,0.32
+S015,Summit High,0.04,0.08,0.16,0.9,0.26
+S016,Cedar Grove High,0.18,0.2,0.06,0.16,0.94
+S017,Parkview High,0.46,0.66,0.52,0.42,0.46
+S018,Liberty High,0.36,0.34,0.24,0.42,0.52
+S019,Monroe High,0.76,0.68,0.32,0.06,0.16
+S020,Adams High,0.34,0.82,0.64,0.14,0.26
+S021,Hamilton High,0.16,0.2,0.1,0.84,0.2
+S022,Kennedy High,0.12,0.14,0.18,0.28,0.88
+S023,Jackson High,0.58,0.6,0.46,0.36,0.58
+S024,Grant High,0.3,0.28,0.36,0.36,0.46
+S025,Wilson High,0.88,0.62,0.26,0.02,0.28
+S026,Heritage High,0.28,0.94,0.76,0.08,0.2
+S027,Valley Tech,0.1,0.14,0.04,0.95,0.32
+S028,Mountain View High,0.06,0.26,0.12,0.22,0.82
+S029,Harbor High,0.52,0.54,0.4,0.48,0.52
+S030,Brookside High,0.42,0.4,0.3,0.3,0.4
+S031,Greenfield High,0.82,0.56,0.38,0.12,0.22
+S032,Redstone High,0.4,0.88,0.7,0.02,0.32
+S033,Horizon High,0.04,0.08,0.16,0.9,0.26
+S034,Pioneer High,0.18,0.2,0.06,0.16,0.94
+S035,Union High,0.46,0.66,0.52,0.42,0.46
+S036,Victory High,0.36,0.34,0.24,0.42,0.52

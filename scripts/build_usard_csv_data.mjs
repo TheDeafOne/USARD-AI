@@ -72,6 +72,61 @@ const actions = [
   "General Recruiting Table",
 ];
 
+const profileDimensions = ["cyber", "engineering", "mechanical", "healthcare", "education"];
+
+// Content metadata is deliberately separate from historical outcomes. These
+// fictional 0-1 values describe aggregate program emphasis at each school and
+// the subject-matter fit of each action; they do not use protected traits.
+const actionProfileValues = {
+  "Cyber Careers Event": [.95, .75, .20, .05, .15],
+  "STEM Careers Presentation": [.70, .95, .35, .05, .20],
+  "Mechanical Careers Demo": [.10, .60, 1.00, .00, .20],
+  "Healthcare Careers Session": [.05, .10, .05, 1.00, .15],
+  "Education Benefits Session": [.10, .20, .10, .15, 1.00],
+  "General Recruiting Table": [.35, .35, .35, .35, .35],
+};
+
+const schoolContentBaseProfiles = {
+  cyber: [.84, .62, .30, .08, .22],
+  engineering: [.34, .86, .72, .08, .24],
+  health: [.08, .16, .10, .88, .28],
+  education: [.14, .20, .10, .24, .88],
+  balanced: [.52, .58, .48, .42, .50],
+  general: [.34, .36, .30, .34, .48],
+};
+
+const schoolContentAnchors = {
+  "Lincoln High": [.45, .58, .72, .12, .28],
+  "Jefferson High": [.90, .80, .75, .15, .40],
+  "Washington High": [.78, .73, .82, .12, .32],
+  "Roosevelt High": [.10, .18, .14, .86, .48],
+  "North County Tech": [.58, .88, .92, .08, .22],
+  "Lakeside Academy": [.18, .20, .18, .76, .45],
+};
+
+const actionProfiles = actions.map((action) => ({
+  action,
+  ...Object.fromEntries(profileDimensions.map((dimension, index) => [
+    dimension,
+    actionProfileValues[action][index],
+  ])),
+}));
+
+const schoolProfiles = schools.map((school) => {
+  const base = schoolContentAnchors[school.school_name] ?? schoolContentBaseProfiles[school.group];
+  const values = schoolContentAnchors[school.school_name]
+    ? base
+    : base.map((value, dimensionIndex) => {
+        const variation = (((school.profile_index * 13 + dimensionIndex * 7) % 9) - 4) * .02;
+        return Math.round(clamp(value + variation, .02, .95) * 100) / 100;
+      });
+  return {
+    school_id: school.school_id,
+    school_name: school.school_name,
+    ...Object.fromEntries(profileDimensions.map((dimension, index) => [dimension, values[index]])),
+  };
+});
+
 const baseProfiles = {
   cyber: [.84, .18, .05, .03, .08, .10],
   engineering: [.28, .72, .76, .05, .10, .16],
@@ -452,6 +507,8 @@ const summaryHeaders = [
   "school_id", "school_name", "historical_events", "recruiter_hours", "contacts",
   "appointments", "qualified", "contracts", "access_score", "distance_miles",
 ];
+const schoolProfileHeaders = ["school_id", "school_name", ...profileDimensions];
+const actionProfileHeaders = ["action", ...profileDimensions];
 
 function csvCell(value) {
   if (value == null) return "";
@@ -491,8 +548,19 @@ async function authorCsv(filename, sheetName, headers, rows) {
   };
   sheet.freezePanes.freezeRows(1);
   sheet.getRange(`A1:${endColumn}${Math.min(matrix.length, 30)}`).format.autofitColumns();
-  const dateColumn = filename === "school_summary.csv" ? null : "B";
+  const dateColumn = filename.includes("events") ? "B" : null;
   if (dateColumn) sheet.getRange(`${dateColumn}2:${dateColumn}${matrix.length}`).format.numberFormat = "yyyy-mm-dd";
+  if (filename === "school_profiles.csv") {
+    sheet.getRange(`C2:G${matrix.length}`).format.numberFormat = "0.00";
+    sheet.getRange(`A1:A${matrix.length}`).format.columnWidth = 12;
+    sheet.getRange(`B1:B${matrix.length}`).format.columnWidth = 24;
+    sheet.getRange(`C1:G${matrix.length}`).format.columnWidth = 13;
+  }
+  if (filename === "action_profiles.csv") {
+    sheet.getRange(`B2:F${matrix.length}`).format.numberFormat = "0.00";
+    sheet.getRange(`A1:A${matrix.length}`).format.columnWidth = 30;
+    sheet.getRange(`B1:F${matrix.length}`).format.columnWidth = 13;
+  }
 
   const inspect = await workbook.inspect({
     kind: "table",
@@ -519,5 +587,11 @@ async function authorCsv(filename, sheetName, headers, rows) {
 await authorCsv("raw_recruiting_events.csv", "Raw Events", rawHeaders, rawEvents);
 await authorCsv("clean_recruiting_events.csv", "Clean Events", cleanHeaders, cleanEvents);
 await authorCsv("school_summary.csv", "School Summary", summaryHeaders, schoolSummary);
+await authorCsv("school_profiles.csv", "School Profiles", schoolProfileHeaders, schoolProfiles);
+await authorCsv("action_profiles.csv", "Action Profiles", actionProfileHeaders, actionProfiles);
 
-console.log(`\nGenerated ${baseEvents.length} base events, ${rawEvents.length} raw rows, ${cleanEvents.length} clean rows, and ${schoolSummary.length} school summaries.`);
+console.log(
+  `\nGenerated ${baseEvents.length} base events, ${rawEvents.length} raw rows, `
+  + `${cleanEvents.length} clean rows, ${schoolSummary.length} school summaries, `
+  + `${schoolProfiles.length} school profiles, and ${actionProfiles.length} action profiles.`,
+);

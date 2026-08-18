@@ -3,10 +3,10 @@
 
   const vocabulary = ["solar", "eclipse", "moon", "blocks", "sun", "earth", "orbits", "days", "panels", "sunlight", "energy", "year"];
   const passages = [
-    { id: "p1", label: "Passage 1", text: "A solar eclipse happens when the moon blocks the sun.", words: ["solar", "eclipse", "moon", "blocks", "sun"], score: 0.96 },
-    { id: "p2", label: "Passage 2", text: "The moon orbits Earth once every twenty-seven days.", words: ["moon", "earth", "orbits", "days"], score: 0.61 },
-    { id: "p3", label: "Passage 3", text: "Solar panels turn sunlight into electrical energy.", words: ["solar", "panels", "sunlight", "energy"], score: 0.34 },
-    { id: "p4", label: "Passage 4", text: "Earth travels around the sun in one year.", words: ["sun", "earth", "year"], score: 0.56 },
+    { id: "p1", label: "Passage 1", embeddingLabel: "1. A solar eclipse…", text: "A solar eclipse happens when the moon blocks the sun.", words: ["solar", "eclipse", "moon", "blocks", "sun"], score: 0.96 },
+    { id: "p2", label: "Passage 2", embeddingLabel: "2. The moon orbits…", text: "The moon orbits Earth once every twenty-seven days.", words: ["moon", "earth", "orbits", "days"], score: 0.61 },
+    { id: "p3", label: "Passage 3", embeddingLabel: "3. Solar panels turn…", text: "Solar panels turn sunlight into electrical energy.", words: ["solar", "panels", "sunlight", "energy"], score: 0.34 },
+    { id: "p4", label: "Passage 4", embeddingLabel: "4. Earth travels around…", text: "Earth travels around the sun in one year.", words: ["sun", "earth", "year"], score: 0.56 },
   ];
   const query = { id: "q", label: "Question", text: "What blocks the sun during an eclipse?", words: ["eclipse", "blocks", "sun"] };
   const scenes = [
@@ -14,7 +14,7 @@
     { label: "Step 2 of 6 / A simple bridge", title: "Give every word a coordinate.", copy: "Build a vocabulary, then use the arrow to place each sentence word into its coordinate. Read the finished row left to right and the sentence is now a vector.", next: "Add passages" },
     { label: "Step 3 of 6 / The knowledge base", title: "Embed every passage the same way.", copy: "A RAG system prepares a searchable collection in advance. Each passage becomes one row, using exactly the same coordinate system.", next: "Ask a question" },
     { label: "Step 4 of 6 / At question time", title: "The question becomes a vector, too.", copy: "Use the arrow to scan shared coordinates and reveal a first similarity score. This exact-word comparison is the bridge to semantic similarity.", next: "Compare directions" },
-    { label: "Step 5 of 6 / Semantic search", title: "Modern embeddings capture meaning.", copy: "Bag-of-words makes the idea visible. A learned embedding model compresses meaning into a dense vector; cosine similarity then ranks the closest passage.", next: "Retrieve evidence" },
+    { label: "Step 5 of 6 / Semantic search", title: "Modern embeddings capture meaning.", copy: "Bag-of-words makes the idea visible. Now use the arrows to pass every row through the same learned embedding model before comparing their directions.", next: "Retrieve evidence" },
     { label: "Step 6 of 6 / Ground the answer", title: "Retrieve first. Generate second.", copy: "The best-matching passage is added to the prompt as evidence. The language model answers from that context and can point back to its source.", next: "Complete" },
   ];
 
@@ -26,11 +26,18 @@
   const nextButton = document.getElementById("rag-next");
   const status = document.getElementById("scene-status");
   const progress = document.getElementById("scene-progress");
+  const answerHeading = document.getElementById("retrieval-heading");
+  const generatedAnswer = "The moon blocks the sun during a solar eclipse.";
   const sceneButtons = [...document.querySelectorAll("[data-scene-button]")];
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let currentScene = 0;
   let wordFillComplete = false;
+  let corpusBuildComplete = true;
   let overlapComplete = false;
+  let embeddingRowsComplete = false;
+  let sphereRevealComplete = false;
+  let visibleSpherePointCount = 0;
+  let answerGenerationComplete = false;
   let interactionBusy = false;
   let animationVersion = 0;
 
@@ -94,8 +101,24 @@
   passages.forEach((passage) => {
     const article = document.createElement("article");
     article.className = "source-chip";
+    article.dataset.passage = passage.id;
     article.innerHTML = `<b>${passage.label}</b><p>${passage.text}</p>`;
     sourceTray.appendChild(article);
+  });
+
+  const passageEmbeddingValues = [
+    "[0.21, −0.38, 0.76, …]",
+    "[−0.15, 0.62, 0.31, …]",
+    "[0.71, 0.09, −0.44, …]",
+    "[0.04, 0.51, 0.26, …]",
+  ];
+  const rowEmbeddings = document.getElementById("row-embeddings");
+  passages.forEach((passage, index) => {
+    const item = document.createElement("div");
+    item.className = "row-embedding is-pending";
+    item.dataset.embeddingRow = passage.id;
+    item.innerHTML = `<span>${passage.embeddingLabel}</span><i class="embedding-arrow" aria-hidden="true"></i><code>${passageEmbeddingValues[index]}</code>`;
+    rowEmbeddings.appendChild(item);
   });
 
   const scoreList = document.getElementById("score-list");
@@ -109,7 +132,7 @@
   function setVisibleRows(scene) {
     allRows.forEach((row, index) => {
       const tr = matrixBody.querySelector(`[data-row="${row.id}"]`);
-      const visible = scene === 1 ? index === 0 : scene === 2 ? index < passages.length : scene >= 3;
+      const visible = scene === 1 || scene === 2 ? index === 0 : scene >= 3;
       tr.hidden = !visible;
     });
   }
@@ -123,9 +146,17 @@
     matrixBody.querySelectorAll("tr").forEach((row) => row.classList.remove("is-compared"));
     matrixHead.querySelectorAll("th").forEach((header) => header.classList.remove("is-scanning"));
     seedWords.querySelectorAll(".word").forEach((word) => word.classList.remove("is-flying", "is-placed"));
-    story.classList.remove("is-filling-words", "similarity-revealed");
+    sourceTray.querySelectorAll(".source-chip").forEach((card) => card.classList.remove("is-corpus-pending", "is-corpus-arriving", "is-first-handoff"));
+    matrixBody.querySelectorAll("tr").forEach((row) => row.classList.remove("is-corpus-arriving"));
+    story.classList.remove("is-filling-words", "word-fill-complete", "similarity-revealed", "corpus-first-handoff", "embedding-rows-revealed", "sphere-revealed", "sphere-points-complete", "is-generating-answer", "answer-generated");
+    rowEmbeddings.querySelectorAll(".row-embedding").forEach((item) => {
+      item.classList.add("is-pending");
+      item.classList.remove("is-on-sphere");
+    });
+    document.querySelector(".learned-card").classList.remove("is-on-sphere");
     document.querySelectorAll(".token-ghost").forEach((ghost) => ghost.remove());
     document.querySelector(".query-arrow").textContent = "↑ same vocabulary, same coordinates";
+    answerHeading.classList.remove("is-typing");
   }
 
   function resetWordFill() {
@@ -142,17 +173,87 @@
     story.classList.remove("similarity-revealed");
   }
 
+  function prepareCorpusBuild() {
+    corpusBuildComplete = false;
+    interactionBusy = true;
+    sourceTray.querySelectorAll(".source-chip").forEach((card) => card.classList.add("is-corpus-pending"));
+    sourceTray.querySelector('[data-passage="p1"]').classList.add("is-first-handoff");
+  }
+
+  function resetEmbeddingComparison() {
+    embeddingRowsComplete = false;
+    sphereRevealComplete = false;
+    visibleSpherePointCount = 0;
+    rowEmbeddings.querySelectorAll(".row-embedding").forEach((item) => item.classList.add("is-pending"));
+  }
+
+  function resetAnswerGeneration() {
+    answerGenerationComplete = false;
+    answerHeading.textContent = "";
+    answerHeading.classList.remove("is-typing");
+    story.classList.remove("is-generating-answer", "answer-generated");
+  }
+
   function updateNextButton() {
     if (currentScene === scenes.length - 1) {
-      nextButton.disabled = true;
-      nextButton.innerHTML = "Complete <span aria-hidden=\"true\">✓</span>";
+      if (answerGenerationComplete) {
+        nextButton.disabled = true;
+        nextButton.innerHTML = "Complete <span aria-hidden=\"true\">✓</span>";
+      } else {
+        nextButton.disabled = interactionBusy;
+        const label = story.classList.contains("is-card-morphing")
+          ? "Preparing prompt…"
+          : interactionBusy ? "Generating answer…" : "Generate answer";
+        nextButton.innerHTML = `${label} <span aria-hidden="true">→</span>`;
+      }
       return;
     }
     nextButton.disabled = interactionBusy;
     let label = scenes[currentScene].next;
     if (currentScene === 1 && !wordFillComplete) label = interactionBusy ? "Placing words…" : "Place the words";
+    if (currentScene === 2 && !corpusBuildComplete) label = "Building corpus…";
     if (currentScene === 3 && !overlapComplete) label = interactionBusy ? "Comparing…" : "Compare word overlap";
+    if (currentScene === 4 && !embeddingRowsComplete) label = interactionBusy ? "Embedding rows…" : "Embed every row";
+    else if (currentScene === 4 && !sphereRevealComplete) label = interactionBusy ? "Building sphere…" : "Place on sphere";
     nextButton.innerHTML = `${label} <span aria-hidden="true">→</span>`;
+  }
+
+  function animateGeneratedAnswer() {
+    if (answerGenerationComplete || interactionBusy) return;
+    const runVersion = animationVersion;
+    interactionBusy = true;
+    answerHeading.textContent = "";
+    answerHeading.classList.add("is-typing");
+    story.classList.add("is-generating-answer");
+    updateNextButton();
+    const finish = () => {
+      if (runVersion !== animationVersion || currentScene !== 5) return;
+      answerHeading.textContent = generatedAnswer;
+      answerHeading.classList.remove("is-typing");
+      story.classList.remove("is-generating-answer");
+      story.classList.add("answer-generated");
+      answerGenerationComplete = true;
+      interactionBusy = false;
+      updateNextButton();
+    };
+    if (reducedMotion) {
+      finish();
+      return;
+    }
+    let characterIndex = 0;
+    const typeNextCharacter = () => {
+      if (runVersion !== animationVersion || currentScene !== 5) return;
+      characterIndex += 1;
+      answerHeading.textContent = generatedAnswer.slice(0, characterIndex);
+      if (characterIndex >= generatedAnswer.length) {
+        window.setTimeout(finish, 180);
+        return;
+      }
+      const character = generatedAnswer[characterIndex - 1];
+      const delay = /[.!?]/.test(character) ? 145 : character === " " ? 42 : 28;
+      window.setTimeout(typeNextCharacter, delay);
+    };
+    window.setTimeout(typeNextCharacter, 180);
   }
 
   function animateWordsIntoVector() {
@@ -172,6 +273,7 @@
       wordFillComplete = true;
       interactionBusy = false;
       story.classList.remove("is-filling-words");
+      story.classList.add("word-fill-complete");
       updateNextButton();
       return;
     }
@@ -213,6 +315,7 @@
       wordFillComplete = true;
       interactionBusy = false;
       story.classList.remove("is-filling-words");
+      story.classList.add("word-fill-complete");
       updateNextButton();
     }, 160 + (words.length - 1) * 150 + 700);
   }
@@ -257,13 +360,114 @@
     window.setTimeout(finish, 180 + query.words.length * 360);
   }
 
+  function animateCorpusBuild() {
+    const runVersion = animationVersion;
+    const revealItem = (index) => {
+      if (runVersion !== animationVersion || currentScene !== 2) return;
+      const passage = passages[index];
+      const row = matrixBody.querySelector(`[data-row="${passage.id}"]`);
+      const card = sourceTray.querySelector(`[data-passage="${passage.id}"]`);
+      row.hidden = false;
+      row.classList.add("is-corpus-arriving");
+      card.classList.remove("is-corpus-pending");
+      card.classList.add("is-corpus-arriving");
+      window.setTimeout(() => {
+        row.classList.remove("is-corpus-arriving");
+        card.classList.remove("is-corpus-arriving");
+      }, 620);
+    };
+    const finish = () => {
+      if (runVersion !== animationVersion || currentScene !== 2) return;
+      corpusBuildComplete = true;
+      interactionBusy = false;
+      updateNextButton();
+    };
+    if (reducedMotion) {
+      const firstCard = sourceTray.querySelector('[data-passage="p1"]');
+      firstCard.classList.remove("is-corpus-pending");
+      [1, 2, 3].forEach((index) => revealItem(index));
+      story.classList.add("corpus-first-handoff");
+      finish();
+      return;
+    }
+    window.setTimeout(() => {
+      if (runVersion !== animationVersion || currentScene !== 2) return;
+      sourceTray.querySelector('[data-passage="p1"]').classList.remove("is-corpus-pending");
+      story.classList.add("corpus-first-handoff");
+    }, 720);
+    [1, 2, 3].forEach((index) => window.setTimeout(() => revealItem(index), 1020 + (index - 1) * 440));
+    window.setTimeout(finish, 1020 + 3 * 440);
+  }
+
+  function animateRowEmbeddings() {
+    if (embeddingRowsComplete || interactionBusy) return;
+    const runVersion = animationVersion;
+    interactionBusy = true;
+    story.classList.add("embedding-rows-revealed");
+    updateNextButton();
+    const items = [...rowEmbeddings.querySelectorAll(".row-embedding")];
+    if (reducedMotion) {
+      items.forEach((item) => item.classList.remove("is-pending"));
+      embeddingRowsComplete = true;
+      interactionBusy = false;
+      updateNextButton();
+      return;
+    }
+    items.forEach((item, index) => window.setTimeout(() => {
+      if (runVersion !== animationVersion || currentScene !== 4) return;
+      item.classList.remove("is-pending");
+    }, 140 + index * 260));
+    window.setTimeout(() => {
+      if (runVersion !== animationVersion || currentScene !== 4) return;
+      embeddingRowsComplete = true;
+      interactionBusy = false;
+      updateNextButton();
+    }, 140 + items.length * 260);
+  }
+
+  function revealEmbeddingSphere() {
+    if (sphereRevealComplete || interactionBusy) return;
+    const runVersion = animationVersion;
+    interactionBusy = true;
+    visibleSpherePointCount = 0;
+    renderSphere(0);
+    story.classList.add("sphere-revealed");
+    updateNextButton();
+    const finish = () => {
+      if (runVersion !== animationVersion || currentScene !== 4) return;
+      story.classList.add("sphere-points-complete");
+      sphereRevealComplete = true;
+      interactionBusy = false;
+      updateNextButton();
+    };
+    if (reducedMotion) {
+      visibleSpherePointCount = points.length;
+      renderSphere();
+      document.querySelector(".learned-card").classList.add("is-on-sphere");
+      rowEmbeddings.querySelectorAll(".row-embedding").forEach((item) => item.classList.add("is-on-sphere"));
+      finish();
+      return;
+    }
+    points.forEach((point, index) => window.setTimeout(() => {
+      if (runVersion !== animationVersion || currentScene !== 4) return;
+      visibleSpherePointCount = index + 1;
+      renderSphere();
+      if (index === 0) document.querySelector(".learned-card").classList.add("is-on-sphere");
+      else rowEmbeddings.querySelector(`[data-embedding-row="p${index}"]`).classList.add("is-on-sphere");
+    }, 180 + index * 280));
+    window.setTimeout(finish, 180 + points.length * 280);
+  }
+
   function showScene(index) {
     animationVersion += 1;
     interactionBusy = false;
     currentScene = Math.max(0, Math.min(scenes.length - 1, index));
     restoreMatrix();
     if (currentScene === 1) resetWordFill();
+    if (currentScene === 2) prepareCorpusBuild();
     if (currentScene === 3) resetOverlap();
+    if (currentScene === 4) resetEmbeddingComparison();
+    if (currentScene === 5) resetAnswerGeneration();
     const scene = scenes[currentScene];
     story.dataset.scene = String(currentScene);
     sceneLabel.textContent = scene.label;
@@ -276,7 +480,94 @@
     sceneButtons.forEach((button, buttonIndex) => button.setAttribute("aria-selected", String(buttonIndex === currentScene)));
     setVisibleRows(currentScene);
     window.history.replaceState(null, "", `#scene-${currentScene + 1}`);
-    if (currentScene === 4) renderSphere();
+    if (currentScene === 2) window.setTimeout(animateCorpusBuild, 40);
+  }
+
+  function transitionToScene(index) {
+    const targetScene = Math.max(0, Math.min(scenes.length - 1, index));
+    const shouldMorphCards = currentScene === 4
+      && targetScene === 5
+      && story.classList.contains("sphere-points-complete")
+      && !reducedMotion;
+    if (shouldMorphCards) {
+      const pairs = [
+        [document.querySelector(".query-card"), document.querySelector(".retrieval-question-card")],
+        [document.querySelector(".compare-passage-card"), document.querySelector(".retrieval-inputs > .retrieved-passage")],
+      ];
+      const morphs = pairs.map(([source, target]) => {
+        const from = source.getBoundingClientRect();
+        const fromStyle = window.getComputedStyle(source);
+        const clone = source.cloneNode(true);
+        clone.removeAttribute("id");
+        clone.setAttribute("aria-hidden", "true");
+        clone.querySelector(".query-arrow")?.remove();
+        clone.classList.add("card-morph-clone");
+        Object.assign(clone.style, {
+          position: "fixed",
+          zIndex: "9999",
+          inset: "auto",
+          top: `${from.top}px`,
+          right: "auto",
+          bottom: "auto",
+          left: `${from.left}px`,
+          width: `${from.width}px`,
+          height: `${from.height}px`,
+          margin: "0",
+          opacity: "1",
+          pointerEvents: "none",
+          transform: "none",
+          transformOrigin: "top left",
+          transition: "none",
+        });
+        document.body.appendChild(clone);
+        return { clone, from, fromStyle, target };
+      });
+      story.classList.add("is-card-morphing");
+      showScene(targetScene);
+      interactionBusy = true;
+      updateNextButton();
+      window.requestAnimationFrame(() => {
+        const animations = morphs.map(({ clone, from, fromStyle, target }) => {
+          const to = target.getBoundingClientRect();
+          const toStyle = window.getComputedStyle(target);
+          return clone.animate([
+            {
+              top: `${from.top}px`,
+              left: `${from.left}px`,
+              width: `${from.width}px`,
+              height: `${from.height}px`,
+              paddingTop: fromStyle.paddingTop,
+              paddingRight: fromStyle.paddingRight,
+              paddingBottom: fromStyle.paddingBottom,
+              paddingLeft: fromStyle.paddingLeft,
+              borderRadius: fromStyle.borderRadius,
+              opacity: 1,
+            },
+            {
+              top: `${to.top}px`,
+              left: `${to.left}px`,
+              width: `${to.width}px`,
+              height: `${to.height}px`,
+              paddingTop: toStyle.paddingTop,
+              paddingRight: toStyle.paddingRight,
+              paddingBottom: toStyle.paddingBottom,
+              paddingLeft: toStyle.paddingLeft,
+              borderRadius: toStyle.borderRadius,
+              opacity: 1,
+            },
+          ], { duration: 720, easing: "cubic-bezier(.2,.8,.2,1)", fill: "forwards" });
+        });
+        Promise.allSettled(animations.map((animation) => animation.finished)).then(() => {
+          morphs.forEach(({ clone }) => clone.remove());
+          story.classList.remove("is-card-morphing");
+          interactionBusy = false;
+          updateNextButton();
+        });
+      });
+      return;
+    }
+    if (story.classList.contains("is-card-morphing")) return;
+    showScene(targetScene);
   }
 
   function handleNext() {
@@ -289,16 +580,28 @@
       animateOverlap();
       return;
     }
-    showScene(currentScene + 1);
+    if (currentScene === 4 && !embeddingRowsComplete) {
+      animateRowEmbeddings();
+      return;
+    }
+    if (currentScene === 4 && !sphereRevealComplete) {
+      revealEmbeddingSphere();
+      return;
+    }
+    if (currentScene === 5 && !answerGenerationComplete) {
+      animateGeneratedAnswer();
+      return;
+    }
+    transitionToScene(currentScene + 1);
   }
 
-  sceneButtons.forEach((button, index) => button.addEventListener("click", () => showScene(index)));
-  backButton.addEventListener("click", () => showScene(currentScene - 1));
+  sceneButtons.forEach((button, index) => button.addEventListener("click", () => transitionToScene(index)));
+  backButton.addEventListener("click", () => transitionToScene(currentScene - 1));
   nextButton.addEventListener("click", handleNext);
   document.addEventListener("keydown", (event) => {
     if (event.target.matches("input, textarea, select, button")) return;
     if (event.key === "ArrowRight") handleNext();
-    if (event.key === "ArrowLeft") showScene(currentScene - 1);
+    if (event.key === "ArrowLeft") transitionToScene(currentScene - 1);
   });
 
   const svg = document.getElementById("rag-sphere");
@@ -309,10 +612,10 @@
   let previous = { x: 0, y: 0 };
   const points = [
     { name: "Question", vector: [1, 0, 0], type: "query" },
-    { name: "Passage 1", vector: [0.96, 0.28, 0], type: "top" },
-    { name: "Passage 2", vector: [0.61, -0.46, 0.65], type: "" },
-    { name: "Passage 3", vector: [0.34, 0.19, -0.92], type: "" },
-    { name: "Passage 4", vector: [0.56, -0.78, -0.28], type: "" },
+    { name: passages[0].embeddingLabel, vector: [0.96, 0.28, 0], type: "top" },
+    { name: passages[1].embeddingLabel, vector: [0.61, -0.46, 0.65], type: "" },
+    { name: passages[2].embeddingLabel, vector: [0.34, 0.19, -0.92], type: "" },
+    { name: passages[3].embeddingLabel, vector: [0.56, -0.78, -0.28], type: "" },
   ].map((point) => {
     const length = Math.hypot(...point.vector);
     return { ...point, vector: point.vector.map((value) => value / length) };
@@ -346,19 +649,25 @@
     }
     return path.join(" ");
   };
-  const arcPath = (a, b) => {
+  const arcPath = (a, b, radius = 0.3) => {
     const path = [];
     for (let i = 0; i <= 30; i += 1) {
       const t = i / 30;
       const mix = a.map((value, axis) => value * (1 - t) + b[axis] * t);
       const length = Math.hypot(...mix);
-      const p = project(mix.map((value) => value / length));
+      const p = project(mix.map((value) => (value / length) * radius));
       path.push(`${i ? "L" : "M"}${p.x.toFixed(1)},${p.y.toFixed(1)}`);
     }
     return path.join(" ");
   };
 
-  function renderSphere() {
+  const angleLabelPosition = (a, b, radius = 0.39) => {
+    const mix = a.map((value, axis) => value + b[axis]);
+    const length = Math.hypot(...mix);
+    return project(mix.map((value) => (value / length) * radius));
+  };
+
+  function renderSphere(visibleCount = visibleSpherePointCount) {
     svg.replaceChildren();
     const defs = el("defs");
     const gradient = el("radialGradient", { id: "ragSphereGlow", cx: "35%", cy: "25%", r: "72%" });
@@ -368,26 +677,68 @@
     svg.appendChild(el("circle", { cx: 280, cy: 210, r: 154, class: "rag-sphere-outline" }));
     [-Math.PI / 3, -Math.PI / 6, 0, Math.PI / 6, Math.PI / 3].forEach((angle) => svg.appendChild(el("path", { d: spherePath(angle), class: "rag-sphere-grid" })));
     [0, Math.PI / 3, 2 * Math.PI / 3].forEach((angle) => svg.appendChild(el("path", { d: spherePath(angle, true), class: "rag-sphere-grid" })));
-    svg.appendChild(el("path", { d: arcPath(points[0].vector, points[1].vector), class: "rag-angle" }));
+    if (visibleCount >= 2) {
+      svg.appendChild(el("path", { d: arcPath(points[0].vector, points[1].vector), class: "rag-angle" }));
+      const thetaPosition = angleLabelPosition(points[0].vector, points[1].vector);
+      const theta = el("text", { x: thetaPosition.x + 4, y: thetaPosition.y - 4, class: "rag-angle-label" });
+      theta.textContent = "θ";
+      svg.appendChild(theta);
+    }
     const center = project([0, 0, 0]);
-    points.map((point) => ({ ...point, projected: project(point.vector) })).sort((a, b) => a.projected.depth - b.projected.depth).forEach((point) => {
+    const projectedPoints = points.slice(0, visibleCount).map((point) => ({ ...point, projected: project(point.vector) }));
+    const labelLayout = new Map(projectedPoints.map((point) => [point.name, {
+      placeLeft: point.projected.x > 300,
+      desiredY: point.projected.y - 9,
+      y: point.projected.y - 9,
+    }]));
+    const labelOrder = [...projectedPoints]
+      .sort((a, b) => labelLayout.get(a.name).desiredY - labelLayout.get(b.name).desiredY);
+    labelOrder.forEach((point, index) => {
+      const layout = labelLayout.get(point.name);
+      if (index > 0) layout.y = Math.max(layout.desiredY, labelLayout.get(labelOrder[index - 1].name).y + 17);
+    });
+    if (labelOrder.length && labelLayout.get(labelOrder.at(-1).name).y > 360) {
+      labelLayout.get(labelOrder.at(-1).name).y = 360;
+      for (let index = labelOrder.length - 2; index >= 0; index -= 1) {
+        const layout = labelLayout.get(labelOrder[index].name);
+        layout.y = Math.min(layout.y, labelLayout.get(labelOrder[index + 1].name).y - 17);
+      }
+    }
+    projectedPoints.sort((a, b) => a.projected.depth - b.projected.depth).forEach((point) => {
       svg.appendChild(el("line", { x1: center.x, y1: center.y, x2: point.projected.x, y2: point.projected.y, class: `rag-vector ${point.type}` }));
       svg.appendChild(el("circle", { cx: point.projected.x, cy: point.projected.y, r: point.type ? 6.5 : 5, class: `rag-point ${point.type}` }));
-      const label = el("text", { x: point.projected.x + 9, y: point.projected.y - 9, class: `rag-point-label ${point.type}` });
+      const layout = labelLayout.get(point.name);
+      const labelX = point.projected.x + (layout.placeLeft ? -9 : 9);
+      if (Math.abs(layout.y - layout.desiredY) > 2) {
+        svg.appendChild(el("line", {
+          x1: point.projected.x,
+          y1: point.projected.y,
+          x2: labelX,
+          y2: layout.y - 3,
+          class: "rag-label-leader",
+        }));
+      }
+      const label = el("text", {
+        x: labelX,
+        y: layout.y,
+        "text-anchor": layout.placeLeft ? "end" : "start",
+        class: `rag-point-label ${point.type}`,
+      });
       label.textContent = point.name;
       svg.appendChild(label);
     });
   }
 
   svg.addEventListener("pointerdown", (event) => {
+    event.preventDefault();
     dragging = true;
     previous = { x: event.clientX, y: event.clientY };
     svg.setPointerCapture(event.pointerId);
   });
   svg.addEventListener("pointermove", (event) => {
     if (!dragging) return;
-    yaw -= (event.clientX - previous.x) * 0.009;
-    pitch = Math.max(-1.25, Math.min(1.25, pitch + (event.clientY - previous.y) * 0.009));
+    yaw += (event.clientX - previous.x) * 0.009;
+    pitch = Math.max(-1.25, Math.min(1.25, pitch - (event.clientY - previous.y) * 0.009));
     previous = { x: event.clientX, y: event.clientY };
     renderSphere();
   });

@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="A continuous interactive explanation of text vectors, embeddings, cosine similarity, and retrieval-augmented generation." />
-    <title>How RAG Finds Evidence | USARD Demo</title>
+    <title>How RAG Finds Evidence | USARD Concepts</title>
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="assets/styles.css" />
     <link rel="stylesheet" href="assets/rag-story.css" />
@@ -13,7 +13,7 @@
   <body class="demo-body rag-body">
     <main class="demo-shell rag-shell">
       <header class="demo-topbar rag-topbar">
-        <a class="back-link compact" href="index.html">&larr; All demos</a>
+        <a class="back-link compact" href="index.html#demos-heading">&larr; All concepts</a>
         <p>USARD / Retrieval-Augmented Generation</p>
       </header>
 
@@ -78,6 +78,12 @@
             <span class="query-arrow" aria-hidden="true">↑ same vocabulary, same coordinates</span>
           </div>
 
+          <div class="compare-passage-card retrieved-passage" aria-label="Most similar passage">
+            <span class="rank-badge">#1 most similar</span>
+            <p>“A solar eclipse happens when the <mark>moon blocks the sun</mark>.”</p>
+            <small>Passage 1 · cosine similarity 0.96</small>
+          </div>
+
           <section class="dense-bridge" aria-label="Sparse vectors become dense embeddings">
             <div class="dense-card sparse-card">
               <span class="card-label">Sparse vector</span>
@@ -92,13 +98,12 @@
             </div>
           </section>
 
-          <section class="similarity-panel" aria-labelledby="sphere-heading">
-            <div class="sphere-copy">
-              <span class="card-label">Cosine similarity</span>
-              <h3 id="sphere-heading">Compare directions, not keywords.</h3>
-              <p>The real vectors have hundreds of dimensions. This sphere is a 3D teaching view of the same angle comparison from Lab 2.</p>
-              <div class="score-list" id="score-list"></div>
-            </div>
+          <section class="row-embeddings-panel" aria-label="Dense embeddings for each passage">
+            <span class="card-label">Passage embeddings</span>
+            <div id="row-embeddings"></div>
+          </section>
+
+          <section class="similarity-panel" aria-label="Cosine similarity results">
             <figure class="rag-sphere-figure">
               <svg id="rag-sphere" viewBox="0 0 560 430" role="img" aria-labelledby="rag-sphere-title rag-sphere-desc">
                 <title id="rag-sphere-title">Question and passage embeddings on a sphere</title>
@@ -106,26 +111,37 @@
               </svg>
               <figcaption>Drag to rotate · smaller angle means more similar</figcaption>
             </figure>
+            <div class="sphere-results">
+              <span class="card-label">Nearest to the question</span>
+              <div class="score-list" id="score-list"></div>
+            </div>
           </section>
 
           <section class="retrieval-panel" aria-labelledby="retrieval-heading">
             <div class="retrieval-flow">
-              <div class="retrieved-passage">
-                <span class="rank-badge">#1 retrieved</span>
-                <p>“A solar eclipse happens when the <mark>moon blocks the sun</mark>.”</p>
-                <small>Passage 1 · cosine similarity 0.96</small>
+              <div class="retrieval-inputs">
+                <div class="retrieval-question-card">
+                  <span class="card-label">User question</span>
+                  <p>What blocks the sun during an eclipse?</p>
+                </div>
+                <div class="retrieved-passage">
+                  <span class="rank-badge">#1 most similar</span>
+                  <p>“A solar eclipse happens when the <mark>moon blocks the sun</mark>.”</p>
+                  <small>Passage 1 · cosine similarity 0.96</small>
+                </div>
               </div>
-              <span class="retrieval-arrow" aria-hidden="true">→</span>
+              <div class="merge-arrows" aria-hidden="true"><span>→</span><span>→</span></div>
               <div class="prompt-card">
-                <span class="card-label">Prompt to the language model</span>
+                <span class="card-label">Augmented prompt to the model</span>
                 <p><b>Context:</b> A solar eclipse happens when the moon blocks the sun.</p>
                 <p><b>Question:</b> What blocks the sun during an eclipse?</p>
               </div>
             </div>
+            <div class="generation-arrow" aria-hidden="true"><span>↓</span> model generates from the supplied context</div>
             <div class="answer-card">
               <div>
                 <span class="card-label">Grounded answer</span>
-                <h3 id="retrieval-heading">The moon blocks the sun during a solar eclipse.</h3>
+                <h3 id="retrieval-heading" aria-live="polite" aria-atomic="true"></h3>
               </div>
               <span class="citation">[Passage 1]</span>
             </div>
