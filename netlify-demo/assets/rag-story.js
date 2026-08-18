@@ -30,6 +30,7 @@
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let currentScene = 0;
   let wordFillComplete = false;
+  let corpusBuildComplete = true;
   let overlapComplete = false;
   let interactionBusy = false;
   let animationVersion = 0;
@@ -94,6 +95,7 @@
   passages.forEach((passage) => {
     const article = document.createElement("article");
     article.className = "source-chip";
+    article.dataset.passage = passage.id;
     article.innerHTML = `<b>${passage.label}</b><p>${passage.text}</p>`;
     sourceTray.appendChild(article);
   });
@@ -109,7 +111,7 @@
   function setVisibleRows(scene) {
     allRows.forEach((row, index) => {
       const tr = matrixBody.querySelector(`[data-row="${row.id}"]`);
-      const visible = scene === 1 ? index === 0 : scene === 2 ? index < passages.length : scene >= 3;
+      const visible = scene === 1 || scene === 2 ? index === 0 : scene >= 3;
       tr.hidden = !visible;
     });
   }
@@ -123,7 +125,9 @@
     matrixBody.querySelectorAll("tr").forEach((row) => row.classList.remove("is-compared"));
     matrixHead.querySelectorAll("th").forEach((header) => header.classList.remove("is-scanning"));
     seedWords.querySelectorAll(".word").forEach((word) => word.classList.remove("is-flying", "is-placed"));
-    story.classList.remove("is-filling-words", "similarity-revealed");
+    sourceTray.querySelectorAll(".source-chip").forEach((card) => card.classList.remove("is-corpus-pending", "is-corpus-arriving", "is-first-handoff"));
+    matrixBody.querySelectorAll("tr").forEach((row) => row.classList.remove("is-corpus-arriving"));
+    story.classList.remove("is-filling-words", "similarity-revealed", "corpus-first-handoff");
     document.querySelectorAll(".token-ghost").forEach((ghost) => ghost.remove());
     document.querySelector(".query-arrow").textContent = "↑ same vocabulary, same coordinates";
   }
@@ -142,6 +146,13 @@
     story.classList.remove("similarity-revealed");
   }
 
+  function prepareCorpusBuild() {
+    corpusBuildComplete = false;
+    interactionBusy = true;
+    sourceTray.querySelectorAll(".source-chip").forEach((card) => card.classList.add("is-corpus-pending"));
+    sourceTray.querySelector('[data-passage="p1"]').classList.add("is-first-handoff");
+  }
+
   function updateNextButton() {
     if (currentScene === scenes.length - 1) {
       nextButton.disabled = true;
@@ -151,6 +162,7 @@
     nextButton.disabled = interactionBusy;
     let label = scenes[currentScene].next;
     if (currentScene === 1 && !wordFillComplete) label = interactionBusy ? "Placing words…" : "Place the words";
+    if (currentScene === 2 && !corpusBuildComplete) label = "Building corpus…";
     if (currentScene === 3 && !overlapComplete) label = interactionBusy ? "Comparing…" : "Compare word overlap";
     nextButton.innerHTML = `${label} <span aria-hidden="true">→</span>`;
   }
@@ -257,12 +269,52 @@
     window.setTimeout(finish, 180 + query.words.length * 360);
   }
 
+  function animateCorpusBuild() {
+    const runVersion = animationVersion;
+    const revealItem = (index) => {
+      if (runVersion !== animationVersion || currentScene !== 2) return;
+      const passage = passages[index];
+      const row = matrixBody.querySelector(`[data-row="${passage.id}"]`);
+      const card = sourceTray.querySelector(`[data-passage="${passage.id}"]`);
+      row.hidden = false;
+      row.classList.add("is-corpus-arriving");
+      card.classList.remove("is-corpus-pending");
+      card.classList.add("is-corpus-arriving");
+      window.setTimeout(() => {
+        row.classList.remove("is-corpus-arriving");
+        card.classList.remove("is-corpus-arriving");
+      }, 620);
+    };
+    const finish = () => {
+      if (runVersion !== animationVersion || currentScene !== 2) return;
+      corpusBuildComplete = true;
+      interactionBusy = false;
+      updateNextButton();
+    };
+    if (reducedMotion) {
+      const firstCard = sourceTray.querySelector('[data-passage="p1"]');
+      firstCard.classList.remove("is-corpus-pending");
+      [1, 2, 3].forEach((index) => revealItem(index));
+      story.classList.add("corpus-first-handoff");
+      finish();
+      return;
+    }
+    window.setTimeout(() => {
+      if (runVersion !== animationVersion || currentScene !== 2) return;
+      sourceTray.querySelector('[data-passage="p1"]').classList.remove("is-corpus-pending");
+      story.classList.add("corpus-first-handoff");
+    }, 720);
+    [1, 2, 3].forEach((index) => window.setTimeout(() => revealItem(index), 1020 + (index - 1) * 440));
+    window.setTimeout(finish, 1020 + 3 * 440);
+  }
+
   function showScene(index) {
     animationVersion += 1;
     interactionBusy = false;
     currentScene = Math.max(0, Math.min(scenes.length - 1, index));
     restoreMatrix();
     if (currentScene === 1) resetWordFill();
+    if (currentScene === 2) prepareCorpusBuild();
     if (currentScene === 3) resetOverlap();
     const scene = scenes[currentScene];
     story.dataset.scene = String(currentScene);
@@ -276,6 +328,7 @@
     sceneButtons.forEach((button, buttonIndex) => button.setAttribute("aria-selected", String(buttonIndex === currentScene)));
     setVisibleRows(currentScene);
     window.history.replaceState(null, "", `#scene-${currentScene + 1}`);
+    if (currentScene === 2) window.setTimeout(animateCorpusBuild, 40);
     if (currentScene === 4) renderSphere();
   }
 
