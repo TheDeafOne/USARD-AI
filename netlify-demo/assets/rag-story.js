@@ -26,6 +26,8 @@
   const nextButton = document.getElementById("rag-next");
   const status = document.getElementById("scene-status");
   const progress = document.getElementById("scene-progress");
+  const answerHeading = document.getElementById("retrieval-heading");
+  const generatedAnswer = "The moon blocks the sun during a solar eclipse.";
   const sceneButtons = [...document.querySelectorAll("[data-scene-button]")];
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let currentScene = 0;
@@ -35,6 +37,7 @@
   let embeddingRowsComplete = false;
   let sphereRevealComplete = false;
   let visibleSpherePointCount = 0;
+  let answerGenerationComplete = false;
   let interactionBusy = false;
   let animationVersion = 0;
 
@@ -145,7 +148,7 @@
     seedWords.querySelectorAll(".word").forEach((word) => word.classList.remove("is-flying", "is-placed"));
     sourceTray.querySelectorAll(".source-chip").forEach((card) => card.classList.remove("is-corpus-pending", "is-corpus-arriving", "is-first-handoff"));
     matrixBody.querySelectorAll("tr").forEach((row) => row.classList.remove("is-corpus-arriving"));
-    story.classList.remove("is-filling-words", "word-fill-complete", "similarity-revealed", "corpus-first-handoff", "embedding-rows-revealed", "sphere-revealed", "sphere-points-complete");
+    story.classList.remove("is-filling-words", "word-fill-complete", "similarity-revealed", "corpus-first-handoff", "embedding-rows-revealed", "sphere-revealed", "sphere-points-complete", "is-generating-answer", "answer-generated");
     rowEmbeddings.querySelectorAll(".row-embedding").forEach((item) => {
       item.classList.add("is-pending");
       item.classList.remove("is-on-sphere");
@@ -153,6 +156,7 @@
     document.querySelector(".learned-card").classList.remove("is-on-sphere");
     document.querySelectorAll(".token-ghost").forEach((ghost) => ghost.remove());
     document.querySelector(".query-arrow").textContent = "↑ same vocabulary, same coordinates";
+    answerHeading.classList.remove("is-typing");
   }
 
   function resetWordFill() {
@@ -183,10 +187,25 @@
     rowEmbeddings.querySelectorAll(".row-embedding").forEach((item) => item.classList.add("is-pending"));
   }
 
+  function resetAnswerGeneration() {
+    answerGenerationComplete = false;
+    answerHeading.textContent = "";
+    answerHeading.classList.remove("is-typing");
+    story.classList.remove("is-generating-answer", "answer-generated");
+  }
+
   function updateNextButton() {
     if (currentScene === scenes.length - 1) {
-      nextButton.disabled = true;
-      nextButton.innerHTML = "Complete <span aria-hidden=\"true\">✓</span>";
+      if (answerGenerationComplete) {
+        nextButton.disabled = true;
+        nextButton.innerHTML = "Complete <span aria-hidden=\"true\">✓</span>";
+      } else {
+        nextButton.disabled = interactionBusy;
+        const label = story.classList.contains("is-card-morphing")
+          ? "Preparing prompt…"
+          : interactionBusy ? "Generating answer…" : "Generate answer";
+        nextButton.innerHTML = `${label} <span aria-hidden="true">→</span>`;
+      }
       return;
     }
     nextButton.disabled = interactionBusy;
@@ -197,6 +216,44 @@
     if (currentScene === 4 && !embeddingRowsComplete) label = interactionBusy ? "Embedding rows…" : "Embed every row";
     else if (currentScene === 4 && !sphereRevealComplete) label = interactionBusy ? "Building sphere…" : "Place on sphere";
     nextButton.innerHTML = `${label} <span aria-hidden="true">→</span>`;
+  }
+
+  function animateGeneratedAnswer() {
+    if (answerGenerationComplete || interactionBusy) return;
+    const runVersion = animationVersion;
+    interactionBusy = true;
+    answerHeading.textContent = "";
+    answerHeading.classList.add("is-typing");
+    story.classList.add("is-generating-answer");
+    updateNextButton();
+    const finish = () => {
+      if (runVersion !== animationVersion || currentScene !== 5) return;
+      answerHeading.textContent = generatedAnswer;
+      answerHeading.classList.remove("is-typing");
+      story.classList.remove("is-generating-answer");
+      story.classList.add("answer-generated");
+      answerGenerationComplete = true;
+      interactionBusy = false;
+      updateNextButton();
+    };
+    if (reducedMotion) {
+      finish();
+      return;
+    }
+    let characterIndex = 0;
+    const typeNextCharacter = () => {
+      if (runVersion !== animationVersion || currentScene !== 5) return;
+      characterIndex += 1;
+      answerHeading.textContent = generatedAnswer.slice(0, characterIndex);
+      if (characterIndex >= generatedAnswer.length) {
+        window.setTimeout(finish, 180);
+        return;
+      }
+      const character = generatedAnswer[characterIndex - 1];
+      const delay = /[.!?]/.test(character) ? 145 : character === " " ? 42 : 28;
+      window.setTimeout(typeNextCharacter, delay);
+    };
+    window.setTimeout(typeNextCharacter, 180);
   }
 
   function animateWordsIntoVector() {
@@ -410,6 +467,7 @@
     if (currentScene === 2) prepareCorpusBuild();
     if (currentScene === 3) resetOverlap();
     if (currentScene === 4) resetEmbeddingComparison();
+    if (currentScene === 5) resetAnswerGeneration();
     const scene = scenes[currentScene];
     story.dataset.scene = String(currentScene);
     sceneLabel.textContent = scene.label;
@@ -423,6 +481,93 @@
     setVisibleRows(currentScene);
     window.history.replaceState(null, "", `#scene-${currentScene + 1}`);
     if (currentScene === 2) window.setTimeout(animateCorpusBuild, 40);
+  }
+
+  function transitionToScene(index) {
+    const targetScene = Math.max(0, Math.min(scenes.length - 1, index));
+    const shouldMorphCards = currentScene === 4
+      && targetScene === 5
+      && story.classList.contains("sphere-points-complete")
+      && !reducedMotion;
+    if (shouldMorphCards) {
+      const pairs = [
+        [document.querySelector(".query-card"), document.querySelector(".retrieval-question-card")],
+        [document.querySelector(".compare-passage-card"), document.querySelector(".retrieval-inputs > .retrieved-passage")],
+      ];
+      const morphs = pairs.map(([source, target]) => {
+        const from = source.getBoundingClientRect();
+        const fromStyle = window.getComputedStyle(source);
+        const clone = source.cloneNode(true);
+        clone.removeAttribute("id");
+        clone.setAttribute("aria-hidden", "true");
+        clone.querySelector(".query-arrow")?.remove();
+        clone.classList.add("card-morph-clone");
+        Object.assign(clone.style, {
+          position: "fixed",
+          zIndex: "9999",
+          inset: "auto",
+          top: `${from.top}px`,
+          right: "auto",
+          bottom: "auto",
+          left: `${from.left}px`,
+          width: `${from.width}px`,
+          height: `${from.height}px`,
+          margin: "0",
+          opacity: "1",
+          pointerEvents: "none",
+          transform: "none",
+          transformOrigin: "top left",
+          transition: "none",
+        });
+        document.body.appendChild(clone);
+        return { clone, from, fromStyle, target };
+      });
+      story.classList.add("is-card-morphing");
+      showScene(targetScene);
+      interactionBusy = true;
+      updateNextButton();
+      window.requestAnimationFrame(() => {
+        const animations = morphs.map(({ clone, from, fromStyle, target }) => {
+          const to = target.getBoundingClientRect();
+          const toStyle = window.getComputedStyle(target);
+          return clone.animate([
+            {
+              top: `${from.top}px`,
+              left: `${from.left}px`,
+              width: `${from.width}px`,
+              height: `${from.height}px`,
+              paddingTop: fromStyle.paddingTop,
+              paddingRight: fromStyle.paddingRight,
+              paddingBottom: fromStyle.paddingBottom,
+              paddingLeft: fromStyle.paddingLeft,
+              borderRadius: fromStyle.borderRadius,
+              opacity: 1,
+            },
+            {
+              top: `${to.top}px`,
+              left: `${to.left}px`,
+              width: `${to.width}px`,
+              height: `${to.height}px`,
+              paddingTop: toStyle.paddingTop,
+              paddingRight: toStyle.paddingRight,
+              paddingBottom: toStyle.paddingBottom,
+              paddingLeft: toStyle.paddingLeft,
+              borderRadius: toStyle.borderRadius,
+              opacity: 1,
+            },
+          ], { duration: 720, easing: "cubic-bezier(.2,.8,.2,1)", fill: "forwards" });
+        });
+        Promise.allSettled(animations.map((animation) => animation.finished)).then(() => {
+          morphs.forEach(({ clone }) => clone.remove());
+          story.classList.remove("is-card-morphing");
+          interactionBusy = false;
+          updateNextButton();
+        });
+      });
+      return;
+    }
+    if (story.classList.contains("is-card-morphing")) return;
+    showScene(targetScene);
   }
 
   function handleNext() {
@@ -443,16 +588,20 @@
       revealEmbeddingSphere();
       return;
     }
-    showScene(currentScene + 1);
+    if (currentScene === 5 && !answerGenerationComplete) {
+      animateGeneratedAnswer();
+      return;
+    }
+    transitionToScene(currentScene + 1);
   }
 
-  sceneButtons.forEach((button, index) => button.addEventListener("click", () => showScene(index)));
-  backButton.addEventListener("click", () => showScene(currentScene - 1));
+  sceneButtons.forEach((button, index) => button.addEventListener("click", () => transitionToScene(index)));
+  backButton.addEventListener("click", () => transitionToScene(currentScene - 1));
   nextButton.addEventListener("click", handleNext);
   document.addEventListener("keydown", (event) => {
     if (event.target.matches("input, textarea, select, button")) return;
     if (event.key === "ArrowRight") handleNext();
-    if (event.key === "ArrowLeft") showScene(currentScene - 1);
+    if (event.key === "ArrowLeft") transitionToScene(currentScene - 1);
   });
 
   const svg = document.getElementById("rag-sphere");
