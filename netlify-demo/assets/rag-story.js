@@ -581,6 +581,7 @@
   }
 
   svg.addEventListener("pointerdown", (event) => {
+    event.preventDefault();
     dragging = true;
     previous = { x: event.clientX, y: event.clientY };
     svg.setPointerCapture(event.pointerId);
