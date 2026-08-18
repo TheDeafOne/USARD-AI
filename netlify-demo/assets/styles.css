@@ -118,6 +118,9 @@ h2 {
   font-weight: 800;
 }
 
+.lab-card { min-height: 250px; }
+.lab-card .card-number { margin-bottom: 44px; }
+
 .card h2, .card h3 { margin-bottom: 10px; font-size: 1.4rem; letter-spacing: -0.02em; }
 .card p, .content-panel p { margin-bottom: 0; color: var(--muted); line-height: 1.6; }
 .data-section { padding-top: 4px; }

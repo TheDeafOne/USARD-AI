@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="USARD demonstration pages" />
-    <title>USARD Demo</title>
+    <meta name="description" content="USARD concepts, lab introductions, and classroom data" />
+    <title>USARD Concepts</title>
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="assets/styles.css" />
   </head>
@@ -12,39 +12,63 @@
     <main class="page-shell">
       <header class="hero">
         <p class="eyebrow">USARD</p>
-        <h1>Demo pages</h1>
-        <p class="lede">Interactive explainers for the USARD technical track.</p>
+        <h1>Concepts &amp; lab guides</h1>
+        <p class="lede">Interactive explainers, source guides, and classroom data for the USARD technical track.</p>
       </header>
 
       <section class="home-section" aria-labelledby="demos-heading">
         <div class="section-heading">
           <p class="eyebrow">Explore</p>
-          <h2 id="demos-heading">Demos</h2>
+          <h2 id="demos-heading">Concepts</h2>
         </div>
 
-        <nav class="card-grid" aria-label="Demonstrations">
+        <nav class="card-grid" aria-label="Concept explainers">
           <a class="card" href="cosine-similarity.html">
             <span class="card-number">01</span>
             <h3>Cosine similarity</h3>
             <p>Turn recruiting outcomes into vectors, neighbors, and a transparent recommendation.</p>
           </a>
 
-          <a class="card" href="lab-2-pipeline.html">
-            <span class="card-number">02</span>
-            <h3>Lab 2 pipeline</h3>
-            <p>Walk from validated school data through weighted scoring, collaborative filtering, and a traceable recommendation.</p>
-          </a>
-
-          <a class="card" href="other.html">
-            <span class="card-number">03</span>
-            <h3>Other demo</h3>
-            <p>Use this page as a template for another demonstration.</p>
-          </a>
-
           <a class="card" href="rag-retrieval.html">
-            <span class="card-number">04</span>
+            <span class="card-number">02</span>
             <h3>How RAG finds evidence</h3>
             <p>Watch words become vectors, compare a question with source passages, and retrieve context for a grounded answer.</p>
+          </a>
+        </nav>
+      </section>
+
+      <section class="home-section" aria-labelledby="labs-heading">
+        <div class="section-heading section-heading-row">
+          <div>
+            <p class="eyebrow">Before you begin</p>
+            <h2 id="labs-heading">Lab intros</h2>
+          </div>
+          <p>Meet each lab’s inputs, outputs, and field definitions before opening the notebook.</p>
+        </div>
+
+        <nav class="card-grid" aria-label="Lab introductions">
+          <a class="card lab-card" href="lab-1-intro.html">
+            <span class="card-number">Lab 01</span>
+            <h3>Can we trust the data?</h3>
+            <p>See the messy event export and the two validated artifacts the pipeline produces.</p>
+          </a>
+
+          <a class="card lab-card" href="lab-2-intro.html">
+            <span class="card-number">Lab 02</span>
+            <h3>Recommender systems</h3>
+            <p>Understand the event, school, and content-profile tables behind each recommendation.</p>
+          </a>
+
+          <a class="card lab-card" href="lab-3-intro.html">
+            <span class="card-number">Lab 03</span>
+            <h3>Ground answers in evidence</h3>
+            <p>Tour the six-document corpus and the metadata that keeps retrieval traceable.</p>
+          </a>
+
+          <a class="card lab-card" href="lab-4-intro.html">
+            <span class="card-number">Lab 04</span>
+            <h3>Coordinate, validate, escalate</h3>
+            <p>Preview the narrow tool responses an agent combines into a bounded plan.</p>
           </a>
         </nav>
       </section>
@@ -95,6 +119,32 @@
             <div class="data-card-actions">
               <a class="text-link" href="data-viewer.html?dataset=summary">View data <span aria-hidden="true">&#8599;</span></a>
               <a class="download-link" href="data/school_summary.csv" download>Download</a>
+            </div>
+          </article>
+
+          <article class="card data-card">
+            <div class="data-card-meta">
+              <span class="file-type">CSV</span>
+              <span>36 rows</span>
+            </div>
+            <h3><a href="data-viewer.html?dataset=school-profiles">School profiles</a></h3>
+            <p>School-level program emphasis across five fictional career-interest dimensions.</p>
+            <div class="data-card-actions">
+              <a class="text-link" href="data-viewer.html?dataset=school-profiles">View data <span aria-hidden="true">&#8599;</span></a>
+              <a class="download-link" href="data/school_profiles.csv" download>Download</a>
+            </div>
+          </article>
+
+          <article class="card data-card">
+            <div class="data-card-meta">
+              <span class="file-type">CSV</span>
+              <span>6 rows</span>
+            </div>
+            <h3><a href="data-viewer.html?dataset=action-profiles">Action profiles</a></h3>
+            <p>Engagement formats scored on the same five dimensions for content-based matching.</p>
+            <div class="data-card-actions">
+              <a class="text-link" href="data-viewer.html?dataset=action-profiles">View data <span aria-hidden="true">&#8599;</span></a>
+              <a class="download-link" href="data/action_profiles.csv" download>Download</a>
             </div>
           </article>
         </div>
