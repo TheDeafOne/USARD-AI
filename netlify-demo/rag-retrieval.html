@@ -92,13 +92,12 @@
             </div>
           </section>
 
-          <section class="similarity-panel" aria-labelledby="sphere-heading">
-            <div class="sphere-copy">
-              <span class="card-label">Cosine similarity</span>
-              <h3 id="sphere-heading">Compare directions, not keywords.</h3>
-              <p>The real vectors have hundreds of dimensions. This sphere is a 3D teaching view of the same angle comparison from Lab 2.</p>
-              <div class="score-list" id="score-list"></div>
-            </div>
+          <section class="row-embeddings-panel" aria-label="Dense embeddings for each passage">
+            <span class="card-label">Passage embeddings</span>
+            <div id="row-embeddings"></div>
+          </section>
+
+          <section class="similarity-panel" aria-label="Cosine similarity results">
             <figure class="rag-sphere-figure">
               <svg id="rag-sphere" viewBox="0 0 560 430" role="img" aria-labelledby="rag-sphere-title rag-sphere-desc">
                 <title id="rag-sphere-title">Question and passage embeddings on a sphere</title>
@@ -106,6 +105,10 @@
               </svg>
               <figcaption>Drag to rotate · smaller angle means more similar</figcaption>
             </figure>
+            <div class="sphere-results">
+              <span class="card-label">Nearest to the question</span>
+              <div class="score-list" id="score-list"></div>
+            </div>
           </section>
 
           <section class="retrieval-panel" aria-labelledby="retrieval-heading">
