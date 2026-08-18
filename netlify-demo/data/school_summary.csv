@@ -1,0 +1,37 @@
+school_id,school_name,historical_events,recruiter_hours,contacts,appointments,qualified,contracts,access_score,distance_miles
+S001,Lincoln High,23,147,1046,495,143,48,0.9,8
+S002,Jefferson High,19,117,655,252,145,64,0.92,12
+S003,Washington High,17,105,672,226,126,60,0.72,18
+S004,Roosevelt High,12,83,469,152,81,26,0.95,6
+S005,North County Tech,14,95,507,173,98,48,0.8,22
+S006,Lakeside Academy,12,82,404,151,84,27,0.94,32
+S007,Madison High,19,118,737,240,139,49,0.77,35
+S008,Franklin High,14,91,479,148,80,23,0.71,47
+S009,Central High,8,48,309,102,66,23,0.8,12
+S010,Riverside High,8,55,300,92,44,1,0.9,6
+S011,Eastview High,11,71,399,118,60,15,0.61,41
+S012,Westfield High,10,65,369,105,49,13,0.63,26
+S013,Pine Ridge High,7,47,265,86,51,16,0.75,46
+S014,Oak Valley High,14,87,472,158,76,19,0.72,9
+S015,Summit High,15,101,524,163,90,29,0.86,16
+S016,Cedar Grove High,13,87,469,147,81,20,0.94,6
+S017,Parkview High,8,61,298,109,66,27,0.92,19
+S018,Liberty High,8,48,258,90,51,13,0.82,44
+S019,Monroe High,17,104,548,190,103,31,0.61,30
+S020,Adams High,6,39,229,75,44,13,0.61,20
+S021,Hamilton High,19,116,673,242,129,32,0.69,33
+S022,Kennedy High,10,74,352,118,65,21,0.67,22
+S023,Jackson High,9,52,370,106,54,15,0.77,38
+S024,Grant High,13,92,471,128,63,14,0.74,46
+S025,Wilson High,18,115,618,213,112,29,0.71,13
+S026,Heritage High,9,58,316,109,64,22,0.96,39
+S027,Valley Tech,11,66,430,151,74,22,0.76,11
+S028,Mountain View High,17,120,613,209,108,29,0.78,34
+S029,Harbor High,15,83,481,190,97,31,0.67,13
+S030,Brookside High,4,26,125,40,25,8,0.61,9
+S031,Greenfield High,8,59,252,86,41,6,0.73,17
+S032,Redstone High,18,127,722,231,128,48,0.85,36
+S033,Horizon High,18,123,628,221,120,27,0.94,10
+S034,Pioneer High,18,115,646,201,100,27,0.68,39
+S035,Union High,15,107,570,192,112,42,0.86,23
+S036,Victory High,2,13,76,25,15,7,0.74,14

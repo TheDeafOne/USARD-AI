@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="An immersive walkthrough of the full USARD Lab 2 recommender-system pipeline." />
+    <title>Lab 2 Pipeline | USARD Demo</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="assets/lab-2-pipeline.css" />
+    <script src="assets/lab-2-pipeline.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#stage-title">Skip to walkthrough</a>
+
+    <main class="walkthrough" id="lab-2-walkthrough">
+      <header class="topbar">
+        <a class="brand" href="index.html" aria-label="Back to all USARD demos">
+          <span class="brand-mark">U</span>
+          <span>USARD <b>/ LAB 02</b></span>
+        </a>
+        <p><span class="keycap">←</span><span class="keycap">→</span> to explore</p>
+      </header>
+
+      <aside class="rail" aria-label="Pipeline steps">
+        <div class="rail-line" aria-hidden="true"><i id="rail-progress"></i></div>
+        <button class="rail-step" type="button" data-go="0" aria-current="step"><span>00</span><b>Mission</b><small>Frame the decision</small></button>
+        <p class="rail-phase">Where</p>
+        <button class="rail-step" type="button" data-go="1"><span>01</span><b>Evidence</b><small>Validated inputs</small></button>
+        <button class="rail-step" type="button" data-go="2"><span>02</span><b>Measures</b><small>Downstream value</small></button>
+        <button class="rail-step" type="button" data-go="3"><span>03</span><b>Score</b><small>Weighted objective</small></button>
+        <button class="rail-step" type="button" data-go="4"><span>04</span><b>Shortlist</b><small>Constraints + Top K</small></button>
+        <p class="rail-phase">What</p>
+        <button class="rail-step" type="button" data-go="5"><span>05</span><b>Matrix</b><small>Schools × actions</small></button>
+        <button class="rail-step" type="button" data-go="6"><span>06</span><b>Similarity</b><small>Behavioral neighbors</small></button>
+        <button class="rail-step" type="button" data-go="7"><span>07</span><b>Predict</b><small>Weighted evidence</small></button>
+        <button class="rail-step" type="button" data-go="8"><span>08</span><b>Recommend</b><small>Keep provenance</small></button>
+      </aside>
+
+      <section class="stage" aria-live="polite">
+        <article class="slide is-active" data-slide="0">
+          <div class="slide-copy intro-copy">
+            <p class="kicker">Precision recruiting / recommender systems</p>
+            <h1 id="stage-title">Two questions.<br /><em>One transparent pipeline.</em></h1>
+            <p class="dek">Limited recruiter time means we cannot visit every school. Lab 2 turns validated history into an explainable recommendation without pretending the model owns the decision.</p>
+          </div>
+          <div class="mission-map" aria-label="The pipeline first ranks schools, then recommends an action">
+            <div class="mission-node mission-input"><span>459</span><small>validated engagements</small></div>
+            <div class="mission-path"><i></i><b>WHERE?</b><small>Rank feasible schools</small></div>
+            <div class="mission-node mission-context"><span>Jefferson</span><small>selected decision context</small></div>
+            <div class="mission-path"><i></i><b>WHAT?</b><small>Infer an untried action</small></div>
+            <div class="mission-node mission-output"><span>0.827</span><small>predicted Mechanical effectiveness</small></div>
+          </div>
+          <p class="takeaway"><span>Core idea</span> Optimize a human-defined objective, then make every inference traceable to observed evidence.</p>
+        </article>
+
+        <article class="slide" data-slide="1" hidden>
+          <div class="slide-copy">
+            <p class="kicker">01 / Validated evidence</p>
+            <h2>Start with outcomes, not a hunch.</h2>
+            <p class="dek">Each school row combines activity, downstream results, access, travel, and the amount of historical evidence.</p>
+          </div>
+          <div class="table-frame" tabindex="0" aria-label="Sample from the school summary table">
+            <table class="pipeline-table">
+              <thead><tr><th>School</th><th>Events</th><th>Hours</th><th>Appointments</th><th>Qualified</th><th>Contracts</th><th>Access</th><th>Miles</th></tr></thead>
+              <tbody>
+                <tr class="attention-row"><th>Lincoln High <small>activity leader</small></th><td>23</td><td>147</td><td><b>495</b></td><td>143</td><td>48</td><td>.90</td><td>8</td></tr>
+                <tr><th>Jefferson High</th><td>19</td><td>117</td><td>252</td><td>145</td><td>64</td><td>.92</td><td>12</td></tr>
+                <tr><th>Roosevelt High</th><td>12</td><td>83</td><td>152</td><td>81</td><td>26</td><td>.95</td><td>6</td></tr>
+                <tr class="focus-row"><th>Washington High <small>efficiency leader</small></th><td>17</td><td>105</td><td>226</td><td>126</td><td>60</td><td>.72</td><td>18</td></tr>
+                <tr><th>North County Tech</th><td>14</td><td>95</td><td>173</td><td>98</td><td>48</td><td>.80</td><td>22</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="insight-strip"><span>Wrong objective</span><strong>Lincoln wins on appointments alone.</strong><p>But raw activity volume is not the downstream mission outcome.</p></div>
+        </article>
+
+        <article class="slide" data-slide="2" hidden>
+          <div class="slide-copy">
+            <p class="kicker">02 / Engineer downstream measures</p>
+            <h2>Change the question, change the winner.</h2>
+            <p class="dek">Ratios put schools on comparable footing and move the objective from “how much activity?” to “what happened per opportunity and constrained hour?”</p>
+          </div>
+          <div class="measure-grid">
+            <section class="measure-card">
+              <p>Qualification rate</p>
+              <div class="fraction"><b>qualified</b><i>appointments</i></div>
+              <span>How often appointments reach qualification</span>
+            </section>
+            <section class="measure-card accent-card">
+              <p>Downstream efficiency</p>
+              <div class="fraction"><b>contracts</b><i>recruiter hours</i></div>
+              <span>Success per constrained resource</span>
+            </section>
+          </div>
+          <div class="winner-shift" aria-label="Changing the measure changes the ranking leader">
+            <div><small>Appointments</small><strong>Lincoln</strong><span>495</span><i style="--bar:100%"></i></div>
+            <b aria-hidden="true">→</b>
+            <div class="winner"><small>Contracts / hour</small><strong>Washington</strong><span>0.571</span><i style="--bar:100%"></i></div>
+            <div><small>Lincoln’s efficiency</small><strong>Lincoln</strong><span>0.327</span><i style="--bar:57.1%"></i></div>
+          </div>
+          <p class="takeaway"><span>Lesson</span> A correct ranking can still optimize the wrong objective.</p>
+        </article>
+
+        <article class="slide" data-slide="3" hidden>
+          <div class="slide-copy">
+            <p class="kicker">03 / Normalize + weighted average</p>
+            <h2>Encode the mission in plain sight.</h2>
+            <p class="dek">Min–max normalization puts unlike measures on a common 0–1 scale. Human-chosen weights then make the tradeoff explicit.</p>
+          </div>
+          <div class="score-lab">
+            <div class="weight-stack" aria-label="Mission weights">
+              <div style="--weight:60%"><p><span>60%</span> downstream efficiency</p><i></i></div>
+              <div style="--weight:25%"><p><span>25%</span> qualification rate</p><i></i></div>
+              <div style="--weight:15%"><p><span>15%</span> school access</p><i></i></div>
+            </div>
+            <div class="score-equation">
+              <p>Jefferson High</p>
+              <div><span>.60 × <b>.956</b></span><i>+</i><span>.25 × <b>.800</b></span><i>+</i><span>.15 × <b>.886</b></span></div>
+              <strong>= 0.906</strong>
+              <small>opportunity score</small>
+            </div>
+          </div>
+          <p class="formula-line"><b>score</b> = .60(success<sub>norm</sub>) + .25(qualified<sub>norm</sub>) + .15(access<sub>norm</sub>)</p>
+        </article>
+
+        <article class="slide" data-slide="4" hidden>
+          <div class="slide-copy">
+            <p class="kicker">04 / Operational constraints + Top K</p>
+            <h2>Scores do not override reality.</h2>
+            <p class="dek">Filter before selecting the top five: travel must be at most 30 miles and each school needs at least four historical events.</p>
+          </div>
+          <div class="constraint-row" aria-label="Eligibility gates"><div><span>≤ 30</span><small>distance miles</small></div><b>AND</b><div><span>≥ 4</span><small>historical events</small></div></div>
+          <div class="shortlist-grid">
+            <section class="rank-list" aria-label="Top five eligible schools">
+              <p class="micro-heading">Eligible top five</p>
+              <ol>
+                <li class="selected"><span>Jefferson High</span><i style="--score:90.6%"></i><strong>.906</strong></li>
+                <li><span>Washington High</span><i style="--score:83.5%"></i><strong>.835</strong></li>
+                <li><span>Central High</span><i style="--score:83.1%"></i><strong>.831</strong></li>
+                <li><span>Parkview High</span><i style="--score:81.4%"></i><strong>.814</strong></li>
+                <li><span>North County Tech</span><i style="--score:80.3%"></i><strong>.803</strong></li>
+              </ol>
+            </section>
+            <section class="rejection-list">
+              <p class="micro-heading">High score, still excluded</p>
+              <div><span>Victory High</span><strong>.837</strong><small>2 events</small></div>
+              <div><span>Heritage High</span><strong>.750</strong><small>39 miles</small></div>
+              <div><span>Madison High</span><strong>.702</strong><small>35 miles</small></div>
+            </section>
+          </div>
+          <p class="takeaway"><span>Handoff</span> The shortlist supports a human choice. Jefferson now becomes the decision context for “what should we do there?”</p>
+        </article>
+
+        <article class="slide" data-slide="5" hidden>
+          <div class="slide-copy">
+            <p class="kicker">05 / Collaborative filtering</p>
+            <h2>Schools become users. Actions become items.</h2>
+            <p class="dek">Each matrix value is historical contracts per recruiter-hour. Blanks stay missing: unobserved is not the same as failure.</p>
+          </div>
+          <div class="matrix-frame" tabindex="0" aria-label="Sample school by action effectiveness matrix">
+            <table class="matrix-table">
+              <thead><tr><th>School</th><th>Cyber</th><th>STEM</th><th>Mechanical</th><th>Healthcare</th><th>Education</th><th>Recruiting table</th></tr></thead>
+              <tbody>
+                <tr class="target"><th>Jefferson <small>target</small></th><td>.767</td><td>.765</td><td class="blank"><b>?</b><span>unobserved</span></td><td>.269</td><td>.522</td><td>.429</td></tr>
+                <tr><th>Washington</th><td>.652</td><td>.667</td><td class="evidence">.815</td><td>.235</td><td>.471</td><td>.333</td></tr>
+                <tr><th>Madison</th><td>.333</td><td>.560</td><td class="evidence">.828</td><td>.077</td><td>.214</td><td>.222</td></tr>
+                <tr><th>North County</th><td>.542</td><td>.476</td><td class="evidence">.840</td><td>—</td><td>.176</td><td>.125</td></tr>
+                <tr><th>Lincoln</th><td>.194</td><td>.364</td><td>.757</td><td>.100</td><td>.105</td><td>.111</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="matrix-legend"><span><i class="legend-target"></i> target row</span><span><i class="legend-evidence"></i> neighbor evidence</span><span><i class="legend-blank"></i> missing, never zero-filled</span></div>
+        </article>
+
+        <article class="slide" data-slide="6" hidden>
+          <div class="slide-copy">
+            <p class="kicker">06 / Overlap-aware cosine similarity</p>
+            <h2>Similar behavior points in the same direction.</h2>
+            <p class="dek">Compare Jefferson with each school only where both have observations. Require at least three shared actions so one or two coincidences cannot define a neighbor.</p>
+          </div>
+          <div class="similarity-layout">
+            <figure class="cosine-figure">
+              <svg viewBox="0 0 620 360" role="img" aria-labelledby="cos-title cos-desc">
+                <title id="cos-title">Two nearly aligned school vectors</title>
+                <desc id="cos-desc">Jefferson and Washington point in nearly the same direction, so their cosine similarity is near one.</desc>
+                <g class="grid"><path d="M55 305H585M55 305V40"/><path d="M55 250H585M55 195H585M55 140H585M55 85H585"/></g>
+                <path class="vector jefferson-vector" d="M55 305L525 70"/><path class="vector washington-vector" d="M55 305L514 76"/>
+                <path class="angle" d="M143 261 A98 98 0 0 1 144 260"/><circle class="origin" cx="55" cy="305" r="5"/>
+                <text x="532" y="65">Jefferson</text><text x="520" y="95">Washington</text><text class="theta" x="150" y="265">θ ≈ 2.2°</text>
+              </svg>
+              <figcaption><span>cos(θ) =</span><span class="compact-fraction"><b>A · B</b><i>‖A‖ × ‖B‖</i></span><strong>→ 1 when directions align</strong></figcaption>
+            </figure>
+            <section class="neighbor-list" aria-label="Nearest behavioral neighbors">
+              <p class="micro-heading">Jefferson’s nearest neighbors</p>
+              <div><b>01</b><span>Washington High <small>5 overlaps</small></span><strong>.9993</strong></div>
+              <div><b>02</b><span>Madison High <small>5 overlaps</small></span><strong>.9638</strong></div>
+              <div><b>03</b><span>North County Tech <small>4 overlaps</small></span><strong>.9628</strong></div>
+              <div class="contrast"><b>25</b><span>Valley Tech <small>contrast</small></span><strong>.354</strong></div>
+              <p class="overlap-rule"><span>minimum overlap</span><strong>3 actions</strong></p>
+            </section>
+          </div>
+        </article>
+
+        <article class="slide" data-slide="7" hidden>
+          <div class="slide-copy">
+            <p class="kicker">07 / Similarity-weighted prediction</p>
+            <h2>Let the closest analogues contribute most.</h2>
+            <p class="dek">Inspect the three nearest schools, keep only neighbors with Mechanical evidence, then compute a weighted average.</p>
+          </div>
+          <div class="prediction-diagram" aria-label="Mechanical prediction from nearest neighbors">
+            <div class="neighbor-node"><span>Washington</span><strong>.815</strong><small>value × .9993 similarity</small></div>
+            <div class="neighbor-node"><span>Madison</span><strong>.828</strong><small>value × .9638 similarity</small></div>
+            <div class="neighbor-node"><span>North County</span><strong>.840</strong><small>value × .9628 similarity</small></div>
+            <div class="merge-lines" aria-hidden="true"><i></i><i></i><i></i></div>
+            <div class="prediction-node"><small>Predicted for Jefferson</small><strong>0.827</strong><span>contracts / recruiter-hour</span></div>
+          </div>
+          <p class="formula-line prediction-formula"><b>prediction</b> = <span class="compact-fraction"><b>(.9993 × .815) + (.9638 × .828) + (.9628 × .840)</b><i>.9993 + .9638 + .9628</i></span> = <strong>.827</strong></p>
+          <p class="takeaway"><span>Collaborative signal</span> Similarity finds the analogues; weighted averaging turns their observed outcomes into an explainable estimate.</p>
+        </article>
+
+        <article class="slide" data-slide="8" hidden>
+          <div class="slide-copy">
+            <p class="kicker">08 / Rank with provenance</p>
+            <h2>A recommendation, not an automated decision.</h2>
+            <p class="dek">Observed and predicted actions can be ranked together only if their evidence type remains visible.</p>
+          </div>
+          <div class="final-layout">
+            <section class="action-ranking" aria-label="Jefferson action ranking">
+              <div class="action-row recommended"><span><small>01 · predicted</small>Mechanical Careers Demo</span><i style="--action:100%"></i><strong>.827</strong></div>
+              <div class="action-row"><span><small>02 · observed</small>Cyber Careers Event</span><i style="--action:92.7%"></i><strong>.767</strong></div>
+              <div class="action-row"><span><small>03 · observed</small>STEM Careers Presentation</span><i style="--action:92.5%"></i><strong>.765</strong></div>
+              <div class="action-row"><span><small>04 · observed</small>Education Benefits Session</span><i style="--action:63.1%"></i><strong>.522</strong></div>
+              <div class="action-row"><span><small>05 · observed</small>General Recruiting Table</span><i style="--action:51.8%"></i><strong>.429</strong></div>
+            </section>
+            <aside class="decision-card">
+              <p class="micro-heading">Recommended next test</p>
+              <h3>Mechanical<br />Careers Demo</h3>
+              <div><strong>0.827</strong><span>predicted effectiveness</span></div>
+              <p>Promising enough to test—not proof that it will work.</p>
+            </aside>
+          </div>
+          <div class="red-team"><span>Before deployment</span><p>Historical choice ≠ causal effectiveness</p><p>Evidence can become stale</p><p>Overlap affects confidence</p><p>Protected fields stay out</p></div>
+        </article>
+      </section>
+
+      <footer class="controls">
+        <button type="button" id="previous" aria-label="Previous pipeline step"><span aria-hidden="true">←</span> Back</button>
+        <div class="progress-copy"><span id="phase-label">FRAME</span><p><b id="step-current">01</b> / 09</p></div>
+        <button type="button" id="next">Explore pipeline <span aria-hidden="true">→</span></button>
+      </footer>
+    </main>
+  </body>
+</html>

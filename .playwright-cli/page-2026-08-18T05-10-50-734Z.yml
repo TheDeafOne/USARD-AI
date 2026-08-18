@@ -1,0 +1,86 @@
+- generic [active] [ref=e1]:
+  - link "Skip to walkthrough" [ref=e2] [cursor=pointer]:
+    - /url: "#stage-title"
+  - main [ref=e3]:
+    - generic [ref=e4]:
+      - link "Back to all USARD demos" [ref=e5] [cursor=pointer]:
+        - /url: index.html
+        - generic [ref=e6]: U
+        - generic [ref=e7]: USARD / LAB 02
+      - paragraph [ref=e8]:
+        - generic [ref=e9]: ←
+        - generic [ref=e10]: →
+        - text: to explore
+    - complementary "Pipeline steps" [ref=e11]:
+      - button "00 Mission Frame the decision" [ref=e13] [cursor=pointer]:
+        - generic [ref=e14]: "00"
+        - generic [ref=e15]: Mission
+        - generic [ref=e16]: Frame the decision
+      - paragraph [ref=e17]: Where
+      - button "01 Evidence Validated inputs" [ref=e18] [cursor=pointer]:
+        - generic [ref=e19]: "01"
+        - generic [ref=e20]: Evidence
+        - generic [ref=e21]: Validated inputs
+      - button "02 Measures Downstream value" [ref=e22] [cursor=pointer]:
+        - generic [ref=e23]: "02"
+        - generic [ref=e24]: Measures
+        - generic [ref=e25]: Downstream value
+      - button "03 Score Weighted objective" [ref=e26] [cursor=pointer]:
+        - generic [ref=e27]: "03"
+        - generic [ref=e28]: Score
+        - generic [ref=e29]: Weighted objective
+      - button "04 Shortlist Constraints + Top K" [ref=e30] [cursor=pointer]:
+        - generic [ref=e31]: "04"
+        - generic [ref=e32]: Shortlist
+        - generic [ref=e33]: Constraints + Top K
+      - paragraph [ref=e34]: What
+      - button "05 Matrix Schools × actions" [ref=e35] [cursor=pointer]:
+        - generic [ref=e36]: "05"
+        - generic [ref=e37]: Matrix
+        - generic [ref=e38]: Schools × actions
+      - button "06 Similarity Behavioral neighbors" [ref=e39] [cursor=pointer]:
+        - generic [ref=e40]: "06"
+        - generic [ref=e41]: Similarity
+        - generic [ref=e42]: Behavioral neighbors
+      - button "07 Predict Weighted evidence" [ref=e43] [cursor=pointer]:
+        - generic [ref=e44]: "07"
+        - generic [ref=e45]: Predict
+        - generic [ref=e46]: Weighted evidence
+      - button "08 Recommend Keep provenance" [ref=e47] [cursor=pointer]:
+        - generic [ref=e48]: "08"
+        - generic [ref=e49]: Recommend
+        - generic [ref=e50]: Keep provenance
+    - generic [ref=e51]:
+      - article [ref=e52]:
+        - generic [ref=e53]:
+          - paragraph [ref=e54]: Precision recruiting / recommender systems
+          - heading "Two questions. One transparent pipeline." [level=1] [ref=e55]:
+            - text: Two questions.
+            - emphasis [ref=e56]: One transparent pipeline.
+          - paragraph [ref=e57]: Limited recruiter time means we cannot visit every school. Lab 2 turns validated history into an explainable recommendation without pretending the model owns the decision.
+        - generic "The pipeline first ranks schools, then recommends an action" [ref=e58]:
+          - generic [ref=e59]:
+            - generic [ref=e60]: "459"
+            - generic [ref=e61]: validated engagements
+          - generic [ref=e62]:
+            - generic [ref=e64]: WHERE?
+            - generic [ref=e65]: Rank feasible schools
+          - generic [ref=e66]:
+            - generic [ref=e67]: Jefferson
+            - generic [ref=e68]: selected decision context
+          - generic [ref=e69]:
+            - generic [ref=e71]: WHAT?
+            - generic [ref=e72]: Infer an untried action
+          - generic [ref=e73]:
+            - generic [ref=e74]: "0.827"
+            - generic [ref=e75]: predicted Mechanical effectiveness
+        - paragraph [ref=e76]:
+          - generic [ref=e77]: Core idea
+          - text: Optimize a human-defined objective, then make every inference traceable to observed evidence.
+      - text: • • • •
+    - generic [ref=e78]:
+      - button "Previous pipeline step" [disabled] [ref=e79]: ← Back
+      - generic [ref=e80]:
+        - generic [ref=e81]: FRAME
+        - paragraph [ref=e82]: 01 / 09
+      - button "Explore pipeline" [ref=e83] [cursor=pointer]: Explore pipeline →

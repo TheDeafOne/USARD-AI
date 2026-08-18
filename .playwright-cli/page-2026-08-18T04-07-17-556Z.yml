@@ -1,0 +1,65 @@
+- main [ref=e2]:
+  - generic [ref=e3]:
+    - link "← All demos" [ref=e4] [cursor=pointer]:
+      - /url: index.html
+    - paragraph [ref=e5]: USARD / Recommender Systems
+  - generic [ref=e6]:
+    - paragraph [ref=e7]: Interactive explainer
+    - heading "Similarity is an angle." [level=1] [ref=e8]
+    - paragraph [ref=e9]: Follow Jefferson High from a table of recruiting outcomes to a recommendation built from its nearest behavioral neighbors.
+  - region "Cosine similarity walkthrough" [ref=e10]:
+    - navigation "Walkthrough steps" [ref=e11]:
+      - button "01 Data" [ref=e12] [cursor=pointer]
+      - button "02 Vectors" [ref=e13] [cursor=pointer]
+      - button "03 Sphere" [ref=e14] [cursor=pointer]
+      - button "04 Neighbors" [ref=e15] [cursor=pointer]
+      - button "05 Recommend" [ref=e16] [cursor=pointer]
+    - article [ref=e18]:
+      - generic [ref=e19]:
+        - paragraph [ref=e20]: Step 3 of 5 / Normalize
+        - heading "Move every vector onto the unit sphere." [level=2] [ref=e21]
+        - paragraph [ref=e22]: Normalization removes magnitude and keeps direction. Points with a small angle between them have similar patterns—even if one school produces more contracts overall.
+      - figure "Drag the sphere to rotate it. Hover a point to inspect it." [ref=e23]:
+        - img [ref=e24]:
+          - generic [ref=e35]: Cyber
+          - generic [ref=e36]: STEM
+          - generic [ref=e38]: Table
+          - generic [ref=e40]:
+            - 'generic "Washington High: 0.9998 similarity" [ref=e42]'
+            - generic [ref=e43]: Washington
+          - generic [ref=e44]:
+            - 'generic "Jefferson High: target" [ref=e46]'
+            - generic [ref=e47]: Jefferson
+          - generic [ref=e48]:
+            - 'generic "Hamilton High: 0.9991 similarity" [ref=e50]'
+            - generic [ref=e51]: Hamilton
+          - 'generic "Wilson High: 0.9966 similarity" [ref=e54]'
+          - 'generic "North County Tech: 0.9954 similarity" [ref=e57]'
+          - 'generic "Central High: 0.9871 similarity" [ref=e60]'
+          - 'generic "Summit High: 0.9733 similarity" [ref=e63]'
+          - 'generic "Monroe High: 0.9579 similarity" [ref=e66]'
+          - 'generic "Union High: 0.9499 similarity" [ref=e69]'
+          - generic [ref=e70]:
+            - 'generic "Oak Valley High: 0.7919 similarity" [ref=e72]'
+            - generic [ref=e73]: Oak Valley
+          - generic [ref=e74]:
+            - 'generic "Westfield High: 0.8085 similarity" [ref=e76]'
+            - generic [ref=e77]: Westfield
+        - generic [ref=e78]:
+          - generic [ref=e79]: Drag the sphere to rotate it. Hover a point to inspect it.
+          - generic [ref=e80]: ↔ drag to rotate
+      - generic [ref=e81]:
+        - generic [ref=e82]: cos(θ)
+        - generic [ref=e83]:
+          - generic [ref=e84]: A · B
+          - generic [ref=e85]: ‖A‖ × ‖B‖
+        - generic [ref=e86]: = 1 when directions match
+      - paragraph [ref=e87]: This sphere uses three visible features for intuition. The lab’s final score uses every action observed by both schools.
+    - generic [ref=e88]:
+      - button "Back" [ref=e89] [cursor=pointer]:
+        - generic [ref=e90]: ←
+        - text: Back
+      - paragraph [ref=e91]: 3 / 5
+      - button "Next" [ref=e92] [cursor=pointer]:
+        - text: Next
+        - generic [ref=e93]: →

@@ -49,38 +49,57 @@ def add_completed_banner(nb, extra=""):
 
 
 def complete_lab_1(nb):
-    name_map_old = '''NAME_MAP = {
-    # TODO: add the known variants.
-    # "Jefferson HS": "Jefferson High",
+    manual_school_fixes_old = '''MANUAL_SCHOOL_FIXES = {
+    # TODO: map these normalized labels:
+    # "JEFFRSON HIGH": "JEFFERSON HIGH",
+    # "N COUNTY TECHNICAL": "NORTH COUNTY TECH",
+    # "LAKESIDE ACAD": "LAKESIDE ACADEMY",
 }'''
-    name_map_new = '''NAME_MAP = {
-    "Jefferson HS": "Jefferson High",
-    "JEFFERSON HIGH": "Jefferson High",
-    "Jefferson High School": "Jefferson High",
-    "LINCOLN HS": "Lincoln High",
-    "Washington H.S.": "Washington High",
+    manual_school_fixes_new = '''MANUAL_SCHOOL_FIXES = {
+    "JEFFRSON HIGH": "JEFFERSON HIGH",
+    "N COUNTY TECHNICAL": "NORTH COUNTY TECH",
+    "LAKESIDE ACAD": "LAKESIDE ACADEMY",
 }'''
+    action_aliases_old = '''ACTION_NAME_MAP.update({
+    # TODO: add aliases such as "STEM PRESENTATION": "STEM Careers Presentation"
+})'''
+    action_aliases_new = '''ACTION_NAME_MAP.update({
+    "CYBER CAREER EVENT": "Cyber Careers Event",
+    "STEM PRESENTATION": "STEM Careers Presentation",
+    "STEM CAREER PRESENTATION": "STEM Careers Presentation",
+    "MECHANICAL CAREER DEMO": "Mechanical Careers Demo",
+    "MECH CAREERS DEMO": "Mechanical Careers Demo",
+    "HEALTHCARE CAREER SESSION": "Healthcare Careers Session",
+    "HEALTH CAREERS SESSION": "Healthcare Careers Session",
+    "EDUCATION BENEFIT SESSION": "Education Benefits Session",
+    "BENEFITS SESSION": "Education Benefits Session",
+    "GENERAL RECRUITMENT TABLE": "General Recruiting Table",
+    "RECRUITING TABLE": "General Recruiting Table",
+})'''
     replace_all(nb, {
-        name_map_old: name_map_new,
-        'REMOVE_DUPLICATE_IDS = False  # TODO: change after inspecting E002':
-            'REMOVE_DUPLICATE_IDS = True  # Remove the verified duplicate E002 record',
-        'INVALID_DATE_POLICY = "keep"  # TODO: choose "flag" for this lab':
-            'INVALID_DATE_POLICY = "flag"  # Preserve the row and its audit flag',
-        '# TODO: complete this section in the final Lab 1 build.':
-            '# Aggregate valid records while retaining quality evidence from the raw source.',
+        manual_school_fixes_old: manual_school_fixes_new,
+        action_aliases_old: action_aliases_new,
+        'REMOVE_DUPLICATE_IDS = False  # TODO':
+            'REMOVE_DUPLICATE_IDS = True  # Keep one record per engagement ID',
+        'INVALID_ROW_POLICY = "keep"  # TODO: change to "exclude"':
+            'INVALID_ROW_POLICY = "exclude"  # Reject records that fail any validation rule',
     })
     insert_explanations(nb, [
         (
             "entity resolution",
-            "Known variants map to a canonical school name before aggregation. This is an explicit, auditable mapping rather than an automatic fuzzy merge, because similarly named schools may be distinct entities.",
+            "The three genuine misspellings map to canonical names through explicit, reviewable rules. Mechanical normalization handles capitalization, whitespace, periods, `HS`, and `High School` without unrestricted fuzzy matching.",
         ),
         (
-            "deduplication and validation",
-            "The repeated `E002` identifier is a verified duplicate, so one copy is retained. Invalid dates, missing keys, negative values, and impossible funnel order are stored as separate flags. The original problem remains visible for audit and remediation.",
+            "action aliases",
+            "All observed aliases map to six canonical engagement actions. This prevents spelling variants from becoming separate columns in the recommender matrix.",
         ),
         (
-            "model-ready aggregation",
-            "Only valid engagement rows contribute to outcome totals. `data_quality` is calculated from all source rows for the school, including rejected records, so cleaning does not hide upstream reliability problems.",
+            "deduplication",
+            "Twelve repeated engagement IDs are exact duplicates, so one copy is retained. Legitimate repeated events have different IDs and remain in the history.",
+        ),
+        (
+            "event validation",
+            "Rows with missing keys, invalid dates, missing or negative numeric values, or impossible funnel order are excluded from the model-ready artifact. Each rule remains a separate audit flag.",
         ),
     ])
     add_completed_banner(nb)
@@ -97,10 +116,10 @@ def complete_lab_2(nb):
         'SUCCESS_WEIGHT = .34   # TODO': 'SUCCESS_WEIGHT = .60',
         'QUALIFIED_WEIGHT = .33 # TODO': 'QUALIFIED_WEIGHT = .25',
         'ACCESS_WEIGHT = .33    # TODO': 'ACCESS_WEIGHT = .15',
-        'MAX_DISTANCE = 999      # TODO': 'MAX_DISTANCE = 30',
-        'MIN_DATA_QUALITY = 0.00 # TODO': 'MIN_DATA_QUALITY = 0.70',
+        'MAX_DISTANCE = 999       # TODO': 'MAX_DISTANCE = 30',
+        'MIN_HISTORICAL_EVENTS = 0 # TODO': 'MIN_HISTORICAL_EVENTS = 4',
         'K = 3  # TODO': 'K = 5',
-        'MIN_OVERLAP = 1  # TODO': 'MIN_OVERLAP = 2',
+        'MIN_OVERLAP = 1  # TODO': 'MIN_OVERLAP = 3',
         'USE_SIMILARITY_WEIGHTS = False  # TODO': 'USE_SIMILARITY_WEIGHTS = True',
     })
     insert_explanations(nb, [
@@ -114,15 +133,15 @@ def complete_lab_2(nb):
         ),
         (
             "operational constraints",
-            "Filtering happens before Top-K selection. Summit is removed because its history is unreliable; Liberty is removed because travel exceeds the current constraint. A strong score cannot override feasibility or evidence quality.",
+            "Filtering happens before Top-K selection. Liberty is removed because travel exceeds the current limit; Victory is removed because only two historical events are available. A strong score cannot override feasibility or thin evidence.",
         ),
         (
             "Top K",
-            "`K = 5` returns a manageable shortlist, not an automated assignment. The displayed component measures let a human see why each school ranked highly.",
+            "`K = 5` returns a manageable shortlist. Jefferson is the clear winner on the stated weighted objective, so the notebook passes that top-ranked school directly into the action recommender.",
         ),
         (
             "overlap-aware similarity",
-            "Cosine similarity is calculated only on actions observed at both schools. Requiring two overlaps avoids declaring two schools similar because of a single shared event result.",
+            "Cosine similarity is calculated only on actions observed at both schools. Requiring three overlaps prevents a one- or two-action coincidence from dominating the neighborhood and exposes the deliberately different school profiles.",
         ),
         (
             "similarity-weighted prediction",
@@ -134,27 +153,23 @@ def complete_lab_2(nb):
 
 def complete_lab_3(nb):
     replace_all(nb, {
-        'TOP_K = 1  # TODO: retrieve three sources for the main exercise':
-            'TOP_K = 3  # retrieve a small, inspectable evidence set',
+        'TOP_K = 1  # TODO: retrieve three chunks for each question':
+            'TOP_K = 3  # retrieve a small, inspectable evidence set per question',
         'INCLUDE_SOURCE_IDS = False  # TODO': 'INCLUDE_SOURCE_IDS = True',
         'REFUSE_UNSUPPORTED = False  # TODO': 'REFUSE_UNSUPPORTED = True',
     })
     insert_explanations(nb, [
         (
             "API execution control",
-            "The completed notebook keeps `RUN_API_CALLS = False` so opening or rerunning it never creates surprise API usage. Paste a temporary workshop key into the blank `OPENAI_API_KEY` variable, then switch the flag to `True` to run both model comparisons. Clear the variable and outputs before saving or sharing. The API call supplies no tools, so it cannot invoke web search.",
+            "The completed notebook keeps `RUN_API_CALLS = False` so opening or rerunning it never creates surprise API usage. Paste a temporary workshop key into the blank `OPENAI_API_KEY` variable, then switch the flag to `True` to run the three ungrounded and three grounded answers. Clear the variable and outputs before saving or sharing. The API call supplies no tools, so it cannot invoke web search.",
         ),
         (
             "retrieval depth",
-            "Top 3 balances evidence coverage with prompt focus. The query retrieves the Mechanical playbook and Jefferson profile because their terms match the requested action, school, timing, and equipment needs. Retrieval relevance is still not authority; every selected document must come from an approved corpus.",
+            "Top 3 balances evidence coverage with prompt focus. Each question retrieves section-level chunks from the larger corpus while preserving source ID, version, heading, and chunk ID for inspection.",
         ),
         (
             "grounding contract",
-            "Source IDs make claims auditable. The refusal rule tells the model to expose missing evidence instead of filling gaps. Delimiters separate documents, while the original question remains intact below the evidence.",
-        ),
-        (
-            "unsupported-claim test",
-            "The red-team question asks for an exact incentive and guaranteed qualification—facts absent from the corpus and inappropriate to infer. A correct answer refuses those specifics and directs the issue to current authoritative channels.",
+            "Source IDs make the three answers auditable. Delimiters separate retrieved chunks, the original question is preserved, and the unsupported-information rule prevents local gaps from being silently filled with plausible guesses.",
         ),
     ])
     add_completed_banner(
@@ -184,7 +199,7 @@ def complete_lab_4(nb):
             "school": school_result["school"],
             "action": action_result["action"],
             "hours": estimate_hours(school_result["school"], action_result["action"]),
-            "data_quality": school_result["data_quality"],
+            "historical_events": school_result["historical_events"],
             "recommendation_score": action_result["score"],
             "evidence_type": action_result["evidence"],
             "source_ids": evidence["source_ids"],
@@ -203,7 +218,7 @@ def complete_lab_4(nb):
     insert_explanations(nb, [
         (
             "bounded orchestration",
-            "The orchestrator calls narrow deterministic tools, constructs a candidate with provenance, validates it, and then checks the shared hour budget. Candidates with missing sources or weak data are skipped rather than repaired through invention. The returned plan is still a proposal requiring human approval.",
+            "The orchestrator calls narrow deterministic tools, constructs a candidate with provenance, validates it, and then checks the shared hour budget. Candidates with missing sources or too little historical evidence are skipped rather than repaired through invention. The returned plan is still a proposal requiring human approval.",
         ),
     ])
     add_completed_banner(nb)
