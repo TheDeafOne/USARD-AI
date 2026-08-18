@@ -183,7 +183,7 @@
 .score-row.top span, .score-row.top strong { color: var(--cyan); }
 .score-row.top { border-color: rgb(77 231 255 / 35%); }
 .score-row.top i { background: linear-gradient(90deg, var(--violet), var(--cyan)); box-shadow: 0 0 8px rgb(77 231 255 / 50%); }
-.rag-sphere-figure { width: 390px; margin: -8px auto 0; }
+.rag-sphere-figure { width: 390px; margin: -8px auto 0; -webkit-user-select: none; user-select: none; }
 .rag-sphere-figure svg { display: block; width: 100%; cursor: grab; touch-action: none; }
 .rag-sphere-figure svg:active { cursor: grabbing; }
 .rag-sphere-figure figcaption { margin-top: -13px; color: var(--muted-2); text-align: center; font-size: 0.58rem; }
