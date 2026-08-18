@@ -411,12 +411,14 @@
 .rag-story.is-card-morphing .compare-passage-card,
 .rag-story.is-card-morphing .retrieval-question-card,
 .rag-story.is-card-morphing .retrieval-inputs > .retrieved-passage { visibility: hidden; }
-.merge-arrows, .prompt-card, .generation-arrow, .rag-definition { transition: opacity 320ms ease; }
+.merge-arrows, .prompt-card, .generation-arrow { transition: opacity 320ms ease; }
 .rag-story.is-card-morphing .merge-arrows,
 .rag-story.is-card-morphing .prompt-card,
 .rag-story.is-card-morphing .generation-arrow,
 .rag-story.is-card-morphing .answer-card,
 .rag-story.is-card-morphing .rag-definition { opacity: 0; }
+.rag-story[data-scene="5"] .rag-definition { opacity: 0; transform: translateY(8px); transition: opacity 320ms ease, transform 420ms cubic-bezier(.2,.8,.2,1); }
+.rag-story[data-scene="5"].answer-generated .rag-definition { opacity: 1; transform: none; transition-delay: 160ms; }
 
 .card-morph-clone.query-card { display: grid; gap: 3px; padding: 14px 18px; }
 .card-morph-clone.query-card .card-label { margin: 0 0 3px; }
