@@ -142,7 +142,7 @@ def complete_lab_3(nb):
     insert_explanations(nb, [
         (
             "API execution control",
-            "The completed notebook keeps `RUN_API_CALLS = False` so opening or rerunning it never creates surprise API usage. After setting a replacement key in the `OPENAI_API_KEY` environment variable, switch this flag to `True` to run both model comparisons. The API call supplies no tools, so it cannot invoke web search.",
+            "The completed notebook keeps `RUN_API_CALLS = False` so opening or rerunning it never creates surprise API usage. Paste a temporary workshop key into the blank `OPENAI_API_KEY` variable, then switch the flag to `True` to run both model comparisons. Clear the variable and outputs before saving or sharing. The API call supplies no tools, so it cannot invoke web search.",
         ),
         (
             "retrieval depth",
@@ -159,7 +159,7 @@ def complete_lab_3(nb):
     ])
     add_completed_banner(
         nb,
-        "Live model calls remain opt-in and require a replacement key supplied through `OPENAI_API_KEY`; no secret is embedded here.",
+        "Live model calls remain opt-in. Paste a temporary key into the blank `OPENAI_API_KEY` variable, and clear it before saving or sharing; no secret is embedded here.",
     )
 
 
