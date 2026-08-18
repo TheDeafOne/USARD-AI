@@ -113,18 +113,25 @@
 
           <section class="retrieval-panel" aria-labelledby="retrieval-heading">
             <div class="retrieval-flow">
-              <div class="retrieved-passage">
-                <span class="rank-badge">#1 retrieved</span>
-                <p>“A solar eclipse happens when the <mark>moon blocks the sun</mark>.”</p>
-                <small>Passage 1 · cosine similarity 0.96</small>
+              <div class="retrieval-inputs">
+                <div class="retrieval-question-card">
+                  <span class="card-label">User question</span>
+                  <p>What blocks the sun during an eclipse?</p>
+                </div>
+                <div class="retrieved-passage">
+                  <span class="rank-badge">#1 most similar</span>
+                  <p>“A solar eclipse happens when the <mark>moon blocks the sun</mark>.”</p>
+                  <small>Passage 1 · cosine similarity 0.96</small>
+                </div>
               </div>
-              <span class="retrieval-arrow" aria-hidden="true">→</span>
+              <div class="merge-arrows" aria-hidden="true"><span>→</span><span>→</span></div>
               <div class="prompt-card">
-                <span class="card-label">Prompt to the language model</span>
+                <span class="card-label">Augmented prompt to the model</span>
                 <p><b>Context:</b> A solar eclipse happens when the moon blocks the sun.</p>
                 <p><b>Question:</b> What blocks the sun during an eclipse?</p>
               </div>
             </div>
+            <div class="generation-arrow" aria-hidden="true"><span>↓</span> model generates from the supplied context</div>
             <div class="answer-card">
               <div>
                 <span class="card-label">Grounded answer</span>
