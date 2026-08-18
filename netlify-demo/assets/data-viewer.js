@@ -17,6 +17,16 @@
       description: "School-level recruiting activity, outcomes, access scores, and travel distance used by the recommendation workflow.",
       path: "data/school_summary.csv",
     },
+    "school-profiles": {
+      title: "School profiles",
+      description: "Fictional school program emphasis scored across five shared career-interest dimensions for content-based matching.",
+      path: "data/school_profiles.csv",
+    },
+    "action-profiles": {
+      title: "Action profiles",
+      description: "The six classroom engagement formats scored across the same dimensions as the school profiles.",
+      path: "data/action_profiles.csv",
+    },
   };
 
   const params = new URLSearchParams(window.location.search);
@@ -217,7 +227,7 @@
   }
 
   async function loadData() {
-    document.title = `${dataset.title} | USARD Demo`;
+    document.title = `${dataset.title} | USARD Concepts`;
     elements.title.textContent = dataset.title;
     elements.description.textContent = dataset.description;
     elements.download.href = dataset.path;
