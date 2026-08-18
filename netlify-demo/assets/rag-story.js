@@ -3,10 +3,10 @@
 
   const vocabulary = ["solar", "eclipse", "moon", "blocks", "sun", "earth", "orbits", "days", "panels", "sunlight", "energy", "year"];
   const passages = [
-    { id: "p1", label: "Passage 1", text: "A solar eclipse happens when the moon blocks the sun.", words: ["solar", "eclipse", "moon", "blocks", "sun"], score: 0.96 },
-    { id: "p2", label: "Passage 2", text: "The moon orbits Earth once every twenty-seven days.", words: ["moon", "earth", "orbits", "days"], score: 0.61 },
-    { id: "p3", label: "Passage 3", text: "Solar panels turn sunlight into electrical energy.", words: ["solar", "panels", "sunlight", "energy"], score: 0.34 },
-    { id: "p4", label: "Passage 4", text: "Earth travels around the sun in one year.", words: ["sun", "earth", "year"], score: 0.56 },
+    { id: "p1", label: "Passage 1", embeddingLabel: "1. A solar eclipse…", text: "A solar eclipse happens when the moon blocks the sun.", words: ["solar", "eclipse", "moon", "blocks", "sun"], score: 0.96 },
+    { id: "p2", label: "Passage 2", embeddingLabel: "2. The moon orbits…", text: "The moon orbits Earth once every twenty-seven days.", words: ["moon", "earth", "orbits", "days"], score: 0.61 },
+    { id: "p3", label: "Passage 3", embeddingLabel: "3. Solar panels turn…", text: "Solar panels turn sunlight into electrical energy.", words: ["solar", "panels", "sunlight", "energy"], score: 0.34 },
+    { id: "p4", label: "Passage 4", embeddingLabel: "4. Earth travels around…", text: "Earth travels around the sun in one year.", words: ["sun", "earth", "year"], score: 0.56 },
   ];
   const query = { id: "q", label: "Question", text: "What blocks the sun during an eclipse?", words: ["eclipse", "blocks", "sun"] };
   const scenes = [
@@ -114,7 +114,7 @@
     const item = document.createElement("div");
     item.className = "row-embedding is-pending";
     item.dataset.embeddingRow = passage.id;
-    item.innerHTML = `<span>${passage.label}</span><i class="embedding-arrow" aria-hidden="true"></i><code>${passageEmbeddingValues[index]}</code>`;
+    item.innerHTML = `<span>${passage.embeddingLabel}</span><i class="embedding-arrow" aria-hidden="true"></i><code>${passageEmbeddingValues[index]}</code>`;
     rowEmbeddings.appendChild(item);
   });
 
@@ -463,10 +463,10 @@
   let previous = { x: 0, y: 0 };
   const points = [
     { name: "Question", vector: [1, 0, 0], type: "query" },
-    { name: "Passage 1", vector: [0.96, 0.28, 0], type: "top" },
-    { name: "Passage 2", vector: [0.61, -0.46, 0.65], type: "" },
-    { name: "Passage 3", vector: [0.34, 0.19, -0.92], type: "" },
-    { name: "Passage 4", vector: [0.56, -0.78, -0.28], type: "" },
+    { name: passages[0].embeddingLabel, vector: [0.96, 0.28, 0], type: "top" },
+    { name: passages[1].embeddingLabel, vector: [0.61, -0.46, 0.65], type: "" },
+    { name: passages[2].embeddingLabel, vector: [0.34, 0.19, -0.92], type: "" },
+    { name: passages[3].embeddingLabel, vector: [0.56, -0.78, -0.28], type: "" },
   ].map((point) => {
     const length = Math.hypot(...point.vector);
     return { ...point, vector: point.vector.map((value) => value / length) };
@@ -536,10 +536,45 @@
       svg.appendChild(theta);
     }
     const center = project([0, 0, 0]);
-    points.slice(0, visibleCount).map((point) => ({ ...point, projected: project(point.vector) })).sort((a, b) => a.projected.depth - b.projected.depth).forEach((point) => {
+    const projectedPoints = points.slice(0, visibleCount).map((point) => ({ ...point, projected: project(point.vector) }));
+    const labelLayout = new Map(projectedPoints.map((point) => [point.name, {
+      placeLeft: point.projected.x > 300,
+      desiredY: point.projected.y - 9,
+      y: point.projected.y - 9,
+    }]));
+    const labelOrder = [...projectedPoints]
+      .sort((a, b) => labelLayout.get(a.name).desiredY - labelLayout.get(b.name).desiredY);
+    labelOrder.forEach((point, index) => {
+      const layout = labelLayout.get(point.name);
+      if (index > 0) layout.y = Math.max(layout.desiredY, labelLayout.get(labelOrder[index - 1].name).y + 17);
+    });
+    if (labelOrder.length && labelLayout.get(labelOrder.at(-1).name).y > 360) {
+      labelLayout.get(labelOrder.at(-1).name).y = 360;
+      for (let index = labelOrder.length - 2; index >= 0; index -= 1) {
+        const layout = labelLayout.get(labelOrder[index].name);
+        layout.y = Math.min(layout.y, labelLayout.get(labelOrder[index + 1].name).y - 17);
+      }
+    }
+    projectedPoints.sort((a, b) => a.projected.depth - b.projected.depth).forEach((point) => {
       svg.appendChild(el("line", { x1: center.x, y1: center.y, x2: point.projected.x, y2: point.projected.y, class: `rag-vector ${point.type}` }));
       svg.appendChild(el("circle", { cx: point.projected.x, cy: point.projected.y, r: point.type ? 6.5 : 5, class: `rag-point ${point.type}` }));
-      const label = el("text", { x: point.projected.x + 9, y: point.projected.y - 9, class: `rag-point-label ${point.type}` });
+      const layout = labelLayout.get(point.name);
+      const labelX = point.projected.x + (layout.placeLeft ? -9 : 9);
+      if (Math.abs(layout.y - layout.desiredY) > 2) {
+        svg.appendChild(el("line", {
+          x1: point.projected.x,
+          y1: point.projected.y,
+          x2: labelX,
+          y2: layout.y - 3,
+          class: "rag-label-leader",
+        }));
+      }
+      const label = el("text", {
+        x: labelX,
+        y: layout.y,
+        "text-anchor": layout.placeLeft ? "end" : "start",
+        class: `rag-point-label ${point.type}`,
+      });
       label.textContent = point.name;
       svg.appendChild(label);
     });
