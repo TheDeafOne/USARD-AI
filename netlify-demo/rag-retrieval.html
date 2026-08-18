@@ -78,6 +78,12 @@
             <span class="query-arrow" aria-hidden="true">↑ same vocabulary, same coordinates</span>
           </div>
 
+          <div class="compare-passage-card retrieved-passage" aria-label="Most similar passage">
+            <span class="rank-badge">#1 most similar</span>
+            <p>“A solar eclipse happens when the <mark>moon blocks the sun</mark>.”</p>
+            <small>Passage 1 · cosine similarity 0.96</small>
+          </div>
+
           <section class="dense-bridge" aria-label="Sparse vectors become dense embeddings">
             <div class="dense-card sparse-card">
               <span class="card-label">Sparse vector</span>
@@ -135,7 +141,7 @@
             <div class="answer-card">
               <div>
                 <span class="card-label">Grounded answer</span>
-                <h3 id="retrieval-heading">The moon blocks the sun during a solar eclipse.</h3>
+                <h3 id="retrieval-heading" aria-live="polite" aria-atomic="true"></h3>
               </div>
               <span class="citation">[Passage 1]</span>
             </div>

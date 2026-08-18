@@ -212,6 +212,10 @@
 .retrieved-passage p { margin-bottom: 10px; font-size: 1rem; line-height: 1.45; }
 .retrieved-passage mark { color: var(--cyan); background: var(--cyan-soft); }
 .retrieved-passage small { color: var(--muted-2); }
+.compare-passage-card { position: absolute; z-index: 7; right: auto; bottom: 43px; left: 42px; width: 600px; padding: 15px 18px; opacity: 0; pointer-events: none; transform: translateY(18px); transition: opacity 350ms ease, transform 480ms cubic-bezier(.2,.8,.2,1); }
+.compare-passage-card .rank-badge { margin-bottom: 8px; }
+.compare-passage-card p { margin-bottom: 7px; font-size: .88rem; }
+.compare-passage-card small { font-size: .65rem; }
 .merge-arrows { display: grid; grid-template-rows: 1fr 1.18fr; gap: 12px; }
 .merge-arrows span { display: grid; place-items: center; color: var(--cyan); font-size: 1.55rem; }
 .prompt-card { display: grid; align-content: center; background: linear-gradient(145deg, rgb(23 30 45 / 88%), var(--surface-soft)); }
@@ -222,11 +226,115 @@
 .generation-arrow span { color: var(--cyan); font-size: 1.35rem; }
 .answer-card { display: flex; align-items: center; justify-content: space-between; gap: 25px; margin-top: 0; padding: 24px 28px; background: linear-gradient(110deg, rgb(77 231 255 / 13%), rgb(169 139 255 / 6%)); border: 1px solid rgb(77 231 255 / 40%); border-radius: 15px; }
 .answer-card .card-label { color: var(--cyan); }
-.answer-card h3 { max-width: 800px; margin: 0; font-size: 1.62rem; letter-spacing: -0.025em; }
-.citation { flex: 0 0 auto; padding: 8px 10px; color: var(--cyan); font-size: 0.7rem; font-weight: 800; background: var(--cyan-soft); border: 1px solid rgb(77 231 255 / 30%); border-radius: 7px; }
+.answer-card h3 { min-height: 1.2em; max-width: 800px; margin: 0; font-size: 1.62rem; letter-spacing: -0.025em; }
+.answer-card h3.is-typing::after { display: inline-block; width: 2px; height: .9em; margin-left: 4px; content: ""; vertical-align: -.04em; background: var(--cyan); box-shadow: 0 0 8px rgb(77 231 255 / 70%); animation: typing-caret 650ms steps(1, end) infinite; }
+.citation { flex: 0 0 auto; padding: 8px 10px; color: var(--cyan); font-size: 0.7rem; font-weight: 800; background: var(--cyan-soft); border: 1px solid rgb(77 231 255 / 30%); border-radius: 7px; transition: opacity 240ms ease, transform 320ms ease; }
 .rag-definition { margin: 17px 0 0; color: var(--muted); text-align: center; font-size: 0.83rem; }
 .rag-definition strong { color: var(--ink); }
 .rag-definition span { padding: 0 12px; color: var(--cyan); }
+
+@keyframes typing-caret {
+  0%, 48% { opacity: 1; }
+  49%, 100% { opacity: 0; }
+}
+
+/* Presentation hover guides: highlight explanatory regions without moving the scene. */
+@media (hover: hover) and (pointer: fine) {
+  :where(
+    .rag-narration > div,
+    .rag-narration > p,
+    .sentence-card,
+    .mystery-vector,
+    .matrix-panel,
+    .source-chip,
+    .query-card,
+    .dense-card,
+    .row-embedding,
+    .score-row,
+    .retrieval-question-card,
+    .retrieved-passage,
+    .prompt-card,
+    .answer-card,
+    .rag-definition
+  ) {
+    --guide-accent: 77 231 255;
+    --guide-radius: 14px;
+  }
+
+  :where(
+    .rag-narration > div,
+    .rag-narration > p,
+    .mystery-vector,
+    .source-chip,
+    .dense-card,
+    .row-embedding,
+    .score-row,
+    .retrieval-question-card,
+    .retrieved-passage,
+    .prompt-card,
+    .answer-card,
+    .rag-definition
+  ) { position: relative; }
+
+  :where(.query-card, .learned-card, .row-embedding, .retrieval-question-card, .prompt-card) {
+    --guide-accent: 169 139 255;
+  }
+
+  :where(.score-row) { --guide-radius: 9px; }
+  :where(.row-embedding) { --guide-radius: 11px; }
+  :where(.rag-narration > div, .rag-narration > p, .rag-definition) { --guide-radius: 10px; }
+
+  :where(
+    .rag-narration > div,
+    .rag-narration > p,
+    .sentence-card,
+    .mystery-vector,
+    .matrix-panel,
+    .source-chip,
+    .query-card,
+    .dense-card,
+    .row-embedding,
+    .score-row,
+    .retrieval-question-card,
+    .retrieved-passage,
+    .prompt-card,
+    .answer-card,
+    .rag-definition
+  )::after {
+    position: absolute;
+    z-index: 20;
+    inset: -4px;
+    content: "";
+    border: 1px solid rgb(var(--guide-accent) / 52%);
+    border-radius: var(--guide-radius);
+    box-shadow: 0 0 30px rgb(var(--guide-accent) / 15%), inset 0 0 22px rgb(var(--guide-accent) / 3%);
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(.992);
+    transition: opacity 150ms ease, transform 200ms ease;
+  }
+
+  :where(
+    .rag-narration > div,
+    .rag-narration > p,
+    .sentence-card,
+    .mystery-vector,
+    .matrix-panel,
+    .source-chip,
+    .query-card,
+    .dense-card,
+    .row-embedding,
+    .score-row,
+    .retrieval-question-card,
+    .retrieved-passage,
+    .prompt-card,
+    .answer-card,
+    .rag-definition
+  ):hover::after {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
 
 .rag-controls { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 18px 22px; border-top: 1px solid var(--border); }
 .rag-controls > :last-child { justify-self: end; }
@@ -268,8 +376,23 @@
 .rag-story[data-scene="4"].embedding-rows-revealed .row-embeddings-panel { opacity: 1; transform: none; }
 .rag-story[data-scene="4"].sphere-revealed .similarity-panel { opacity: 1; pointer-events: auto; transform: none; }
 .rag-story[data-scene="4"].sphere-points-complete .sphere-results { opacity: 1; transform: none; }
-.rag-story[data-scene="4"] .source-tray,
-.rag-story[data-scene="4"] .query-card { opacity: 0; pointer-events: none; }
+.rag-story[data-scene="4"] .source-tray { opacity: 0; pointer-events: none; }
+.rag-story[data-scene="4"] .query-card {
+  right: auto;
+  bottom: 43px;
+  left: 42px;
+  display: grid;
+  gap: 3px;
+  width: 600px;
+  padding: 14px 18px;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(-132px);
+}
+.rag-story[data-scene="4"] .query-card .card-label { margin: 0 0 3px; }
+.rag-story[data-scene="4"] .query-card p { font-size: .92rem; }
+.rag-story[data-scene="4"] .query-arrow { display: none; }
+.rag-story[data-scene="4"].sphere-points-complete .compare-passage-card { opacity: 1; pointer-events: auto; transform: none; }
 .rag-story[data-scene="5"] .matrix-panel,
 .rag-story[data-scene="5"] .dense-bridge,
 .rag-story[data-scene="5"] .row-embeddings-panel,
@@ -277,6 +400,27 @@
 .rag-story[data-scene="5"] .source-tray,
 .rag-story[data-scene="5"] .query-card { opacity: 0; pointer-events: none; transform: translateY(-30px) scale(.92); }
 .rag-story[data-scene="5"] .retrieval-panel { opacity: 1; pointer-events: auto; transform: none; }
+.rag-story[data-scene="5"] .answer-card { opacity: 0; pointer-events: none; transform: translateY(18px); transition: opacity 350ms ease, transform 500ms cubic-bezier(.2,.8,.2,1); }
+.rag-story[data-scene="5"] .citation { opacity: 0; transform: translateX(8px); }
+.rag-story[data-scene="5"].is-generating-answer .answer-card,
+.rag-story[data-scene="5"].answer-generated .answer-card { opacity: 1; pointer-events: auto; transform: none; }
+.rag-story[data-scene="5"].answer-generated .citation { opacity: 1; transform: none; }
+.rag-story[data-scene="5"].is-generating-answer .generation-arrow { color: var(--cyan); }
+.rag-story.is-card-morphing[data-scene="5"] .retrieval-panel { opacity: 1; transform: none; transition: none; }
+.rag-story.is-card-morphing .query-card,
+.rag-story.is-card-morphing .compare-passage-card,
+.rag-story.is-card-morphing .retrieval-question-card,
+.rag-story.is-card-morphing .retrieval-inputs > .retrieved-passage { visibility: hidden; }
+.merge-arrows, .prompt-card, .generation-arrow, .rag-definition { transition: opacity 320ms ease; }
+.rag-story.is-card-morphing .merge-arrows,
+.rag-story.is-card-morphing .prompt-card,
+.rag-story.is-card-morphing .generation-arrow,
+.rag-story.is-card-morphing .answer-card,
+.rag-story.is-card-morphing .rag-definition { opacity: 0; }
+
+.card-morph-clone.query-card { display: grid; gap: 3px; padding: 14px 18px; }
+.card-morph-clone.query-card .card-label { margin: 0 0 3px; }
+.card-morph-clone.query-card p { font-size: .92rem; }
 
 .token-ghost { position: fixed; z-index: 999; margin: 0; padding: 4px 7px; color: var(--background); font-size: 0.76rem; font-weight: 850; background: var(--cyan); border-radius: 6px; box-shadow: 0 0 20px rgb(77 231 255 / 65%); pointer-events: none; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }

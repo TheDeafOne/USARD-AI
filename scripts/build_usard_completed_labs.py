@@ -121,6 +121,8 @@ def complete_lab_2(nb):
         'K = 3  # TODO': 'K = 5',
         'MIN_OVERLAP = 1  # TODO': 'MIN_OVERLAP = 3',
         'USE_SIMILARITY_WEIGHTS = False  # TODO': 'USE_SIMILARITY_WEIGHTS = True',
+        'COLLABORATIVE_WEIGHT = .50  # TODO': 'COLLABORATIVE_WEIGHT = .60',
+        'CONTENT_WEIGHT = .50        # TODO': 'CONTENT_WEIGHT = .40',
     })
     insert_explanations(nb, [
         (
@@ -146,6 +148,10 @@ def complete_lab_2(nb):
         (
             "similarity-weighted prediction",
             "The three nearest behavioral neighbors contribute to the missing Mechanical score. Each neighbor’s outcome is weighted by similarity, making stronger analogues more influential. The result remains labeled `predicted` so it is not confused with direct Jefferson evidence.",
+        ),
+        (
+            "hybrid evidence",
+            "The hybrid gives 60% weight to normalized collaborative outcomes and 40% to content fit. The two source scores remain visible beside the final score, and the provenance column still distinguishes Jefferson observations from collaborative predictions.",
         ),
     ])
     add_completed_banner(nb)
