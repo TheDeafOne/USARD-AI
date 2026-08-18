@@ -167,7 +167,7 @@ def complete_lab_3(nb):
     insert_explanations(nb, [
         (
             "API execution control",
-            "The completed notebook keeps `RUN_API_CALLS = False` so opening or rerunning it never creates surprise API usage. Paste a temporary workshop key into the blank `OPENAI_API_KEY` variable, then switch the flag to `True` to run the three ungrounded and three grounded answers. Clear the variable and outputs before saving or sharing. The API call supplies no tools, so it cannot invoke web search.",
+            "The completed notebook keeps `RUN_API_CALLS = False` so opening or rerunning it never creates surprise API usage. Paste a temporary workshop key into the blank `OPENAI_API_KEY` variable, then switch the flag to `True` to run the three ungrounded and three grounded answers. Clear the variable and API-response outputs before saving or sharing. The API call supplies no tools, so it cannot invoke web search.",
         ),
         (
             "retrieval depth",

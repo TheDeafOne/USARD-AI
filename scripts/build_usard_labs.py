@@ -23,6 +23,68 @@ def C(code, tags=None):
     return cell
 
 
+def H(html, tags=None):
+    """Create a Colab form cell whose rendering code is collapsed by default."""
+    rendered = dedent(html).strip()
+    cell = nbf.v4.new_code_cell(
+        "#@title\n"
+        "from IPython.display import HTML, display\n"
+        f"display(HTML({rendered!r}))"
+    )
+    cell.outputs = [nbf.v4.new_output(
+        output_type="display_data",
+        data={"text/html": rendered},
+        metadata={},
+    )]
+    cell.metadata["jupyter"] = {"source_hidden": True, "outputs_hidden": False}
+    cell.metadata["cellView"] = "form"
+    cell.metadata["editable"] = False
+    cell.metadata["deletable"] = False
+    if tags:
+        cell.metadata["tags"] = tags
+    return cell
+
+
+def exercise_prompt(todo, question, hint):
+    return H(f'''
+    <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.18), rgba(59, 130, 246, 0.10)); border: 1px solid rgba(245, 158, 11, 0.55); border-left: 6px solid #f59e0b; border-radius: 8px; padding: 14px 16px; margin: 10px 0 12px;">
+      <p style="font-size: 1.05em; margin: 0 0 10px;"><strong>🛠️ TODO:</strong> {todo}</p>
+      <p style="margin: 0 0 10px;"><strong>🤔 Think:</strong> {question}</p>
+      <div style="background-color: rgba(59, 130, 246, 0.12); border-left: 4px solid #3b82f6; border-radius: 4px; padding: 9px 11px;">
+        <strong>💡 Hint:</strong> {hint}
+      </div>
+    </div>
+    ''', tags=["exercise-prompt"])
+
+
+def gate_self_checks(cells):
+    result = []
+
+    for cell in cells:
+        tags = cell.metadata.get("tags", [])
+        is_self_check = "self-check" in tags
+
+        if is_self_check:
+            result.append(H(r'''
+            <div style="background-color: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.45); border-left: 6px solid #10b981; border-radius: 8px; padding: 11px 14px; margin: 8px 0 10px;">
+              <p style="margin: 0; text-align: center;"><strong>⬇️ 🔒 Checking cell below:</strong> Only expand and run the cell directly below once you are ready to check your work. <strong>⬇️</strong></p>
+            </div>
+            ''', tags=["check-instructions"]))
+            if not cell.source.startswith("#@title\n"):
+                cell.source = f"#@title\n{cell.source}"
+            jupyter_metadata = cell.metadata.setdefault("jupyter", {})
+            jupyter_metadata["source_hidden"] = True
+            jupyter_metadata["outputs_hidden"] = False
+            # Google Colab uses `cellView: form` for the same default-collapsed behavior.
+            cell.metadata["cellView"] = "form"
+            if "collapsed-check" not in tags:
+                cell.metadata["tags"] = [*tags, "collapsed-check"]
+
+        result.append(cell)
+
+    return result
+
+
 def notebook(title, lab_number, minutes, cells):
     nb = nbf.v4.new_notebook()
     nb.cells = cells
@@ -566,7 +628,7 @@ def build_lab_2():
         **Estimated time:** 75 minutes (Lab A: 30; Lab B: 45)
         '''),
         M(AI_ASSISTANT),
-        M(r'''
+        H(r'''
         <div style="background-color: rgba(128, 128, 128, 0.12); border: 1px solid rgba(128, 128, 128, 0.28); border-radius: 6px; padding: 12px 16px; margin: 8px 0 12px;">
           <h2 style="margin: 0 0 8px;">0. Setup</h2>
           <p style="margin: 0 0 14px;">Run these setup blocks before beginning Lab A.</p>
@@ -575,7 +637,7 @@ def build_lab_2():
         </div>
         '''),
         C(COMMON_SETUP),
-        M(r'''
+        H(r'''
         <div style="background-color: rgba(128, 128, 128, 0.12); border: 1px solid rgba(128, 128, 128, 0.28); border-radius: 6px; padding: 12px 16px; margin: 8px 0 12px;">
           <h3 style="margin: 0 0 6px;">0.2 Import packages and configure the notebook</h3>
           <p style="margin: 0;">This block loads the Python packages used for data work, charts, scaling, and similarity, then sets reproducible display options.</p>
@@ -594,7 +656,7 @@ def build_lab_2():
         pd.set_option("display.max_columns", 30)
         pd.options.display.float_format = "{:,.3f}".format
         '''),
-        M(r'''
+        H(r'''
         <div style="background-color: rgba(128, 128, 128, 0.12); border: 1px solid rgba(128, 128, 128, 0.28); border-radius: 6px; padding: 12px 16px; margin: 8px 0 12px;">
           <h3 style="margin: 0 0 6px;">0.3 Read the prepared Lab 1 artifacts and Lab 2 profile tables</h3>
           <p>Lab 2 uses validated CSV artifacts produced by the Lab 1 pipeline. Prepared copies are supplied so this lab remains runnable even if a team has not completed Lab 1.</p>
@@ -646,6 +708,11 @@ def build_lab_2():
 
         Complete the four marked column choices. The cell runs even before it is correct; the checks tell you what to fix.
         '''),
+        exercise_prompt(
+            "Fill out the numerator and denominator columns for qualification rate and efficiency.",
+            "If we are trying to measure qualification rate and downstream efficiency, which table columns should we compare?",
+            "Look at the columns in the table above. A rate compares an outcome with the opportunity that produced it; efficiency compares a downstream outcome with the constrained resource used.",
+        ),
         C(r'''
         QUALIFIED_NUMERATOR = "appointments"   # TODO
         QUALIFIED_DENOMINATOR = "appointments" # TODO
@@ -685,6 +752,11 @@ def build_lab_2():
 
         Edit the three weights. The algorithm cannot decide the objective for us.
         '''),
+        exercise_prompt(
+            "Fill out the three opportunity-score weights.",
+            "How should the full 100% be divided among downstream efficiency, qualification rate, and school access?",
+            "Translate the stated 60%, 25%, and 15% priorities into decimals. The three weights should add up to 1.",
+        ),
         C(r'''
         scaler = MinMaxScaler()
         features = ["contracts_per_hour", "qualified_rate", "access_score"]
@@ -711,6 +783,11 @@ def build_lab_2():
 
         Scores do not override operations. Set the thresholds to **30 miles** and at least **4 historical events**. Event count is observable evidence volume—not a made-up “data quality” score.
         '''),
+        exercise_prompt(
+            "Fill out the maximum-distance and minimum-history thresholds.",
+            "What limits would keep the shortlist operationally feasible and supported by enough historical evidence?",
+            "Use the two limits stated directly above: 30 miles and at least 4 historical events.",
+        ),
         C(r'''
         MAX_DISTANCE = 999       # TODO
         MIN_HISTORICAL_EVENTS = 0 # TODO
@@ -738,6 +815,11 @@ def build_lab_2():
 
         Set `K = 5`. The winning school at the top of this list becomes the target for Lab B.
         '''),
+        exercise_prompt(
+            "Fill out the number of schools to return in the final shortlist.",
+            "How many feasible schools should the recruiter receive before choosing the top-ranked target?",
+            "The requested shortlist size is shown immediately above. Set <code>K</code> to that number.",
+        ),
         C(r'''
         K = 3  # TODO
         top_schools = eligible.nlargest(K, "opportunity_score").copy()
@@ -829,6 +911,11 @@ def build_lab_2():
 
         Cosine similarity should use only actions observed at both schools. Require at least **three** overlapping actions so a one- or two-action coincidence cannot dominate the neighborhood.
         '''),
+        exercise_prompt(
+            "Fill out the minimum number of overlapping actions required for similarity.",
+            "How much shared behavioral evidence should two schools have before we trust their similarity score?",
+            "The evidence rule above requires at least three actions observed at both schools.",
+        ),
         C(r'''
         MIN_OVERLAP = 1  # TODO
 
@@ -866,6 +953,11 @@ def build_lab_2():
 
         Turn on similarity weighting. A close neighbor should contribute more than a weak neighbor. To avoid diluting the signal with every weakly related school, use the three nearest behavioral neighbors.
         '''),
+        exercise_prompt(
+            "Turn on similarity weighting for the neighbor prediction.",
+            "Should a very similar school influence the prediction more than a weakly similar school?",
+            "Change the Boolean control so the weighted-average branch runs. The neighbor count is already set for you.",
+        ),
         C(r'''
         USE_SIMILARITY_WEIGHTS = False  # TODO
         NEIGHBOR_COUNT = 3
@@ -973,6 +1065,11 @@ def build_lab_2():
 
         Normalize the collaborative scores, then give them 60% of the final score and content fit 40%. Collaborative evidence receives more weight because it is tied directly to historical outcomes; content evidence helps explain program fit.
         '''),
+        exercise_prompt(
+            "Fill out the collaborative and content weights for the hybrid score.",
+            "How much influence should historical outcome evidence have compared with descriptive content fit?",
+            "Convert the stated 60% collaborative and 40% content policy into decimals. The weights must add up to 1.",
+        ),
         C(r'''
         COLLABORATIVE_WEIGHT = .50  # TODO
         CONTENT_WEIGHT = .50        # TODO
@@ -1019,6 +1116,7 @@ def build_lab_2():
         **Transition:** We now have a WHERE and a WHAT. The recruiter still needs authoritative information before acting. That is the job of RAG.
         '''),
     ]
+    cells = gate_self_checks(cells)
     return notebook("Precision Recruiting with Recommender Systems", 2, 75, cells)
 
 
@@ -1355,7 +1453,7 @@ def build_lab_3():
         M(r'''
         > **Classroom safety:** Every school, rule, benefit description, and program detail in this lab is fictional workshop content. Do not treat it as current policy or paste operational, personal, controlled, or sensitive information into an external model without approval.
         '''),
-        M(r'''
+        H(r'''
         <div style="background-color: rgba(128, 128, 128, 0.12); border: 1px solid rgba(128, 128, 128, 0.28); border-radius: 6px; padding: 12px 16px; margin: 8px 0 12px;">
           <h2 style="margin: 0 0 8px;">0. Setup</h2>
           <p style="margin: 0 0 14px;">Run these setup blocks before loading the approved document collection.</p>
@@ -1364,14 +1462,19 @@ def build_lab_3():
         </div>
         '''),
         C(COMMON_SETUP),
-        M(r'''
+        H(r'''
         <div style="background-color: rgba(128, 128, 128, 0.12); border: 1px solid rgba(128, 128, 128, 0.28); border-radius: 6px; padding: 12px 16px; margin: 8px 0 12px;">
           <h3 style="margin: 0 0 6px;">0.2 Install or import packages and configure API access</h3>
-          <p>Paste a temporary workshop key into <code>OPENAI_API_KEY</code>, then set <code>RUN_API_CALLS = True</code> when you are ready. Clear the key and cell outputs before saving or sharing the notebook.</p>
+          <p>Paste a temporary workshop key into <code>OPENAI_API_KEY</code>, then set <code>RUN_API_CALLS = True</code> when you are ready. Clear the key and any API-response outputs before saving or sharing the notebook.</p>
           <p>The notebook calls GPT-5.4 mini through the OpenAI Responses API. It passes <strong>no tools</strong>, so the model cannot invoke web search or file search. Retrieval happens locally in Python.</p>
           <p style="margin-bottom: 0;">Official references: <a href="https://developers.openai.com/api/docs/models/gpt-5.4-mini">GPT-5.4 mini</a> · <a href="https://developers.openai.com/api/docs/guides/text">Text generation with the Responses API</a></p>
         </div>
         '''),
+        exercise_prompt(
+            "Configure optional live API access for the workshop.",
+            "What needs to be ready before you enable live model calls, and how will you avoid saving a key in the notebook?",
+            "If you are running live calls, install <code>openai</code>, paste the temporary workshop key, and set <code>RUN_API_CALLS</code> to <code>True</code>. Clear the key and API-response outputs before sharing. Leave offline preview mode on if you are not making live calls.",
+        ),
         C(r'''
         # Uncomment once if needed:
         # %pip install -q openai
@@ -1387,7 +1490,7 @@ def build_lab_3():
         OPENAI_API_KEY = ""  # Paste the temporary workshop key between these quotes.
         RUN_API_CALLS = False  # Change to True when the key and package are ready.
         ''', tags=["exercise"]),
-        M(r'''
+        H(r'''
         <div style="background-color: rgba(128, 128, 128, 0.12); border: 1px solid rgba(128, 128, 128, 0.28); border-radius: 6px; padding: 12px 16px; margin: 8px 0 12px;">
           <h3 style="margin: 0 0 6px;">0.3 Initialize the API client and model-call helper</h3>
           <p style="margin: 0;">This block creates the OpenAI client only when live calls are enabled and defines the shared <code>call_model()</code> function used later in the lab.</p>
@@ -1516,6 +1619,10 @@ def build_lab_3():
         ## 3. Three questions—without local sources
 
         These questions ask for facts the model cannot know from the prompt alone. A reasonable ungrounded answer may guess, hedge, or admit uncertainty. None of those behaviors supplies local evidence.
+
+        1. **Hosting requirements:** For a Mechanical Careers Demo at Jefferson High, when can the event be held, and what visitor, room, network, capacity, and student-privacy constraints apply?
+        2. **Relevant technical content:** Which Mechanical and technical-career topics would best connect with Jefferson High's current programs and classroom interests?
+        3. **Education benefits:** What can a recruiter accurately say to Jefferson High students about education benefits?
         '''),
         C(r'''
         QUESTIONS = [
@@ -1575,6 +1682,11 @@ def build_lab_3():
 
         TF-IDF and cosine similarity keep retrieval transparent. Each question has a concise search query containing its key concepts; the model is not involved in selecting the evidence.
         '''),
+        exercise_prompt(
+            "Fill out the number of document chunks retrieved for each question.",
+            "What retrieval depth gives each answer enough evidence without flooding the prompt with loosely related text?",
+            "Retrieve three chunks per question. Look for the <code>TOP_K</code> variable in the next cell.",
+        ),
         C(r'''
         vectorizer = TfidfVectorizer(stop_words="english", ngram_range=(1, 2))
         chunk_matrix = vectorizer.fit_transform(
@@ -1634,6 +1746,11 @@ def build_lab_3():
 
         Turn on both controls. The prompt should expose the retrieved chunks, require source-ID citations, and prevent unsupported local details from being filled in by guesswork.
         '''),
+        exercise_prompt(
+            "Enable source IDs and the unsupported-information refusal rule.",
+            "Which controls make the grounded answer auditable and prevent the model from inventing missing local details?",
+            "Set both Boolean controls in the next cell to <code>True</code>: one exposes source IDs and the other requires the answer to acknowledge unsupported information.",
+        ),
         C(r'''
         INCLUDE_SOURCE_IDS = False  # TODO
         REFUSE_UNSUPPORTED = False  # TODO
@@ -1764,6 +1881,7 @@ def build_lab_3():
         **Next:** Lab 4 can coordinate the recommendation and grounded answers inside a bounded workflow.
         '''),
     ]
+    cells = gate_self_checks(cells)
     return notebook("Retrieval-Augmented Generation", 3, 60, cells)
 
 
