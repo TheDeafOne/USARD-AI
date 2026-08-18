@@ -634,7 +634,9 @@ def build_lab_3():
         M(r'''
         ## 0. Setup
 
-        If the OpenAI package is missing, uncomment and run the install line once. Set `OPENAI_API_KEY` in your environment; do not paste keys into notebooks you will save or share.
+        If the OpenAI package is missing, uncomment and run the install line once. For this classroom exercise, paste a workshop key into the `OPENAI_API_KEY` variable in the next cell.
+
+        **Before saving, submitting, or sharing the notebook, replace the key with an empty string and clear cell outputs.** Use a temporary project key with an appropriate spending limit. For production work, use an environment variable or approved secret manager instead of storing a key in code.
 
         Official references: [GPT-5.4 mini](https://developers.openai.com/api/docs/models/gpt-5.4-mini) · [Text generation with the Responses API](https://developers.openai.com/api/docs/guides/text)
         '''),
@@ -642,7 +644,6 @@ def build_lab_3():
         # Uncomment once if needed:
         # %pip install -q openai
 
-        import os
         import re
         import numpy as np
         import pandas as pd
@@ -650,6 +651,7 @@ def build_lab_3():
         from sklearn.metrics.pairwise import cosine_similarity
 
         MODEL = "gpt-5.4-mini"
+        OPENAI_API_KEY = ""  # Paste the workshop API key between these quotes.
         RUN_API_CALLS = False  # Change to True when your API key and package are ready.
         ''', tags=["exercise"]),
         C(r'''
@@ -658,9 +660,9 @@ def build_lab_3():
                 from openai import OpenAI
             except ImportError as exc:
                 raise ImportError("Install the openai package with the setup cell first.") from exc
-            if not os.getenv("OPENAI_API_KEY"):
-                raise EnvironmentError("Set OPENAI_API_KEY in your environment, then restart the kernel.")
-            client = OpenAI()
+            if not OPENAI_API_KEY.strip():
+                raise ValueError("Paste the workshop key into OPENAI_API_KEY, then rerun this cell.")
+            client = OpenAI(api_key=OPENAI_API_KEY.strip())
             print(f"Ready to call {MODEL}")
         else:
             client = None

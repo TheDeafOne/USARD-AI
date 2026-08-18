@@ -11,9 +11,10 @@ The RAG notebook keeps `RUN_API_CALLS = False` by default. This prevents acciden
 For a live demonstration:
 
 1. Revoke any key that has been pasted into chat or another shared surface.
-2. Create a replacement project key.
-3. Store it in the `OPENAI_API_KEY` environment variable or an approved secret manager.
-4. Restart Jupyter and change `RUN_API_CALLS = True`.
+2. Create a temporary replacement project key with an appropriate spending limit.
+3. Paste it into the blank `OPENAI_API_KEY` variable in Lab 3.
+4. Change `RUN_API_CALLS = True`.
+5. Clear the variable and cell outputs before saving or sharing the notebook.
 
 No API key is stored in these files.
 
