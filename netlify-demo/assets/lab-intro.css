@@ -38,6 +38,26 @@
 
 .intro-hero .lede { max-width: 830px; margin-bottom: 0; }
 
+.next-notebook-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 24px;
+  padding: 10px 14px;
+  color: var(--background);
+  font-size: 0.78rem;
+  font-weight: 850;
+  text-decoration: none;
+  background: var(--cyan);
+  border: 1px solid var(--cyan);
+  border-radius: 9px;
+}
+
+.next-notebook-link:hover,
+.next-notebook-link:focus-visible { filter: brightness(1.1); outline: 2px solid var(--cyan); outline-offset: 3px; }
+
+.next-notebook-link span { font-size: 1rem; }
+
 .mission-card {
   position: relative;
   min-height: 200px;
