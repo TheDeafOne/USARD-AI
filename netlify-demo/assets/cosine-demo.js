@@ -1,295 +1,290 @@
 (() => {
   "use strict";
 
-  const steps = [...document.querySelectorAll("[data-step]")];
-  const stepButtons = [...document.querySelectorAll("[data-step-button]")];
-  const previousButton = document.getElementById("previous-step");
-  const nextButton = document.getElementById("next-step");
-  const status = document.getElementById("step-status");
-  let currentStep = 0;
+  const story = document.getElementById("cosine-story");
+  const sceneButtons = [...document.querySelectorAll("[data-scene-button]")];
+  const panels = [...document.querySelectorAll("[data-concept-panel]")];
+  const backButton = document.getElementById("cosine-back");
+  const nextButton = document.getElementById("cosine-next");
+  const sceneLabel = document.getElementById("scene-label");
+  const sceneTitle = document.getElementById("scene-title");
+  const sceneCopy = document.getElementById("scene-copy");
+  const status = document.getElementById("scene-status");
+  const progress = document.getElementById("scene-progress");
+  const tableCaption = document.getElementById("table-caption");
+  const captionSymbol = document.querySelector(".caption-symbol");
+
+  const scenes = [
+    {
+      label: "Step 1 of 5 / Read the evidence",
+      title: "A row is a pattern of outcomes.",
+      copy: "Each value is follow-up completions per staff-hour for one library program. Harbor has never run a Maker Lab, so its blank is unknown—not zero.",
+      caption: "<strong>Missing means unobserved.</strong> Replacing the blank with zero would turn ‘we do not know’ into ‘it failed.’",
+      symbol: "—",
+      next: "Make the vector",
+    },
+    {
+      label: "Step 2 of 5 / Represent the row",
+      title: "Numbers give the branch a direction.",
+      copy: "For a three-dimensional teaching view, use Resume, Coding, and Robotics as axes. Harbor’s three values become the coordinates of one arrow.",
+      caption: "<strong>Same row, new representation.</strong> The highlighted cells supply the three coordinates shown in the plot.",
+      symbol: "→",
+      next: "Normalize it",
+    },
+    {
+      label: "Step 3 of 5 / Normalize",
+      title: "Direction matters more than magnitude.",
+      copy: "Move every branch vector onto the unit sphere. Nearby directions represent similar program patterns even when overall effectiveness differs.",
+      caption: "<strong>The visible sphere uses three features for intuition.</strong> The final neighbor score uses all five programs observed at Harbor.",
+      symbol: "θ",
+      next: "Find neighbors",
+    },
+    {
+      label: "Step 4 of 5 / Compare",
+      title: "The closest directions become neighbors.",
+      copy: "Cosine similarity measures the angle between Harbor and every other branch across their five shared observations. The three strongest matches carry the estimate.",
+      caption: "<strong>Neighborhood selected.</strong> Riverside, Northside, and Maple most closely match Harbor’s observed outcome pattern.",
+      symbol: "≃",
+      next: "Estimate Maker Lab",
+    },
+    {
+      label: "Step 5 of 5 / Fill the gap",
+      title: "Use nearby evidence to estimate the unknown.",
+      copy: "Weight each neighbor’s observed Maker Lab outcome by its similarity to Harbor. The result is traceable, but it remains a prediction until Harbor runs a pilot.",
+      caption: "<strong>Provenance stays visible.</strong> The 0.777 cell is predicted from three neighbors; it is not an observed Harbor outcome.",
+      symbol: "≈",
+      next: "Walkthrough complete",
+    },
+  ];
 
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
-  const hashStep = Number.parseInt(window.location.hash.replace("#step-", ""), 10) - 1;
-  if (Number.isInteger(hashStep)) currentStep = clamp(hashStep, 0, steps.length - 1);
+  let currentScene = 0;
 
-  function showStep(index, moveFocus = false) {
-    currentStep = clamp(index, 0, steps.length - 1);
-    steps.forEach((step, stepIndex) => {
-      const active = stepIndex === currentStep;
-      step.hidden = !active;
-      step.classList.toggle("is-active", active);
+  function showScene(index) {
+    currentScene = clamp(index, 0, scenes.length - 1);
+    const scene = scenes[currentScene];
+    story.dataset.scene = String(currentScene);
+    panels.forEach((panel, panelIndex) => {
+      const isActive = panelIndex === currentScene;
+      panel.classList.toggle("is-active", isActive);
+      panel.hidden = !isActive;
+      panel.setAttribute("aria-hidden", String(!isActive));
+      panel.inert = !isActive;
     });
-    stepButtons.forEach((button, buttonIndex) => {
-      button.setAttribute("aria-selected", String(buttonIndex === currentStep));
-    });
-    stepButtons[currentStep].parentElement.scrollLeft = 0;
-    previousButton.disabled = currentStep === 0;
-    nextButton.disabled = currentStep === steps.length - 1;
-    nextButton.innerHTML = currentStep === steps.length - 1
-      ? "Complete <span aria-hidden=\"true\">✓</span>"
-      : "Next <span aria-hidden=\"true\">→</span>";
-    status.textContent = `${currentStep + 1} / ${steps.length}`;
-    window.history.replaceState(null, "", `#step-${currentStep + 1}`);
-    if (moveFocus) steps[currentStep].querySelector("h2")?.focus({ preventScroll: true });
-    if (currentStep === 1) renderVectorPlot();
-    if (currentStep === 2) renderSpherePlot();
+    sceneButtons.forEach((button, buttonIndex) => button.setAttribute("aria-selected", String(buttonIndex === currentScene)));
+    sceneLabel.textContent = scene.label;
+    sceneTitle.textContent = scene.title;
+    sceneCopy.textContent = scene.copy;
+    tableCaption.innerHTML = scene.caption;
+    captionSymbol.textContent = scene.symbol;
+    status.textContent = `${currentScene + 1} / ${scenes.length}`;
+    progress.style.width = `${((currentScene + 1) / scenes.length) * 100}%`;
+    backButton.disabled = currentScene === 0;
+    nextButton.disabled = false;
+    nextButton.innerHTML = currentScene === scenes.length - 1
+      ? "Next: Content filtering <span aria-hidden=\"true\">→</span>"
+      : `${scene.next} <span aria-hidden="true">→</span>`;
+    window.history.replaceState(null, "", `#scene-${currentScene + 1}`);
+    if (currentScene === 1) renderVectorPlot();
+    if (currentScene === 2) renderSpherePlot();
   }
 
-  stepButtons.forEach((button, index) => button.addEventListener("click", () => showStep(index)));
-  previousButton.addEventListener("click", () => showStep(currentStep - 1));
+  sceneButtons.forEach((button, index) => button.addEventListener("click", () => showScene(index)));
+  backButton.addEventListener("click", () => showScene(currentScene - 1));
   nextButton.addEventListener("click", () => {
-    if (currentStep < steps.length - 1) showStep(currentStep + 1);
+    if (currentScene === scenes.length - 1) {
+      window.location.href = "content-filtering.html";
+      return;
+    }
+    showScene(currentScene + 1);
   });
-
   document.addEventListener("keydown", (event) => {
-    if (event.target.matches("input, textarea, select")) return;
-    if (event.key === "ArrowRight") showStep(currentStep + 1);
-    if (event.key === "ArrowLeft") showStep(currentStep - 1);
+    if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey) return;
+    if (event.target.matches("input, textarea, select, button, [contenteditable]")) return;
+    if (event.key === "ArrowRight" || event.key === "PageDown") {
+      event.preventDefault();
+      showScene(currentScene + 1);
+    } else if (event.key === "ArrowLeft" || event.key === "PageUp") {
+      event.preventDefault();
+      showScene(currentScene - 1);
+    }
   });
 
-  const svgNamespace = "http://www.w3.org/2000/svg";
-  const createSvg = (name, attributes = {}) => {
-    const element = document.createElementNS(svgNamespace, name);
+  const ns = "http://www.w3.org/2000/svg";
+  const svgElement = (name, attributes = {}) => {
+    const element = document.createElementNS(ns, name);
     Object.entries(attributes).forEach(([key, value]) => element.setAttribute(key, value));
     return element;
   };
-
-  const normalize = ([x, y, z]) => {
-    const length = Math.hypot(x, y, z);
-    return [x / length, y / length, z / length];
+  const addText = (svg, value, x, y, className, anchor = "start") => {
+    const text = svgElement("text", { x, y, class: className, "text-anchor": anchor });
+    text.textContent = value;
+    svg.appendChild(text);
+    return text;
+  };
+  const normalize = (vector) => {
+    const length = Math.hypot(...vector);
+    return vector.map((value) => value / length);
   };
 
-  const rotate = ([x, y, z], yaw, pitch) => {
-    const x1 = x * Math.cos(yaw) - z * Math.sin(yaw);
-    const z1 = x * Math.sin(yaw) + z * Math.cos(yaw);
-    const y1 = y * Math.cos(pitch) - z1 * Math.sin(pitch);
-    const z2 = y * Math.sin(pitch) + z1 * Math.cos(pitch);
+  let yaw = -0.62;
+  let pitch = 0.32;
+  const rotate = ([x, y, z], useYaw = yaw, usePitch = pitch) => {
+    const x1 = x * Math.cos(useYaw) - z * Math.sin(useYaw);
+    const z1 = x * Math.sin(useYaw) + z * Math.cos(useYaw);
+    const y1 = y * Math.cos(usePitch) - z1 * Math.sin(usePitch);
+    const z2 = y * Math.sin(usePitch) + z1 * Math.cos(usePitch);
     return [x1, y1, z2];
   };
-
-  const project = (point, yaw, pitch, centerX = 360, centerY = 235, scale = 175) => {
-    const [x, y, depth] = rotate(point, yaw, pitch);
+  const project = (point, centerX = 260, centerY = 198, scale = 142, useYaw = yaw, usePitch = pitch) => {
+    const [x, y, depth] = rotate(point, useYaw, usePitch);
     return { x: centerX + x * scale, y: centerY - y * scale, depth };
   };
-
-  const pathFromPoints = (points, yaw, pitch, centerY = 235, scale = 175) => points.map((point, index) => {
-    const projected = project(point, yaw, pitch, 360, centerY, scale);
-    return `${index ? "L" : "M"}${projected.x.toFixed(2)},${projected.y.toFixed(2)}`;
-  }).join(" ");
-
-  function addText(svg, text, x, y, className, anchor = "start") {
-    const label = createSvg("text", { x, y, class: className, "text-anchor": anchor });
-    label.textContent = text;
-    svg.appendChild(label);
-    return label;
-  }
 
   function renderVectorPlot() {
     const svg = document.getElementById("vector-plot");
     if (!svg) return;
     svg.replaceChildren();
-    const yaw = -0.72;
-    const pitch = 0.46;
-    const center = project([0, 0, 0], yaw, pitch, 330, 330, 255);
-    const axisData = [
-      { point: [1, 0, 0], label: "Cyber" },
-      { point: [0, 1, 0], label: "STEM" },
-      { point: [0, 0, 1], label: "Recruiting table" },
+    const plotYaw = -0.72;
+    const plotPitch = 0.46;
+    const origin = project([0, 0, 0], 235, 295, 205, plotYaw, plotPitch);
+    const axes = [
+      { vector: [1, 0, 0], label: "Resume" },
+      { vector: [0, 1, 0], label: "Coding" },
+      { vector: [0, 0, 1], label: "Robotics" },
     ];
-
-    for (let gridValue = 0.25; gridValue <= 1; gridValue += 0.25) {
-      axisData.forEach(({ point }) => {
-        const gridPoint = point.map((value) => value * gridValue);
-        const end = project(gridPoint, yaw, pitch, 330, 330, 255);
-        svg.appendChild(createSvg("line", { x1: center.x, y1: center.y, x2: end.x, y2: end.y, class: "grid-line" }));
+    for (let step = .25; step <= 1; step += .25) {
+      axes.forEach(({ vector }) => {
+        const endpoint = project(vector.map((value) => value * step), 235, 295, 205, plotYaw, plotPitch);
+        svg.appendChild(svgElement("line", { x1: origin.x, y1: origin.y, x2: endpoint.x, y2: endpoint.y, class: "cosine-grid-line" }));
       });
     }
-
-    axisData.forEach(({ point, label }) => {
-      const end = project(point, yaw, pitch, 330, 330, 255);
-      svg.appendChild(createSvg("line", { x1: center.x, y1: center.y, x2: end.x, y2: end.y, class: "axis-line" }));
-      addText(svg, label, end.x, end.y - 10, "axis-label", "middle");
+    axes.forEach(({ vector, label }) => {
+      const endpoint = project(vector, 235, 295, 205, plotYaw, plotPitch);
+      svg.appendChild(svgElement("line", { x1: origin.x, y1: origin.y, x2: endpoint.x, y2: endpoint.y, class: "cosine-axis-line" }));
+      addText(svg, label, endpoint.x, endpoint.y - 9, "cosine-axis-label", "middle");
     });
-
-    const vectors = [
-      { name: "Jefferson", values: [0.767, 0.765, 0.429], className: "jefferson" },
-    ];
-    vectors.forEach((vector) => {
-      const scaled = vector.values.map((value) => value / 0.85);
-      const end = project(scaled, yaw, pitch, 330, 330, 255);
-      svg.appendChild(createSvg("line", { x1: center.x, y1: center.y, x2: end.x, y2: end.y, class: `vector-line ${vector.className}` }));
-      svg.appendChild(createSvg("circle", { cx: end.x, cy: end.y, r: 6, class: `vector-point ${vector.className}`, fill: vector.className === "jefferson" ? "var(--cyan)" : "var(--violet)" }));
-      addText(svg, vector.name, end.x + 10, end.y - 11, "point-label");
-    });
-    svg.appendChild(createSvg("circle", { cx: center.x, cy: center.y, r: 4, fill: "var(--ink)" }));
+    const harbor = [.74 / .85, .81 / .85, .76 / .85];
+    const endpoint = project(harbor, 235, 295, 205, plotYaw, plotPitch);
+    svg.appendChild(svgElement("line", { x1: origin.x, y1: origin.y, x2: endpoint.x, y2: endpoint.y, class: "cosine-vector-line" }));
+    svg.appendChild(svgElement("circle", { cx: endpoint.x, cy: endpoint.y, r: 6, class: "cosine-vector-point" }));
+    addText(svg, "Harbor", endpoint.x + 10, endpoint.y - 10, "cosine-point-label");
+    svg.appendChild(svgElement("circle", { cx: origin.x, cy: origin.y, r: 3.5, fill: "var(--ink)" }));
   }
 
-  const schools = [
-    { name: "Jefferson High", short: "Jefferson", values: [0.767, 0.765, 0.429], similarity: 1, target: true },
-    { name: "Washington High", short: "Washington", values: [0.652, 0.667, 0.333], similarity: 0.9993, neighbor: true },
-    { name: "Madison High", short: "Madison", values: [0.333, 0.560, 0.222], similarity: 0.9638, neighbor: true },
-    { name: "North County Tech", short: "North County", values: [0.542, 0.476, 0.125], similarity: 0.9628, neighbor: true },
-    { name: "Lincoln High", short: "Lincoln", values: [0.194, 0.364, 0.111], similarity: 0.9458 },
-    { name: "Redstone High", short: "Redstone", values: [0.290, 0.778, 0.188], similarity: 0.8745 },
-    { name: "Monroe High", short: "Monroe", values: [0.913, 0.208, 0.000], similarity: 0.7988 },
-    { name: "Wilson High", short: "Wilson", values: [0.857, 0.200, 0.045], similarity: 0.7498 },
-    { name: "Pioneer High", short: "Pioneer", values: [0.154, 0.150, 0.353], similarity: 0.6984 },
-    { name: "Westfield High", short: "Westfield", values: [0.227, 0.077, 0.800], similarity: 0.6098 },
-    { name: "Franklin High", short: "Franklin", values: [0.077, 0.138, 0.267], similarity: 0.5759 },
-    { name: "Horizon High", short: "Horizon", values: [0.000, 0.182, 0.118], similarity: 0.4331 },
-    { name: "Hamilton High", short: "Hamilton", values: [0.056, 0.045, 0.143], similarity: 0.4187 },
-    { name: "Summit High", short: "Summit", values: [0.000, 0.158, 0.111], similarity: 0.3944 },
-  ].map((school) => ({ ...school, point: normalize(school.values) }));
+  const libraries = [
+    { name: "Harbor", vector: [.74, .81, .76], similarity: 1, type: "target" },
+    { name: "Riverside", vector: [.69, .78, .71], similarity: .9999, type: "neighbor" },
+    { name: "Northside", vector: [.55, .73, .75], similarity: .9899, type: "neighbor" },
+    { name: "Maple", vector: [.80, .67, .59], similarity: .9829, type: "neighbor" },
+    { name: "Cedar", vector: [.26, .65, .72], similarity: .9454, type: "" },
+    { name: "Downtown", vector: [.88, .42, .38], similarity: .9229, type: "" },
+    { name: "Lakeside", vector: [.32, .41, .29], similarity: .8613, type: "" },
+    { name: "Hillcrest", vector: [.49, .30, .25], similarity: .8375, type: "" },
+  ].map((library) => ({ ...library, point: normalize(library.vector) }));
 
-  let sphereYaw = -0.65;
-  let spherePitch = 0.35;
-
-  function sphereLine(latitude, longitudeMode = false) {
+  const spherePath = (latitude, longitudeMode = false) => {
     const points = [];
     for (let index = 0; index <= 72; index += 1) {
       const angle = (index / 72) * Math.PI * 2;
-      if (longitudeMode) {
-        points.push([Math.cos(angle) * Math.cos(latitude), Math.sin(angle), Math.cos(angle) * Math.sin(latitude)]);
-      } else {
-        points.push([Math.cos(angle) * Math.cos(latitude), Math.sin(latitude), Math.sin(angle) * Math.cos(latitude)]);
-      }
+      const point = longitudeMode
+        ? [Math.cos(angle) * Math.cos(latitude), Math.sin(angle), Math.cos(angle) * Math.sin(latitude)]
+        : [Math.cos(latitude) * Math.cos(angle), Math.sin(latitude), Math.cos(latitude) * Math.sin(angle)];
+      const projected = project(point);
+      points.push(`${index ? "L" : "M"}${projected.x.toFixed(1)},${projected.y.toFixed(1)}`);
     }
-    return points;
-  }
-
-  function greatCircleArc(a, b) {
-    const dot = clamp(a[0] * b[0] + a[1] * b[1] + a[2] * b[2], -1, 1);
-    const angle = Math.acos(dot);
-    if (angle < 0.0001) return [a, b];
+    return points.join(" ");
+  };
+  const arcPath = (first, second, radius = .34) => {
     const points = [];
-    for (let index = 0; index <= 32; index += 1) {
-      const t = index / 32;
-      const weightA = Math.sin((1 - t) * angle) / Math.sin(angle);
-      const weightB = Math.sin(t * angle) / Math.sin(angle);
-      points.push([
-        weightA * a[0] + weightB * b[0],
-        weightA * a[1] + weightB * b[1],
-        weightA * a[2] + weightB * b[2],
-      ]);
+    for (let index = 0; index <= 30; index += 1) {
+      const progressValue = index / 30;
+      const mixed = first.map((value, axis) => value * (1 - progressValue) + second[axis] * progressValue);
+      const length = Math.hypot(...mixed);
+      const projected = project(mixed.map((value) => (value / length) * radius));
+      points.push(`${index ? "L" : "M"}${projected.x.toFixed(1)},${projected.y.toFixed(1)}`);
     }
-    return points;
-  }
+    return points.join(" ");
+  };
 
   function renderSpherePlot() {
     const svg = document.getElementById("sphere-plot");
     if (!svg) return;
     svg.replaceChildren();
-
-    const definitions = createSvg("defs");
-    const gradient = createSvg("radialGradient", { id: "sphereGlow", cx: "35%", cy: "25%", r: "70%" });
-    gradient.appendChild(createSvg("stop", { offset: "0%", "stop-color": "#253148", "stop-opacity": "0.48" }));
-    gradient.appendChild(createSvg("stop", { offset: "100%", "stop-color": "#0b101a", "stop-opacity": "0.12" }));
+    const definitions = svgElement("defs");
+    const gradient = svgElement("radialGradient", { id: "cosineSphereGlow", cx: "35%", cy: "25%", r: "72%" });
+    gradient.append(
+      svgElement("stop", { offset: "0%", "stop-color": "#26334d", "stop-opacity": ".55" }),
+      svgElement("stop", { offset: "100%", "stop-color": "#0b101a", "stop-opacity": ".12" }),
+    );
     definitions.appendChild(gradient);
     svg.appendChild(definitions);
+    svg.appendChild(svgElement("circle", { cx: 260, cy: 198, r: 142, class: "cosine-sphere-outline" }));
+    [-Math.PI / 3, -Math.PI / 6, 0, Math.PI / 6, Math.PI / 3].forEach((angle) => svg.appendChild(svgElement("path", { d: spherePath(angle), class: "cosine-sphere-grid" })));
+    [0, Math.PI / 3, 2 * Math.PI / 3].forEach((angle) => svg.appendChild(svgElement("path", { d: spherePath(angle, true), class: "cosine-sphere-grid" })));
+    svg.appendChild(svgElement("path", { d: arcPath(libraries[0].point, libraries[1].point), class: "cosine-angle" }));
 
-    svg.appendChild(createSvg("circle", { cx: 360, cy: 245, r: 178, class: "sphere-outline" }));
-    [-Math.PI / 3, -Math.PI / 6, 0, Math.PI / 6, Math.PI / 3].forEach((latitude) => {
-      svg.appendChild(createSvg("path", { d: pathFromPoints(sphereLine(latitude), sphereYaw, spherePitch, 245, 178), class: "sphere-grid" }));
-    });
-    [0, Math.PI / 3, 2 * Math.PI / 3].forEach((longitude) => {
-      svg.appendChild(createSvg("path", { d: pathFromPoints(sphereLine(longitude, true), sphereYaw, spherePitch, 245, 178), class: "sphere-grid" }));
-    });
-
-    const axes = [
-      { point: [1, 0, 0], label: "Cyber" },
-      { point: [0, 1, 0], label: "STEM" },
-      { point: [0, 0, 1], label: "Table" },
-    ];
-    axes.forEach(({ point, label }) => {
-      const start = project([0, 0, 0], sphereYaw, spherePitch, 360, 245, 178);
-      const end = project(point, sphereYaw, spherePitch, 360, 245, 178);
-      svg.appendChild(createSvg("line", { x1: start.x, y1: start.y, x2: end.x, y2: end.y, class: "sphere-axis" }));
-      addText(svg, label, end.x, end.y - 8, "axis-label", "middle");
-    });
-
-    const target = schools.find((school) => school.target);
-    const washington = schools.find((school) => school.name === "Washington High");
-    svg.appendChild(createSvg("path", {
-      d: pathFromPoints(greatCircleArc(target.point, washington.point), sphereYaw, spherePitch, 245, 178),
-      class: "angle-arc",
-    }));
-
-    const projectedSchools = schools.map((school) => ({
-      ...school,
-      projected: project(school.point, sphereYaw, spherePitch, 360, 245, 178),
-    })).sort((a, b) => a.projected.depth - b.projected.depth);
-
-    projectedSchools.forEach((school) => {
-      const center = project([0, 0, 0], sphereYaw, spherePitch, 360, 245, 178);
-      const group = createSvg("g", { class: "school-group" });
-      group.appendChild(createSvg("line", {
-        x1: center.x, y1: center.y, x2: school.projected.x, y2: school.projected.y,
-        class: `school-vector${school.target ? " is-target" : ""}`,
-      }));
-      const pointClass = ["school-point", school.target ? "target" : "", school.neighbor ? "neighbor" : ""].filter(Boolean).join(" ");
-      const circle = createSvg("circle", { cx: school.projected.x, cy: school.projected.y, r: school.target ? 7 : 5, class: pointClass });
-      const title = createSvg("title");
-      title.textContent = `${school.name}: ${school.target ? "target" : `${school.similarity.toFixed(4)} similarity`}`;
+    const center = project([0, 0, 0]);
+    const projected = libraries.map((library) => ({ ...library, projected: project(library.point) })).sort((a, b) => a.projected.depth - b.projected.depth);
+    projected.forEach((library) => {
+      svg.appendChild(svgElement("line", { x1: center.x, y1: center.y, x2: library.projected.x, y2: library.projected.y, class: `cosine-school-vector ${library.type}` }));
+      const circle = svgElement("circle", { cx: library.projected.x, cy: library.projected.y, r: library.type ? 6 : 4.5, class: `cosine-school-point ${library.type}` });
+      const title = svgElement("title");
+      title.textContent = library.type === "target" ? "Harbor · target" : `${library.name} · similarity ${library.similarity.toFixed(4)}`;
       circle.appendChild(title);
-      group.appendChild(circle);
-      if (school.target || school.neighbor || school.name === "Summit High") {
-        const labelPositions = {
-          "Jefferson High": { dx: -10, dy: -7, anchor: "end" },
-          "Washington High": { dx: 10, dy: 9, anchor: "start" },
-          "North County Tech": { dx: 10, dy: -13, anchor: "start" },
-          "Madison High": { dx: 10, dy: 24, anchor: "start" },
-          "Hamilton High": { dx: 10, dy: -13, anchor: "start" },
-          "Summit High": { dx: 10, dy: 22, anchor: "start" },
-        };
-        const labelPosition = labelPositions[school.name] ?? { dx: 9, dy: -9, anchor: "start" };
-        addText(
-          group,
-          school.short,
-          school.projected.x + labelPosition.dx,
-          school.projected.y + labelPosition.dy,
-          "point-label",
-          labelPosition.anchor,
-        );
-      }
       const updateReadout = () => {
         const readout = document.getElementById("point-readout");
-        if (readout) readout.textContent = school.target
-          ? "Jefferson High · target vector"
-          : `${school.name} · cosine similarity ${school.similarity.toFixed(4)}`;
+        readout.textContent = library.type === "target" ? "Harbor · target vector" : `${library.name} · cosine similarity ${library.similarity.toFixed(4)}`;
       };
-      group.addEventListener("pointerenter", updateReadout);
-      group.addEventListener("click", updateReadout);
-      svg.appendChild(group);
+      circle.addEventListener("pointerenter", updateReadout);
+      circle.addEventListener("click", updateReadout);
+      svg.appendChild(circle);
+      if (library.type === "target" || library.name === "Riverside" || library.name === "Hillcrest") {
+        const labelOffsets = {
+          Harbor: { dx: -30, dy: -30, anchor: "end" },
+          Riverside: { dx: 28, dy: -14, anchor: "start" },
+          Hillcrest: { dx: 28, dy: 24, anchor: "start" },
+        };
+        const offset = labelOffsets[library.name];
+        const labelX = library.projected.x + offset.dx;
+        const labelY = library.projected.y + offset.dy;
+        svg.appendChild(svgElement("line", {
+          x1: library.projected.x,
+          y1: library.projected.y,
+          x2: labelX + (offset.anchor === "end" ? 4 : -4),
+          y2: labelY - 4,
+          class: "cosine-label-leader",
+        }));
+        addText(svg, library.name, labelX, labelY, "cosine-point-label", offset.anchor);
+      }
     });
   }
 
   const sphere = document.getElementById("sphere-plot");
-  if (sphere) {
-    let dragging = false;
-    let previousX = 0;
-    let previousY = 0;
-    sphere.addEventListener("pointerdown", (event) => {
-      dragging = true;
-      previousX = event.clientX;
-      previousY = event.clientY;
-      sphere.setPointerCapture(event.pointerId);
-    });
-    sphere.addEventListener("pointermove", (event) => {
-      if (!dragging) return;
-      sphereYaw -= (event.clientX - previousX) * 0.009;
-      spherePitch = clamp(spherePitch + (event.clientY - previousY) * 0.009, -1.35, 1.35);
-      previousX = event.clientX;
-      previousY = event.clientY;
-      renderSpherePlot();
-    });
-    sphere.addEventListener("pointerup", () => { dragging = false; });
-    sphere.addEventListener("pointercancel", () => { dragging = false; });
-  }
+  let dragging = false;
+  let previous = { x: 0, y: 0 };
+  sphere.addEventListener("pointerdown", (event) => {
+    event.preventDefault();
+    dragging = true;
+    previous = { x: event.clientX, y: event.clientY };
+    sphere.setPointerCapture(event.pointerId);
+  });
+  sphere.addEventListener("pointermove", (event) => {
+    if (!dragging) return;
+    yaw += (event.clientX - previous.x) * .009;
+    pitch = clamp(pitch - (event.clientY - previous.y) * .009, -1.25, 1.25);
+    previous = { x: event.clientX, y: event.clientY };
+    renderSpherePlot();
+  });
+  sphere.addEventListener("pointerup", () => { dragging = false; });
+  sphere.addEventListener("pointercancel", () => { dragging = false; });
 
   window.addEventListener("hashchange", () => {
-    const nextHashStep = Number.parseInt(window.location.hash.replace("#step-", ""), 10) - 1;
-    if (Number.isInteger(nextHashStep)) showStep(nextHashStep);
+    const hashScene = Number.parseInt(window.location.hash.replace("#scene-", ""), 10) - 1;
+    if (Number.isInteger(hashScene)) showScene(hashScene);
   });
 
-  showStep(currentStep);
+  const hashScene = Number.parseInt(window.location.hash.replace("#scene-", ""), 10) - 1;
+  if (Number.isInteger(hashScene)) currentScene = clamp(hashScene, 0, scenes.length - 1);
+  showScene(currentScene);
 })();
