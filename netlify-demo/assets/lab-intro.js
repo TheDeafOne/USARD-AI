@@ -49,6 +49,14 @@
 
   const pick = (dictionary, keys) => Object.fromEntries(keys.map((key) => [key, dictionary[key]]));
 
+  const datasetViewerByPath = {
+    "data/raw_recruiting_events.csv": "data-viewer.html?dataset=raw",
+    "data/clean_recruiting_events.csv": "data-viewer.html?dataset=clean",
+    "data/school_summary.csv": "data-viewer.html?dataset=summary",
+    "data/school_profiles.csv": "data-viewer.html?dataset=school-profiles",
+    "data/action_profiles.csv": "data-viewer.html?dataset=action-profiles",
+  };
+
   const labs = {
     "1": {
       kicker: "Lab 01 / Pipeline integrity",
@@ -374,6 +382,8 @@
 
   function sourceMarkup(source, index) {
     const fields = Object.entries(source.fields);
+    const datasetViewer = datasetViewerByPath[source.path];
+    const layoutClass = source.snippet ? "source-layout" : "source-layout source-layout-table";
     const preview = source.snippet
       ? `
           <div class="snippet-preview">
@@ -403,9 +413,12 @@
               <p class="source-file">${escapeHTML(source.filename)}</p>
             </div>
           </div>
-          <span class="source-role">${escapeHTML(source.role)}</span>
+          <div class="source-actions">
+            ${datasetViewer ? `<a class="source-dataset-link" href="${datasetViewer}">View full dataset <span aria-hidden="true">↗</span></a>` : ""}
+            <span class="source-role">${escapeHTML(source.role)}</span>
+          </div>
         </header>
-        <div class="source-layout">
+        <div class="${layoutClass}">
           <div class="source-preview">
             ${preview}
             <div class="column-strip">

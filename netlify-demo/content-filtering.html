@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="A table-first, interactive explanation of content-based filtering using a fictional library program example." />
+    <title>Content-Based Filtering | USARD Concepts</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="assets/styles.css" />
+    <link rel="stylesheet" href="assets/cosine-story.css" />
+    <script src="assets/content-demo.js" defer></script>
+  </head>
+  <body class="demo-body cosine-body content-body">
+    <main class="demo-shell cosine-shell">
+      <header class="demo-topbar cosine-topbar">
+        <a class="back-link compact" href="cosine-similarity.html#scene-5">&larr; Collaborative filtering</a>
+        <p>USARD / Recommender Systems</p>
+      </header>
+
+      <section class="demo-title-block cosine-title-block content-title-block">
+        <p class="eyebrow">Companion worked example</p>
+        <h1>The match is in the features.</h1>
+        <p class="lede">Answer the same library-program question without borrowing outcomes from neighboring branches. This time, Harbor’s own history and the programs’ attributes do the work.</p>
+      </section>
+
+      <section class="cosine-story content-story" id="content-story" data-scene="0" aria-label="Content-based filtering walkthrough">
+        <nav class="cosine-progress" aria-label="Walkthrough scenes">
+          <button type="button" data-content-scene-button="0" aria-selected="true"><span>01</span>Catalog</button>
+          <button type="button" data-content-scene-button="1" aria-selected="false"><span>02</span>Features</button>
+          <button type="button" data-content-scene-button="2" aria-selected="false"><span>03</span>Profile</button>
+          <button type="button" data-content-scene-button="3" aria-selected="false"><span>04</span>Match</button>
+          <button type="button" data-content-scene-button="4" aria-selected="false"><span>05</span>Recommend</button>
+        </nav>
+
+        <div class="cosine-narration">
+          <div>
+            <p class="step-label" id="content-scene-label">Step 1 of 5 / Change the evidence</p>
+            <h2 id="content-scene-title">Describe the programs, not the neighbors.</h2>
+          </div>
+          <p id="content-scene-copy">Content-based filtering starts with Harbor’s own history and a feature profile for every program. It never needs outcomes from another branch.</p>
+        </div>
+
+        <div class="cosine-stage">
+          <section class="outcome-panel" aria-labelledby="content-table-title">
+            <div class="panel-heading">
+              <div>
+                <span class="card-label">Worked example · fictional data</span>
+                <h3 id="content-table-title">Program content and Harbor outcomes</h3>
+              </div>
+              <div class="measure-key content-measure-key"><i></i> feature strength · 0–1</div>
+            </div>
+
+            <div class="outcome-scroll" tabindex="0" aria-label="Scrollable program content table">
+              <table class="cosine-table content-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Program</th>
+                    <th scope="col" data-feature><abbr title="Science, technology, engineering, and math">STEM</abbr></th>
+                    <th scope="col" data-feature><abbr title="Hands-on learning">Hands-on</abbr></th>
+                    <th scope="col" data-feature>Career</th>
+                    <th scope="col" data-feature>Social</th>
+                    <th scope="col" data-feature>Beginner</th>
+                    <th scope="col"><abbr title="Harbor follow-up completions per staff-hour">Harbor result</abbr></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="profile-source-row" data-profile-source data-program="coding">
+                    <th scope="row">Coding Club <span class="source-tag">profile</span></th>
+                    <td data-feature>0.90</td><td data-feature>0.75</td><td data-feature>0.55</td><td data-feature>0.80</td><td data-feature>0.60</td><td class="result-cell">0.81</td>
+                  </tr>
+                  <tr class="profile-source-row" data-profile-source data-program="robotics">
+                    <th scope="row">Robotics Demo <span class="source-tag">profile</span></th>
+                    <td data-feature>0.95</td><td data-feature>0.85</td><td data-feature>0.35</td><td data-feature>0.70</td><td data-feature>0.55</td><td class="result-cell">0.76</td>
+                  </tr>
+                  <tr class="observed-row" data-program="resume">
+                    <th scope="row">Resume Clinic</th>
+                    <td data-feature>0.10</td><td data-feature>0.40</td><td data-feature>0.95</td><td data-feature>0.35</td><td data-feature>0.85</td><td class="result-cell">0.74</td>
+                  </tr>
+                  <tr class="observed-row" data-program="career">
+                    <th scope="row">Career Q&amp;A</th>
+                    <td data-feature>0.15</td><td data-feature>0.25</td><td data-feature>0.95</td><td data-feature>0.65</td><td data-feature>0.75</td><td class="result-cell">0.61</td>
+                  </tr>
+                  <tr class="observed-row" data-program="benefits">
+                    <th scope="row">Benefits Workshop</th>
+                    <td data-feature>0.10</td><td data-feature>0.35</td><td data-feature>0.90</td><td data-feature>0.45</td><td data-feature>0.80</td><td class="result-cell">0.48</td>
+                  </tr>
+                  <tr class="candidate-row recommendation-row" data-candidate data-recommend data-program="maker">
+                    <th scope="row">Maker Lab <span class="candidate-tag">untried</span></th>
+                    <td data-feature>0.85</td><td data-feature>0.95</td><td data-feature>0.35</td><td data-feature>0.80</td><td data-feature>0.65</td>
+                    <td class="result-cell missing-cell"><span class="missing-value">—</span><span class="recommended-value">Try next<small>rank 1</small></span></td>
+                  </tr>
+                  <tr class="candidate-row" data-candidate data-program="storytelling">
+                    <th scope="row">Digital Storytelling <span class="candidate-tag">untried</span></th>
+                    <td data-feature>0.55</td><td data-feature>0.75</td><td data-feature>0.30</td><td data-feature>0.85</td><td data-feature>0.75</td><td class="result-cell missing-cell">—</td>
+                  </tr>
+                  <tr class="candidate-row" data-candidate data-program="archive">
+                    <th scope="row">Community Archive <span class="candidate-tag">untried</span></th>
+                    <td data-feature>0.30</td><td data-feature>0.70</td><td data-feature>0.40</td><td data-feature>0.80</td><td data-feature>0.65</td><td class="result-cell missing-cell">—</td>
+                  </tr>
+                  <tr class="candidate-row" data-candidate data-program="finance">
+                    <th scope="row">Financial Literacy <span class="candidate-tag">untried</span></th>
+                    <td data-feature>0.10</td><td data-feature>0.40</td><td data-feature>0.90</td><td data-feature>0.55</td><td data-feature>0.70</td><td class="result-cell missing-cell">—</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="table-caption content-table-caption" aria-live="polite">
+              <span class="caption-symbol content-caption-symbol" aria-hidden="true">≠</span>
+              <p id="content-table-caption"><strong>Same question, different evidence.</strong> Known Harbor outcomes identify useful examples; content attributes describe tried and untried programs alike.</p>
+            </div>
+          </section>
+
+          <div class="concept-stage content-concept-stage">
+            <section class="concept-panel read-panel is-active" data-content-panel="0" aria-label="Content-based evidence">
+              <div class="question-card">
+                <span class="card-label">Same question</span>
+                <h3>Would a Maker Lab fit Harbor?</h3>
+                <p>Instead of finding similar branches, describe each program and learn which attributes are common in Harbor’s strongest relevant results.</p>
+              </div>
+              <div class="method-switch" aria-label="Change from collaborative to content-based evidence">
+                <span>Other branches</span><b aria-hidden="true">→</b><strong>Program features</strong>
+              </div>
+              <p class="transfer-note"><b>Key distinction:</b> collaborative filtering asks “who behaved similarly?” Content-based filtering asks “what is this item like?”</p>
+            </section>
+
+            <section class="concept-panel content-vector-panel" data-content-panel="1" aria-label="Coding Club feature vector" hidden>
+              <div class="concept-heading">
+                <span class="card-label">Content representation</span>
+                <h3>Coding Club becomes five numbers.</h3>
+              </div>
+              <div class="feature-vector-list" aria-label="Coding Club content features">
+                <div><span>STEM</span><i><b style="--feature:90%"></b></i><strong>0.90</strong></div>
+                <div><span>Hands-on</span><i><b style="--feature:75%"></b></i><strong>0.75</strong></div>
+                <div><span>Career</span><i><b style="--feature:55%"></b></i><strong>0.55</strong></div>
+                <div><span>Social</span><i><b style="--feature:80%"></b></i><strong>0.80</strong></div>
+                <div><span>Beginner</span><i><b style="--feature:60%"></b></i><strong>0.60</strong></div>
+              </div>
+              <div class="vector-readout"><span>Coding Club</span><code>[.90, .75, .55, .80, .60]</code></div>
+              <p class="concept-note">The feature vocabulary is chosen by the system designer. Good features should be meaningful, available for new programs, and consistent.</p>
+            </section>
+
+            <section class="concept-panel profile-panel" data-content-panel="2" aria-label="Harbor content profile" hidden>
+              <div class="concept-heading">
+                <span class="card-label">Outcome-weighted profile</span>
+                <h3>Blend the strongest relevant signals.</h3>
+              </div>
+              <div class="profile-build" aria-label="Coding Club and Robotics Demo combine into Harbor's profile">
+                <div class="profile-source"><span>Coding Club</span><strong>0.81</strong><small>Harbor result</small></div>
+                <div class="profile-plus" aria-hidden="true">+</div>
+                <div class="profile-source"><span>Robotics Demo</span><strong>0.76</strong><small>Harbor result</small></div>
+              </div>
+              <div class="profile-arrow" aria-hidden="true">weighted average ↓</div>
+              <div class="profile-vector-card">
+                <span>Harbor content profile</span>
+                <code>[.924, .798, .453, .752, .576]</code>
+                <div class="profile-mini-bars" aria-hidden="true"><i style="--feature:92.4%"></i><i style="--feature:79.8%"></i><i style="--feature:45.3%"></i><i style="--feature:75.2%"></i><i style="--feature:57.6%"></i></div>
+              </div>
+              <p class="concept-note">This compact vector says Harbor responds well to STEM-rich, hands-on, social programming. It can be compared directly with every catalog item.</p>
+            </section>
+
+            <section class="concept-panel neighbor-panel" data-content-panel="3" aria-label="Candidate programs ranked by content similarity" hidden>
+              <div class="concept-heading">
+                <span class="card-label">Cosine similarity to Harbor’s profile</span>
+                <h3>Rank the unseen programs.</h3>
+              </div>
+              <div class="neighbor-list content-match-list" aria-label="Programs ranked by content similarity">
+                <div class="neighbor-item top"><span><b>01</b>Maker Lab<small>content match</small></span><strong>0.9921</strong><i style="--score:99.21%"></i></div>
+                <div class="neighbor-item top"><span><b>02</b>Digital Storytelling<small>content match</small></span><strong>0.9600</strong><i style="--score:96%"></i></div>
+                <div class="neighbor-item"><span><b>03</b>Community Archive<small>content match</small></span><strong>0.9218</strong><i style="--score:92.18%"></i></div>
+                <div class="neighbor-item contrast"><span><b>04</b>Financial Literacy<small>content match</small></span><strong>0.7631</strong><i style="--score:76.31%"></i></div>
+              </div>
+              <div class="compact-equation"><span>cos(θ)</span><b>=</b><span class="mini-fraction"><i>profile · item</i><i>‖profile‖ × ‖item‖</i></span></div>
+              <p class="concept-note"><strong>No branch-to-branch comparison appears here.</strong> Each score compares Harbor’s profile with one program’s attributes.</p>
+            </section>
+
+            <section class="concept-panel estimate-panel content-recommend-panel" data-content-panel="4" aria-label="Maker Lab content recommendation" hidden>
+              <div class="concept-heading">
+                <span class="card-label">Top content match</span>
+                <h3>Maker Lab fits the learned pattern.</h3>
+              </div>
+              <div class="reason-grid" aria-label="Features supporting the Maker Lab recommendation">
+                <div><span>STEM</span><strong>0.85</strong><small>profile .92</small></div>
+                <div><span>Hands-on</span><strong>0.95</strong><small>profile .80</small></div>
+                <div><span>Social</span><strong>0.80</strong><small>profile .75</small></div>
+                <div><span>Beginner</span><strong>0.65</strong><small>profile .58</small></div>
+              </div>
+              <div class="prediction-formula content-score-card" aria-label="Content similarity equals 0.9921">
+                <span>content similarity</span>
+                <strong>0.9921</strong>
+                <small>ranking score · not an outcome prediction</small>
+              </div>
+              <div class="recommendation-card">
+                <div><span class="card-label">Recommended next pilot</span><h3>Maker Lab</h3></div>
+                <span class="evidence-badge">feature evidence</span>
+              </div>
+              <p class="concept-note">A close feature match makes Maker Lab a defensible next test. Only a real Harbor pilot can produce an observed outcome.</p>
+            </section>
+          </div>
+        </div>
+
+        <footer class="cosine-controls">
+          <button type="button" class="arrow-button" id="content-back" disabled><span aria-hidden="true">←</span> Back</button>
+          <div class="scene-status"><span id="content-scene-status">1 / 5</span><i><b id="content-scene-progress"></b></i></div>
+          <button type="button" class="arrow-button primary" id="content-next">Encode the content <span aria-hidden="true">→</span></button>
+        </footer>
+      </section>
+    </main>
+  </body>
+</html>
