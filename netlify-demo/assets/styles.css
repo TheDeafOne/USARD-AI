@@ -404,6 +404,16 @@ h2 {
 .arrow-button.primary { color: var(--background); font-weight: 800; background: var(--cyan); border-color: var(--cyan); }
 .arrow-button:disabled { opacity: 0.28; cursor: not-allowed; }
 
+/* Keep the first meaningful content visible on shorter laptop displays. */
+@media (max-height: 820px) and (min-width: 761px) {
+  .page-shell { padding-top: 48px; padding-bottom: 64px; }
+  .hero { margin-bottom: 46px; }
+  .home-section + .home-section { margin-top: 76px; }
+  .demo-shell { padding-top: 18px; }
+  .demo-topbar { margin-bottom: 42px; }
+  .demo-title-block { margin-bottom: 42px; }
+}
+
 @media (max-width: 850px) {
   .step-tabs button { text-align: center; }
   .step-tabs button span { display: block; margin: 0 0 4px; }
